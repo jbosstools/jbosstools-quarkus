@@ -9,6 +9,9 @@
   <artifactId>io.quarkus.eclipse.runtime</artifactId>
   <packaging>eclipse-plugin</packaging>
   <properties>
+    <jackson.version>2.9.8</jackson.version>
+    <maven.version>3.6.0</maven.version>
+    <plexus.version>3.1.1</plexus.version>
     <quarkus.version>0.11.0</quarkus.version>
     <lib.dir>${basedir}/lib</lib.dir>
   </properties>
@@ -32,6 +35,21 @@
               <groupId>io.quarkus</groupId>
               <artifactId>quarkus-devtools-common</artifactId>
               <version>${quarkus.version}</version>
+            </artifactItem>
+            <artifactItem>
+              <groupId>org.apache.maven</groupId>
+              <artifactId>maven-model</artifactId>
+              <version>${maven.version}</version>
+            </artifactItem>
+            <artifactItem>
+              <groupId>org.codehaus.plexus</groupId>
+              <artifactId>plexus-utils</artifactId>
+              <version>${plexus.version}</version>
+            </artifactItem>
+            <artifactItem>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-core</artifactId>
+              <version>${jackson.version}</version>
             </artifactItem>
           </artifactItems>
           <skip>false</skip>

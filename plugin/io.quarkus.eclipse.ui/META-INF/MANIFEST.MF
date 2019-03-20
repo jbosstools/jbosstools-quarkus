@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse UI Plugin
-Bundle-SymbolicName: io.quarkus.eclipse.ui
+Bundle-SymbolicName: io.quarkus.eclipse.ui;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Automatic-Module-Name: io.quarkus.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.jface,
- io.quarkus.eclipse.core,
+Require-Bundle: io.quarkus.eclipse.core,
+ org.eclipse.jface,
+ org.eclipse.ui;bundle-version="3.111.0",
  org.eclipse.ui.workbench

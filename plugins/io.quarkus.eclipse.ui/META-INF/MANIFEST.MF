@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Quarkus Eclipse UI Plugin
+Bundle-SymbolicName: io.quarkus.eclipse.ui
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: io.quarkus.eclipse.ui

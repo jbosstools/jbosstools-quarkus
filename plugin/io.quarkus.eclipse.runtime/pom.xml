@@ -2,14 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.quarkus.eclipse</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>plugin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>plugin</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-    <module>io.quarkus.eclipse.core</module>
-    <module>io.quarkus.eclipse.runtime</module>
-    <module>io.quarkus.eclipse.ui</module>
-  </modules>
+  <groupId>io.quarkus.eclipse.plugin</groupId>
+  <artifactId>io.quarkus.eclipse.runtime</artifactId>
+  <packaging>eclipse-plugin</packaging>
 </project>

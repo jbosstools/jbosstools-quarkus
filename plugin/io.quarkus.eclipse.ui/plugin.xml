@@ -10,6 +10,7 @@
       <wizard
             category="io.quarkus.eclipse.wizards"
             class="io.quarkus.eclipse.ui.wizard.CreateProjectWizard"
+            icon="icon/quarkus-16.png"
             id="io.quarkus.eclipse.ui.wizard.createProject"
             name="Create New Quarkus Project">
       </wizard>

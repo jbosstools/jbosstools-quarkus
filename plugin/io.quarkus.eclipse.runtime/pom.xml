@@ -8,4 +8,46 @@
   <groupId>io.quarkus.eclipse.plugin</groupId>
   <artifactId>io.quarkus.eclipse.runtime</artifactId>
   <packaging>eclipse-plugin</packaging>
+  <properties>
+    <quarkus.version>0.11.0</quarkus.version>
+    <lib.dir>${basedir}/lib</lib.dir>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>get-libs</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <artifactItems>
+            <artifactItem>
+              <groupId>io.quarkus</groupId>
+              <artifactId>quarkus-devtools-common</artifactId>
+              <version>${quarkus.version}</version>
+            </artifactItem>
+          </artifactItems>
+          <skip>false</skip>
+          <outputDirectory>${lib.dir}</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${lib.dir}</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

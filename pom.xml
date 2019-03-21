@@ -10,6 +10,7 @@
   <modules>
     <module>feature</module>
     <module>plugin</module>
+    <module>repository</module>
   </modules>
   <build>
     <plugins>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="io.quarkus.eclipse" label="Quarkus"/>
+   <feature id="io.quarkus.eclipse.feature">
+      <category name="io.quarkus.eclipse"/>
+   </feature>
+</site>

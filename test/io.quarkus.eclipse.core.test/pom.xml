@@ -2,13 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.quarkus.eclipse</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>test</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>test</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-    <module>io.quarkus.eclipse.core.test</module>
-    <module>io.quarkus.eclipse.runtime.test</module>
-  </modules>
+  <groupId>io.quarkus.eclipse.test</groupId>
+  <artifactId>io.quarkus.eclipse.core.test</artifactId>
+  <packaging>eclipse-test-plugin</packaging>
 </project>

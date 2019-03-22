@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Quarkus Eclipse Core Test Fragment
+Bundle-SymbolicName: io.quarkus.eclipse.core.test
+Bundle-Version: 0.0.1.qualifier
+Fragment-Host: io.quarkus.eclipse.core;bundle-version="0.0.1"
+Automatic-Module-Name: io.quarkus.eclipse.core.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.jdt.junit5.runtime;bundle-version="1.0.300",
+ org.junit.jupiter.api;bundle-version="5.3.1"

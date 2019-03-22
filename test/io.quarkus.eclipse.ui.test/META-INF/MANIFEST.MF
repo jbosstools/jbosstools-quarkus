@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: io.quarkus.eclipse.ui.test
+Bundle-Version: 0.0.1.qualifier
+Fragment-Host: io.quarkus.eclipse.ui
+Automatic-Module-Name: io.quarkus.eclipse.ui.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.jdt.junit5.runtime,
+ org.junit.jupiter.api,
+ org.eclipse.core.resources

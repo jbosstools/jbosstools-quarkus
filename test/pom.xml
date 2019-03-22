@@ -10,5 +10,6 @@
   <modules>
     <module>io.quarkus.eclipse.core.test</module>
     <module>io.quarkus.eclipse.runtime.test</module>
+    <module>io.quarkus.eclipse.ui.test</module>
   </modules>
 </project>

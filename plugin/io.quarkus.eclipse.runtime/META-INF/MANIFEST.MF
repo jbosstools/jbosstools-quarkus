@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Quarkus Eclipse UI Plugin
+Bundle-Name: Quarkus Eclipse Runtime Plugin
 Bundle-SymbolicName: io.quarkus.eclipse.runtime
 Bundle-Version: 0.0.1.qualifier
 Automatic-Module-Name: io.quarkus.eclipse.runtime

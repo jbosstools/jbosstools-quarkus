@@ -6,5 +6,5 @@ Bundle-Version: 0.0.1.qualifier
 Fragment-Host: io.quarkus.eclipse.runtime;bundle-version="0.0.1"
 Automatic-Module-Name: io.quarkus.eclipse.runtime.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.jdt.junit5.runtime;bundle-version="1.0.300",
- org.junit.jupiter.api;bundle-version="5.3.1"
+Require-Bundle: org.eclipse.jdt.junit5.runtime,
+ org.junit.jupiter.api

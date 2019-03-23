@@ -33,6 +33,11 @@
               <version>${quarkus.version}</version>
             </artifactItem>
             <artifactItem>
+              <groupId>io.quarkus</groupId>
+              <artifactId>quarkus-devtools-common-core</artifactId>
+              <version>${quarkus.version}</version>
+            </artifactItem>
+            <artifactItem>
               <groupId>org.apache.maven</groupId>
               <artifactId>maven-model</artifactId>
               <version>${maven.version}</version>

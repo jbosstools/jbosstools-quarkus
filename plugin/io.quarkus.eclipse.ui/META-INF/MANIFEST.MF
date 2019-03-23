@@ -7,5 +7,5 @@ Automatic-Module-Name: io.quarkus.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.quarkus.eclipse.core,
  org.eclipse.jface,
- org.eclipse.ui;bundle-version="3.111.0",
+ org.eclipse.ui,
  org.eclipse.ui.workbench

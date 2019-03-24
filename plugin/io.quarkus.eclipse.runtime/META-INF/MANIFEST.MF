@@ -11,4 +11,6 @@ Bundle-ClassPath: lib/jackson-core-2.9.8.jar,
  lib/quarkus-devtools-common-0.11.0.jar,
  lib/quarkus-devtools-common-core-0.11.0.jar
 Export-Package: io.quarkus.cli.commands,
- io.quarkus.dependencies
+ io.quarkus.dependencies,
+ io.quarkus.maven.utilities,
+ org.apache.maven.model

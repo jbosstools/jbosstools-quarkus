@@ -4,15 +4,30 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="io.quarkus.eclipse.wizards"
+            id="io.quarkus.eclipse.ui.wizards"
             name="Quarkus">
       </category>
       <wizard
-            category="io.quarkus.eclipse.wizards"
+            category="io.quarkus.eclipse.ui.wizards"
             class="io.quarkus.eclipse.ui.wizard.CreateProjectWizard"
             icon="icon/quarkus-16.png"
             id="io.quarkus.eclipse.ui.wizard.createProject"
             name="Create New Quarkus Project">
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="io.quarkus.eclipse.ui.views"
+            name="Quarkus">
+      </category>
+      <view
+            category="io.quarkus.eclipse.ui.views"
+            class="io.quarkus.eclipse.ui.view.ExtensionsView"
+            icon="icon/quarkus-16.png"
+            id="io.quarkus.eclipse.ui.view.extensionsView"
+            name="Quarkus Extensions"
+            restorable="true">
+      </view>
    </extension>
 </plugin>

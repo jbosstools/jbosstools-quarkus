@@ -30,4 +30,13 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="io.quarkus.eclipse.ui.perspective.PerspectiveFactory"
+            icon="icon/quarkus-16.png"
+            id="io.quarkus.eclipse.ui.perspective"
+            name="Quarkus">
+      </perspective>
+   </extension>
 </plugin>

@@ -13,6 +13,8 @@ import io.quarkus.dependencies.Extension;
 import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {
+	
+	public static final String ID = "io.quarkus.eclipse.ui.view.extensionsView";
 
 	private Table table;
 

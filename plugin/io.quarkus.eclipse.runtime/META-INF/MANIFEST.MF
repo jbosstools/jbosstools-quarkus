@@ -1,4 +1,6 @@
 Manifest-Version: 1.0
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Plugin
 Bundle-SymbolicName: io.quarkus.eclipse.runtime

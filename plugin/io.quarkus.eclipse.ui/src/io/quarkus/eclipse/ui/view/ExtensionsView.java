@@ -17,22 +17,36 @@
 package io.quarkus.eclipse.ui.view;
 
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import io.quarkus.dependencies.Extension;
+import io.quarkus.eclipse.core.ProjectUtils;
+import io.quarkus.eclipse.core.SelectionChangeHandler;
 import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {
 	
 	public static final String ID = "io.quarkus.eclipse.ui.view.extensionsView";
 
-	private Table table;
+	private Table table = null;
+	private Object currentProject = null;
 
 	public void createPartControl(Composite parent) {
 		table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
@@ -43,6 +57,8 @@ public class ExtensionsView extends ViewPart {
             TableColumn column = new TableColumn(table, SWT.NONE);
             column.setText(titles[i]);
         }
+        createContextMenu();
+        addSelectionListener();
         List<Extension> extensions = MojoUtils.loadExtensions();
         for (Extension extension : extensions) {
         	TableItem item = new TableItem(table, SWT.NONE);
@@ -60,6 +76,66 @@ public class ExtensionsView extends ViewPart {
 	@Override
 	public void setFocus() {
 		table.setFocus();
+	}
+	
+	private void createContextMenu() {
+		Menu contextMenu = new Menu(table);
+		table.setMenu(contextMenu);
+		MenuItem menuItem = new MenuItem(contextMenu, SWT.None);
+		menuItem.setText("Install extension");
+		menuItem.addSelectionListener(new SelectionListener() {			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (currentProject != null) {
+					ProjectUtils.installExtension(
+							currentProject, 
+							(Extension)table.getSelection()[0].getData());
+					refreshView();
+				}
+			}		
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		table.addListener(SWT.MouseDown, new Listener() {		
+		    @Override
+		    public void handleEvent(Event event) {
+		        TableItem[] selection = table.getSelection();
+		        if(selection.length!=0 && (event.button == 3)){
+		            contextMenu.setVisible(true);
+		        }
+		    }
+		});
+	}
+	
+	private void addSelectionListener() {
+		getSite()
+			.getWorkbenchWindow()
+			.getSelectionService()
+			.addSelectionListener(
+					new ISelectionListener() {						
+						@Override
+						public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+							if (!selection.isEmpty() && selection instanceof StructuredSelection) {
+								Object newProject = SelectionChangeHandler.getSelectedProject(
+										((StructuredSelection)selection).getFirstElement());
+								if (currentProject != newProject) {
+									currentProject = newProject;
+									refreshView();
+								}
+							}
+						}
+					});
+	}
+	
+	private void refreshView() {
+		Set<?> installed = ProjectUtils.findInstalledExtensions(currentProject);
+		for (TableItem tableItem : table.getItems()) {
+			String credentials = 
+					MojoUtils.credentials(
+							((Extension)tableItem.getData()).toDependency(true));
+			tableItem.setChecked(installed.contains(credentials));
+		}
 	}
 	
 }

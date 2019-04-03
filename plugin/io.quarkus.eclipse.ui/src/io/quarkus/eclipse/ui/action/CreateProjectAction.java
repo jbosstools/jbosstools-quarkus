@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import org.eclipse.jface.action.Action;
 
-import io.quarkus.eclipse.core.ProjectCreator;
+import io.quarkus.eclipse.core.ProjectUtils;
 
 public class CreateProjectAction extends Action {
 
@@ -44,7 +44,7 @@ public class CreateProjectAction extends Action {
 	
 	@Override
 	public void run() {
-		ProjectCreator.createProject(name, groupId, artefactId, version, context);
+		ProjectUtils.createProject(name, groupId, artefactId, version, context);
 	}	
 
 }

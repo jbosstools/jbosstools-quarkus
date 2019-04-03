@@ -38,7 +38,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import io.quarkus.dependencies.Extension;
 import io.quarkus.eclipse.core.ProjectUtils;
-import io.quarkus.eclipse.core.SelectionChangeHandler;
 import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {
@@ -117,7 +116,7 @@ public class ExtensionsView extends ViewPart {
 						@Override
 						public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 							if (!selection.isEmpty() && selection instanceof StructuredSelection) {
-								Object newProject = SelectionChangeHandler.getSelectedProject(
+								Object newProject = ProjectUtils.getSelectedProject(
 										((StructuredSelection)selection).getFirstElement());
 								if (currentProject != newProject) {
 									currentProject = newProject;

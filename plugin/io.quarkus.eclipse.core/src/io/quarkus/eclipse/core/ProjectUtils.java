@@ -65,19 +65,6 @@ public class ProjectUtils {
 		return new HashSet<Object>();
 	}
 	
-	public static void installExtension(Object currentProject, Extension extension) {
-		try {
-			if (currentProject != null && currentProject instanceof IProject) {
-				IResource resource = ((IProject)currentProject).findMember("pom.xml");
-				AddExtensions project = new AddExtensions(new File(resource.getRawLocation().toOSString()));
-				project.addExtensions(Collections.singleton(extension.getName()));
-				resource.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-			}		
-		} catch (IOException | CoreException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public static void createProject(			
 			String name, 
 			String groupId, 
@@ -120,6 +107,27 @@ public class ProjectUtils {
 			result.setAccessible(true);
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
+		}
+		return result;
+	}
+
+	public static void installExtension(Object currentProject, Extension extension) {
+		try {
+			if (currentProject != null && currentProject instanceof IProject) {
+				IResource resource = ((IProject)currentProject).findMember("pom.xml");
+				AddExtensions project = new AddExtensions(new File(resource.getRawLocation().toOSString()));
+				project.addExtensions(Collections.singleton(extension.getName()));
+				resource.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			}		
+		} catch (IOException | CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object getSelectedProject(Object selectedElement) {
+		Object result = null;
+		if (selectedElement instanceof IResource) {
+			result = ((IResource) selectedElement).getProject();
 		}
 		return result;
 	}

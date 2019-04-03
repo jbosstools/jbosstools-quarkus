@@ -32,7 +32,7 @@ public class ProjectCreatorTest {
 				.getRoot()
 				.getProject("com.acme.quarkus");
 		assertFalse(project.exists());
-		ProjectCreator.create(
+		ProjectUtils.createProject(
 				"com.acme.quarkus", 
 				"com.acme", 
 				"quarkus", 

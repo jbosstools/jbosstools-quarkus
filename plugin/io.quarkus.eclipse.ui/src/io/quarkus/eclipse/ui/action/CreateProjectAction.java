@@ -44,7 +44,7 @@ public class CreateProjectAction extends Action {
 	
 	@Override
 	public void run() {
-		ProjectCreator.create(name, groupId, artefactId, version, context);
+		ProjectCreator.createProject(name, groupId, artefactId, version, context);
 	}	
 
 }

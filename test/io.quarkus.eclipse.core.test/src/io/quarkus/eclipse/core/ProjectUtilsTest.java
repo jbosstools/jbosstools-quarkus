@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.junit.jupiter.api.Test;
 
-public class ProjectCreatorTest {
+public class ProjectUtilsTest {
 	
 	@Test
 	public void testCreate() {

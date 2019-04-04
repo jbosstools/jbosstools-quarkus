@@ -100,4 +100,14 @@ Fill out the details for your project and push the `Finish` button to close the 
 
 Observe that in the `Quarkus Extensions` view, the checkboxes next to the already installed extensions are selected.
  
+### Install New Extension
 
+You can add a new Quarkus extension to your project from teh `Quarkus Extensions` view.
+
+<img src="documentation/images/install-quarkus-extension-popup.png" width="450"/>
+
+Simply select the extension you want to add and bring up the context menu by right-clicking. Then push the `Install Extension` menu item.
+
+<img src="documentation/images/install-quarkus-extension-result.png" width="600"/>
+
+Observe that the newly installed extension is now checked in the `Quarkus Extensions` view and that a new dependency has been added to the `pom.xml` file.

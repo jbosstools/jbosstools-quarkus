@@ -60,3 +60,23 @@ Ignore the warning and push the `Install anyway` button. Eventually a new dialog
 
 Finish the installation by selecting `Restart Now`.
 
+## Getting Started
+
+Now that you have succesfully installed the Quarkus plugins into your Eclipse workbench, it is time to use the available functionality.
+
+### The Quarkus Perspective
+
+There is a `Quarkus` perpective that brings the currently available functionality together.
+
+<img src="documentation/images/open-perspective-menu.png" width="350"/>
+
+Select the `Window->Perspective->Open Perspective->Other...` menu item to bring up the `Open Perspective` dialog.
+
+<img src="documentation/images/open-perspective-dialog.png" width="200"/>
+
+Select `Quarkus` and push the `Open` button to open the perspective.
+
+<img src="documentation/images/quarkus-perspective.png" width="600"/>
+
+As you can see there is a `Quarkus Extensions` view in this perspective, containing a list of all the available Quarkus extensions.
+

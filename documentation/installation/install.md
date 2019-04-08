@@ -42,3 +42,5 @@ Ignore the warning and push the `Install anyway` button. Eventually a new dialog
 
 Finish the installation by selecting `Restart Now`.
 
+You can now create your first Quarkus project by following the [getting started guide](../getting-started/getting-started.md).
+

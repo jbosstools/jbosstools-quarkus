@@ -1,6 +1,6 @@
 # Getting Started Guide
 
-Now that you have succesfully installed the Quarkus plugins into your Eclipse workbench, it is time to use the available functionality.
+To follow the getting started guide you will need to have the Quarkus plugins installed in your Eclipse workbench. You can build an installable repository by following the [build instructions](../building/build.md). After building, use the [installation guide](../installation/install.md) to perform the installation.
 
 ## The Quarkus Perspective
 

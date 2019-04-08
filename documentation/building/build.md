@@ -10,4 +10,4 @@ When the build finishes you will find an installable Eclipse repository in the `
 
 The name of the repository is `io.quarkus.eclipse.repository-x.y.z-SNAPSHOT.zip`.
 
-
+Now you can proceed with the installation of your repository in your Eclipse workbench by following the [installation instructions](../installation/install.md).

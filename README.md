@@ -8,7 +8,7 @@ Quarkus Eclipse contains tooling to make it easier to work with the [Quarkus](ht
 
 To build Quarkus Eclipse follow the [build instructions](documentation/building/build.md).
 
-## Installation Instructions
+## Installation
 
 To install the freshly built Quarkus Eclipse plugins into your Eclipse workbench, follow the instructions in the [installation guide](documentation/installation/install.md).
 

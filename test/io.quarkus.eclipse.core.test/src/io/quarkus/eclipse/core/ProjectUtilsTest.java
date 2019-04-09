@@ -21,10 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ProjectUtilsTest {
 	
+	// TODO Reenable this test
+	@Disabled
 	@Test
 	public void testCreate() {
 		IProject project = ResourcesPlugin

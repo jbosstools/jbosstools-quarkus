@@ -24,7 +24,7 @@ public class VersionTest {
 	
 	@Test
 	public void testVersion() {
-		assertEquals("0.11.0", io.quarkus.maven.utilities.MojoUtils.getPluginVersion());
+		assertEquals("0.13.0", io.quarkus.maven.utilities.MojoUtils.getPluginVersion());
 	}
 
 }

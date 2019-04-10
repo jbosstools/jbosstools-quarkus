@@ -26,6 +26,18 @@ Don't forget to indicate your Java and Eclipse version.
 
 To contribute, use GitHub Pull Requests, from your **own** fork.
 
+### Import the Projects
+
+The different projects constituting the Quarkus Eclipse tooling can be imported in your Eclipse workspace by using the Eclipse import wizard. Bring up the wizard by selecting `File->Import...`
+
+<img src="images/import-wizard.png" width="350"/>
+
+Select the `Maven->Existing Maven Projects` wizard and push the `Next` button.
+
+<img src="images/select-root.png" width="350"/>
+
+Push the `Browse...` button and navigate to the root of your quarkus-eclipse clone. Perform the import by pushing the `Finish` button.
+
 ## The small print
 
 This project is an open source project, please act responsibly, be nice, polite and enjoy!

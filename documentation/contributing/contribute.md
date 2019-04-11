@@ -38,6 +38,14 @@ Select the `Maven->Existing Maven Projects` wizard and push the `Next` button.
 
 Push the `Browse...` button and navigate to the root of your quarkus-eclipse clone. Perform the import by pushing the `Finish` button.
 
+### Work on a Topic Branch
+
+When you want to contribute code or documentation you first need to create a topic branch. It is common practice to give your branch a name that refers to the issue you are solving. E.g. if you want to fix the issue #2, name your topic branch 'QE-2' (`git checkout -b QE-2`). 
+
+When the work is done or the issue is (partly) fixed, squash the commits into one. It is good practice to refer to the solved issue in the commit message. E.g. `git commit -m "QE-2: Create contribution guide - Add a 'Work on a Topic Branch' section"`). 
+
+Rebase your topic branch against the current master branch if necessary (`git rebase master`), push the branch to your own fork on GitHub (`git push <your-fork> QE-2`) and open a pull request (`https://github.com/<your-fork>/quarkus-eclipse/pull/new/QE-2`).
+
 ## The small print
 
 This project is an open source project, please act responsibly, be nice, polite and enjoy!

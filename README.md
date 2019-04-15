@@ -15,3 +15,7 @@ To install the freshly built Quarkus Eclipse plugins into your Eclipse workbench
 ## Getting Started
 
 After the installation, get started using the new functionality by following the instructions in the [getting started manual](documentation/getting-started/getting-started.md).
+
+## Contributing
+
+If you run into errors, have ideas on how to improve the project or if you just want to collaborate, checkout the [contribution guide](documentation/contributing/contribute.md).

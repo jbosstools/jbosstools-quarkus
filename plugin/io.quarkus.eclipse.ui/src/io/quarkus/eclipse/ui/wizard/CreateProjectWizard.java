@@ -28,9 +28,11 @@ import io.quarkus.eclipse.ui.action.CreateProjectAction;
 public class CreateProjectWizard extends Wizard implements INewWizard {
 	
 	private CreateProjectWizardPage createProjectWizardPage = null;
-
+	
 	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {}
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		setWindowTitle("New Quarkus Project");
+	}
 
 	@Override
 	public boolean performFinish() {

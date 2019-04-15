@@ -30,8 +30,8 @@ public class CreateProjectWizardPage extends WizardPage {
 
 	public CreateProjectWizardPage() {
 		super("Create New Quarkus Project");
-        setTitle("New Quarkus Project");
-        setDescription("Create a new Quarkus project.");
+        setTitle("Quarkus Project");
+        setDescription("Create a new Quarkus project resource.");
 	}
 	
 	public String getGroupId() {

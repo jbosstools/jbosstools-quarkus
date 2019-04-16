@@ -12,8 +12,8 @@ Bundle-ClassPath: lib/jackson-annotations-2.9.8.jar,
  lib/jackson-databind-2.9.8.jar,
  lib/maven-model-3.6.0.jar,
  lib/plexus-utils-3.1.1.jar,
- lib/quarkus-devtools-common-0.13.1.jar,
- lib/quarkus-devtools-common-core-0.13.1.jar
+ lib/quarkus-devtools-common-0.13.2.jar,
+ lib/quarkus-devtools-common-core-0.13.2.jar
 Export-Package: io.quarkus.cli.commands,
  io.quarkus.dependencies,
  io.quarkus.maven.utilities,

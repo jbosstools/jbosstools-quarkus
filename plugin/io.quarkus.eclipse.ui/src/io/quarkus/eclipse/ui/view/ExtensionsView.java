@@ -123,6 +123,10 @@ public class ExtensionsView extends ViewPart {
 									refreshView();
 								}
 							}
+							else if (selection.isEmpty() && (currentProject != null)) {
+								currentProject = null;
+								refreshView();
+							}
 						}
 					});
 	}

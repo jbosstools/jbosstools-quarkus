@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Red Hat, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<cheatsheet title="Create Your First Quarkus Application">
+
+	<intro>
+		<description>
+Welcome to the Quarkus Getting Started guide You will learn how to create a Hello World Quarkus application. 
+This guide covers:<br/>
+- Bootstrapping an application<br/>
+- Creating a JAX-RS endpoint<br/>
+- Injecting beans<br/>
+- Functional tests<br/>
+- Packaging of the application		
+        </description>
+   </intro>
+   
+   <item
+         title="Bootstrapping the Project">
+ <!--     <action
+            pluginId="org.jboss.tools.shamrock"
+            class="org.jboss.tools.shamrock.ui.action.BootstrapShamrockApplicationAction"/> -->      
+      <description>
+Here we need to describe what menu item to select or what maven command to run in order to create a protean project
+      </description>
+   </item> 
+
+</cheatsheet>

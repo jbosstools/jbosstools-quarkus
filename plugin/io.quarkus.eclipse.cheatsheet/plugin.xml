@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <category
+            id="io.quarkus.eclipse.cheatsheet"
+            name="Quarkus">
+      </category>
+      <cheatsheet
+            category="io.quarkus.eclipse.cheatsheet"
+            composite="false"
+            contentFile="content/getting-started-guide.xml"
+            id="org.eclipse.ui.cheatsheet.gettingStartedGuide"
+            name="Getting Started Guide">
+      </cheatsheet>
+   </extension>
+
+</plugin>

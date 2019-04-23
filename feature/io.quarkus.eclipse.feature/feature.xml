@@ -257,4 +257,11 @@ APPENDIX: How to apply the Apache License to your work.
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="io.quarkus.eclipse.cheatsheet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

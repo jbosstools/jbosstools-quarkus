@@ -22,7 +22,7 @@ import org.eclipse.jface.action.Action;
 
 import io.quarkus.eclipse.core.ProjectUtils;
 
-public class CreateProjectAction extends Action {
+public class CreateProjectAction extends Action implements Runnable {
 
 	private String groupId, artefactId, version, name = null;
 	private HashMap<String, Object> context = new HashMap<String, Object>();

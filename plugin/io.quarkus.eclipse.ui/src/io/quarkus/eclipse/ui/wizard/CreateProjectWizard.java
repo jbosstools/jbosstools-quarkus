@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -35,14 +36,14 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 	}
 
 	@Override
-	public boolean performFinish() {
-		new CreateProjectAction(
+	public boolean performFinish() {		
+		Runnable createProjectAction = new CreateProjectAction(
 					createProjectWizardPage.getGroupId(), 
 					createProjectWizardPage.getArtefactId(), 
 					createProjectWizardPage.getVersion(), 
 					createProjectWizardPage.getName(),
-					new HashMap<String, Object>())
-				.run();	
+					new HashMap<String, Object>());
+		Display.getDefault().asyncExec(createProjectAction);	
 		return true;
 	}
 

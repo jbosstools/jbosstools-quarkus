@@ -18,11 +18,15 @@ package io.quarkus.eclipse.ui.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import io.quarkus.eclipse.core.ProjectUtils;
 
 public class CreateProjectWizardPage extends WizardPage {
 	
@@ -61,8 +65,14 @@ public class CreateProjectWizardPage extends WizardPage {
 	    versionText = createText(container, "1.0.0-SHAPSHOT");
 	    createLabel(container, "Name");
 	    nameText = createText(container, "com.acme.quarkus");
+	    nameText.addModifyListener(new ModifyListener() {		
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setPageComplete(checkPageComplete());
+			}
+		});
 	    setControl(container);
-	    setPageComplete(true);
+	    setPageComplete(checkPageComplete());
 	}
 	
 	private GridData createGridData() {
@@ -91,6 +101,10 @@ public class CreateProjectWizardPage extends WizardPage {
 		text.setLayoutData(createGridData());
 		text.setText(initialContents);
 		return text;
+	}
+	
+	private boolean checkPageComplete() {
+		return !ProjectUtils.projectExists(nameText.getText());
 	}
 
 }

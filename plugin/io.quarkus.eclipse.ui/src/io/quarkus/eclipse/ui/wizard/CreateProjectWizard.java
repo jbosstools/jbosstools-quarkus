@@ -46,9 +46,15 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 		return true;
 	}
 
+	@Override
 	public void addPages() {
 		createProjectWizardPage = new CreateProjectWizardPage();
 	    addPage(createProjectWizardPage);
+	}
+	
+	@Override
+	public boolean canFinish() {
+		return createProjectWizardPage.isPageComplete();
 	}
 	
 }

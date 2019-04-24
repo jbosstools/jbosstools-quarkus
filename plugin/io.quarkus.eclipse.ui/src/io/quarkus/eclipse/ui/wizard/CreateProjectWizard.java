@@ -16,13 +16,19 @@
 
 package io.quarkus.eclipse.ui.wizard;
 
+import java.net.URL;
 import java.util.HashMap;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import io.quarkus.eclipse.ui.action.CreateProjectAction;
 
@@ -33,6 +39,7 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		setWindowTitle("New Quarkus Project");
+		setDefaultPageImageDescriptor(createImageDescriptor());
 	}
 
 	@Override
@@ -56,6 +63,12 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean canFinish() {
 		return createProjectWizardPage.isPageComplete();
+	}
+	
+	private ImageDescriptor createImageDescriptor() {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		URL url = FileLocator.find(bundle, new Path("icon/quarkus-64.png"));
+		return ImageDescriptor.createFromURL(url);
 	}
 	
 }

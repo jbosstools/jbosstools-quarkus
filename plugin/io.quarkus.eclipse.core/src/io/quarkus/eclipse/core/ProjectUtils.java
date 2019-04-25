@@ -133,7 +133,9 @@ public class ProjectUtils {
 	}
 	
 	public static boolean projectExists(String name) {
-		return ResourcesPlugin.getWorkspace().getRoot().getProject(name).exists();
+		return (name != null) 
+				&& !"".equals(name) 
+				&& ResourcesPlugin.getWorkspace().getRoot().getProject(name).exists();
 	}
 	
 }

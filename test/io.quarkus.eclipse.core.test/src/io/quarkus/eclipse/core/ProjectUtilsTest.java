@@ -18,9 +18,11 @@ package io.quarkus.eclipse.core;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -46,14 +48,21 @@ public class ProjectUtilsTest {
 	}
 	
 	@Test 
-	public void testProjectExists() throws Exception {
-		assertFalse(ProjectUtils.projectExists("com.acme.quarkus"));
-		ResourcesPlugin
-				.getWorkspace()
-				.getRoot()
-				.getProject("com.acme.quarkus")
-				.create(new NullProgressMonitor());;
-		assertTrue(ProjectUtils.projectExists("com.acme.quarkus"));
+	public void testProjectExists() {
+		try {
+			assertFalse(ProjectUtils.projectExists("com.acme.quarkus"));
+			ResourcesPlugin
+					.getWorkspace()
+					.getRoot()
+					.getProject("com.acme.quarkus")
+					.create(new NullProgressMonitor());;
+			assertTrue(ProjectUtils.projectExists("com.acme.quarkus"));
+			assertFalse(ProjectUtils.projectExists(null));
+			assertFalse(ProjectUtils.projectExists(""));
+		}
+		catch (CoreException e) {
+			fail();
+		}
 	}
 	
 }

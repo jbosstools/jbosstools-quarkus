@@ -138,4 +138,8 @@ public class ProjectUtils {
 				&& ResourcesPlugin.getWorkspace().getRoot().getProject(name).exists();
 	}
 	
+	public static String getProjectLocationDefault() {
+		return ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
+	}
+	
 }

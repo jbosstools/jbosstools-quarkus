@@ -40,9 +40,10 @@ public class ProjectUtilsTest {
 				.getProject("com.acme.quarkus");
 		assertFalse(project.exists());
 		ProjectUtils.createProject(
+				"quarkus", 
+				project.getLocation().toOSString(),
 				"com.acme.quarkus", 
 				"com.acme", 
-				"quarkus", 
 				"1.0.0-SHAPSHOT", 
 				null);
 		assertTrue(project.exists());

@@ -39,6 +39,7 @@ public class CreateProjectActionTest {
 			CreateProjectAction createProjectAction = 
 					new CreateProjectAction(
 							"com.acme.quarkus", 
+							project.getLocation().toOSString(),
 							"com.acme", 
 							"quarkus", 
 							"1.0.0-SHAPSHOT", 

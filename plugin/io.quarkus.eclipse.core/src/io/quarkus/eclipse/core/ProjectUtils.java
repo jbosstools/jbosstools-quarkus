@@ -67,6 +67,7 @@ public class ProjectUtils {
 	
 	public static void createProject(			
 			String name, 
+			String location,
 			String groupId, 
 			String artefactId, 
 			String version, 
@@ -76,12 +77,12 @@ public class ProjectUtils {
 				context = new HashMap<String, Object>();
 			}
 			File workspaceFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
-			File projectFolder = new File(workspaceFolder, name);
+			File projectFolder = new File(location);
 			new CreateProject(projectFolder)
 					.groupId(groupId)
 					.artifactId(artefactId)
 					.version(version)
-					.doCreateProject(context);;
+					.doCreateProject(context);
 			Set<MavenProjectInfo> projectSet = null;
 			IProjectConfigurationManager projectConfigurationManager = MavenPlugin.getProjectConfigurationManager();
 			MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();

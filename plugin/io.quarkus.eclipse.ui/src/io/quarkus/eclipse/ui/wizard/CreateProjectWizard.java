@@ -45,10 +45,11 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {		
 		Runnable createProjectAction = new CreateProjectAction(
+					createProjectWizardPage.getName(),
+					createProjectWizardPage.getLocation(),
 					createProjectWizardPage.getGroupId(), 
 					createProjectWizardPage.getArtefactId(), 
 					createProjectWizardPage.getVersion(), 
-					createProjectWizardPage.getName(),
 					new HashMap<String, Object>());
 		Display.getDefault().asyncExec(createProjectAction);	
 		return true;

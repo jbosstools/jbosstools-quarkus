@@ -18,6 +18,7 @@ package io.quarkus.eclipse.ui.wizard;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -44,6 +45,9 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {		
+		Map<String, Object> context = new HashMap<String, Object>();
+		context.put("className", createProjectWizardPage.getClassName());
+		context.put("path", createProjectWizardPage.getPath());
 		Runnable createProjectAction = new CreateProjectAction(
 					createProjectWizardPage.getName(),
 					createProjectWizardPage.getLocation(),

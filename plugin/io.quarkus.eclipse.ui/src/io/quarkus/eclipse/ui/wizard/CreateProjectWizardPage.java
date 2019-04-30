@@ -38,7 +38,7 @@ import io.quarkus.eclipse.core.ProjectUtils;
 public class CreateProjectWizardPage extends WizardPage {
 	
 	private Button browseButton = null;
-	private Text locationText, groupIdText, artefactIdText, versionText, nameText = null;
+	private Text locationText, groupIdText, artefactIdText, versionText, nameText, classNameText, pathText = null;
 
 	public CreateProjectWizardPage() {
 		super("Create New Quarkus Project");
@@ -65,6 +65,14 @@ public class CreateProjectWizardPage extends WizardPage {
 	public String getLocation() {
 		return locationText.getText();
 	}
+	
+	public String getClassName() {
+		return classNameText.getText();
+	}
+	
+	public String getPath() {
+		return pathText.getText();
+	}
 
 	@Override
 	public void createControl(Composite parent) {
@@ -75,6 +83,8 @@ public class CreateProjectWizardPage extends WizardPage {
 	    createFillerField(container, true, false);
 	    createUseDefaultWorkspaceLocationButton(container);
 	    createLocationField(container);
+	    createFillerField(container, true, false);
+	    createRestInfoGroup(container);
 	    createFillerField(container, true, true);
 	    setControl(container);
 	    setPageComplete(checkPageComplete());
@@ -190,6 +200,31 @@ public class CreateProjectWizardPage extends WizardPage {
 			}		
 		});
 	}
+	
+	private void createRestInfoGroup(Composite parent) {
+		Group group = new Group(parent, SWT.SHADOW_ETCHED_OUT);
+		group.setText("REST Info");
+		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true, 3, 1));
+		group.setLayout(new GridLayout(2, false));
+		createClassNameField(group);
+		createPathField(group);
+	}
+	
+	private void createClassNameField(Composite parent) {
+		Label classNameLabel = new Label(parent, SWT.NONE);
+		classNameLabel.setText("Class Name:");
+		classNameText = new Text(parent, SWT.BORDER | SWT.SINGLE);
+		classNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		classNameText.setText("org.acme.quarkus.GreetingResource");
+	}
+	
+	private void createPathField(Composite parent) {
+		Label pathLabel = new Label(parent, SWT.NONE);
+		pathLabel.setText("Path:");
+		pathText = new Text(parent, SWT.BORDER | SWT.SINGLE);
+		pathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		pathText.setText("/hello");
+	}	
 	
 	private boolean checkPageComplete() {
 		return !ProjectUtils.projectExists(nameText.getText());

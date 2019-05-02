@@ -39,4 +39,13 @@
             name="Quarkus">
       </perspective>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="io.quarkus.eclipse.ui.perspective">
+         <newWizardShortcut
+               id="io.quarkus.eclipse.ui.wizard.createProject">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
 </plugin>

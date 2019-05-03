@@ -26,7 +26,7 @@ There is a `Quarkus` perpective that brings the currently available functionalit
 
 Select the `Window->Perspective->Open Perspective->Other...` menu item to bring up the `Open Perspective` dialog.
 
-<img src="open-perspective-dialog.png" width="200"/>
+<img src="images/open-perspective-dialog.png" width="200"/>
 
 Select `Quarkus` and push the `Open` button to open the perspective.
 

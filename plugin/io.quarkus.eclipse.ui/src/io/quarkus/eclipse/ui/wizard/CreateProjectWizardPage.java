@@ -227,7 +227,14 @@ public class CreateProjectWizardPage extends WizardPage {
 	}	
 	
 	private boolean checkPageComplete() {
-		return !ProjectUtils.projectExists(nameText.getText());
+		String name = nameText.getText();
+		boolean projectExists = ProjectUtils.projectExists(name);		
+		if (projectExists) {
+			setMessage("A project with name '" + name + "' already exists.", ERROR);
+		} else {
+			setMessage("");
+		}
+		return !projectExists;
 	}
 	
 	private String getDefaultLocation() {

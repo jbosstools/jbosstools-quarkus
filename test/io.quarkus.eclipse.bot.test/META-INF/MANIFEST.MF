@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
+Bundle-ManifestVersion: 2
+Bundle-Name: Quarkus Integration Test Plugin
+Bundle-SymbolicName: io.quarkus.eclipse.bot.test;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Red Hat, Inc
+Automatic-Module-Name: io.quarkus.eclipse.ui.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit, org.eclipse.reddeer.go
+

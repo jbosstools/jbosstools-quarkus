@@ -23,19 +23,13 @@
 
     <parent>
         <groupId>io.quarkus.eclipse</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>test</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>test</artifactId>
-
-    <packaging>pom</packaging>
+    <groupId>io.quarkus.eclipse.test</groupId>
+    <artifactId>io.quarkus.eclipse.bot.test</artifactId>
     
-    <modules>
-        <module>io.quarkus.eclipse.bot.test</module>
-        <module>io.quarkus.eclipse.core.test</module>
-        <module>io.quarkus.eclipse.runtime.test</module>
-        <module>io.quarkus.eclipse.ui.test</module>
-    </modules>
+    <packaging>eclipse-test-plugin</packaging>
     
 </project>

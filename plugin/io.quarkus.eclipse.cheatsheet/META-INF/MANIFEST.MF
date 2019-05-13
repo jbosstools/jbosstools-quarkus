@@ -7,4 +7,7 @@ Bundle-SymbolicName: io.quarkus.eclipse.cheatsheet;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Automatic-Module-Name: io.quarkus.eclipse.cheatsheet
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.ui.cheatsheets
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.ui,
+ org.eclipse.ui.cheatsheets

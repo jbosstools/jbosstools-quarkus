@@ -21,6 +21,7 @@
 		<description>
 Welcome to the Quarkus Getting Started guide You will learn how to create a Hello World Quarkus application. 
 This guide covers:<br/>
+- Switch to the Quarkus perspective<br/>
 - Bootstrapping an application<br/>
 - Creating a JAX-RS endpoint<br/>
 - Injecting beans<br/>
@@ -29,13 +30,28 @@ This guide covers:<br/>
         </description>
    </intro>
    
+   <item 
+         title="Switch to the Quarkus perspective">
+      <action 
+              pluginId="io.quarkus.eclipse.cheatsheet"
+              class="io.quarkus.eclipse.cheatsheet.ShowQuarkusPerspectiveAction"/>
+      <description>
+A lot of the Quarkus functionality is more easily accessible when you are working in the Quarkus perspective. 
+You can change to the Quarkus perspective by bringing up the list of perspectives pushing the perspectives <img href='perspectives.png'/> icon
+in the Eclipse toolbar or by using the 'Window->Perspective->Open Perspective->Other...' menu entry and then choosing the 'Quarkus' 
+entry.
+      </description>
+   </item>
+   
    <item
          title="Bootstrapping the Project">
  <!--     <action
             pluginId="org.jboss.tools.shamrock"
             class="org.jboss.tools.shamrock.ui.action.BootstrapShamrockApplicationAction"/> -->      
       <description>
-Here we need to describe what menu item to select or what maven command to run in order to create a protean project
+The most general way to create a Quarkus project in Eclipse is to open up the 'New' wizard by selecting 'File->New->Other...' 
+or by pressing 'Cmd+N' and subsequently selecting 'Quarkus->New Quarkus Project'.<br/>
+If you are in the 'Quarkus' perspective (that you can open by selecting
       </description>
    </item> 
 

@@ -45,9 +45,9 @@ entry.
    
    <item
          title="Bootstrapping the Project">
- <!--     <action
-            pluginId="org.jboss.tools.shamrock"
-            class="org.jboss.tools.shamrock.ui.action.BootstrapShamrockApplicationAction"/> -->      
+      <action
+            pluginId="io.quarkus.eclipse.cheatsheet"
+            class="io.quarkus.eclipse.cheatsheet.OpenCreateProjectWizardAction"/>      
       <description>
 The most general way to create a Quarkus project in Eclipse is to open up the 'New' wizard by selecting 'File->New->Other...' 
 or by pressing 'Cmd+N' and subsequently selecting 'Quarkus->New Quarkus Project'.<br/>

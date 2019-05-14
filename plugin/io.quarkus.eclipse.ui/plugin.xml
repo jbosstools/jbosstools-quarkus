@@ -12,7 +12,7 @@
             class="io.quarkus.eclipse.ui.wizard.CreateProjectWizard"
             icon="icon/quarkus-16.png"
             id="io.quarkus.eclipse.ui.wizard.createProject"
-            name="Create New Quarkus Project">
+            name="Quarkus Project">
       </wizard>
    </extension>
    <extension

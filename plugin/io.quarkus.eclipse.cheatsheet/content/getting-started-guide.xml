@@ -50,8 +50,8 @@ entry.
             class="io.quarkus.eclipse.cheatsheet.OpenCreateProjectWizardAction"/>      
       <description>
 The most general way to create a Quarkus project in Eclipse is to open up the 'New' wizard by selecting 'File->New->Other...' 
-or by pressing 'Cmd+N' and subsequently selecting 'Quarkus->New Quarkus Project'.<br/>
-If you are in the 'Quarkus' perspective (that you can open by selecting
+or by pressing 'Ctrl+N' (or 'Cmd+N' on OS X) and subsequently selecting 'Quarkus->Quarkus Project'.<br/>
+If you are in the 'Quarkus' perspective you can also select 'File->New->Quarkus Project'. 
       </description>
    </item> 
 

@@ -1,6 +1,7 @@
 package io.quarkus.eclipse.cheatsheet;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -20,7 +21,12 @@ public class OpenCreateProjectWizardAction extends Action implements ICheatSheet
 		createProjectWizard.init(workbench, null);
 		WizardDialog dialog = new WizardDialog(window.getShell(), createProjectWizard);
 		dialog.create();
-		dialog.open();
+		int result = dialog.open();
+		if (result == Window.CANCEL) {
+			notifyResult(false);
+		} else if (result == Window.OK) {
+			notifyResult(true);
+		}
 	}
 
 }

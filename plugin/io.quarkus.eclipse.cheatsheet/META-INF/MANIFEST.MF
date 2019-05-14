@@ -11,3 +11,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.ui,
  org.eclipse.ui.cheatsheets
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: io.quarkus.eclipse.cheatsheet.Activator

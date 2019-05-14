@@ -17,8 +17,7 @@ public class ShowQuarkusPerspectiveAction extends Action implements ICheatSheetA
 			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 			workbench.showPerspective("io.quarkus.eclipse.ui.perspective", window);
 		} catch (WorkbenchException e) {
-			// should not happen
-			e.printStackTrace();
+			Activator.DEFAULT.logError(e);
 		}
 	}
 

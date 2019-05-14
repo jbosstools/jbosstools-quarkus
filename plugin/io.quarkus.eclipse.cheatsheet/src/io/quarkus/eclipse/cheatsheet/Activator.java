@@ -9,8 +9,6 @@ public class Activator extends AbstractUIPlugin {
 	public final static String ID = "io.quarkus.eclipse.cheatsheet";
 	public final static Activator DEFAULT = new Activator();
 
-	private Activator() {}
-	
 	public void logError(Throwable t) {
 		IStatus status = new Status(
 				IStatus.ERROR, 

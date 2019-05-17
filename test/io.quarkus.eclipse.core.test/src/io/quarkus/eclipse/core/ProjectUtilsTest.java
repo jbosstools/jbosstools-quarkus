@@ -45,6 +45,7 @@ public class ProjectUtilsTest {
 				"com.acme.quarkus", 
 				"com.acme", 
 				"1.0.0-SHAPSHOT", 
+				null,
 				null);
 		assertTrue(project.exists());
 	}

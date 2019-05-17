@@ -71,6 +71,7 @@ public class ProjectUtils {
 			String groupId, 
 			String artefactId, 
 			String version, 
+			String className,
 			HashMap<String, Object> context) {
 		try {
 			if (context == null) {
@@ -82,6 +83,7 @@ public class ProjectUtils {
 					.groupId(groupId)
 					.artifactId(artefactId)
 					.version(version)
+					.className(className)
 					.doCreateProject(context);
 			Set<MavenProjectInfo> projectSet = null;
 			IProjectConfigurationManager projectConfigurationManager = MavenPlugin.getProjectConfigurationManager();

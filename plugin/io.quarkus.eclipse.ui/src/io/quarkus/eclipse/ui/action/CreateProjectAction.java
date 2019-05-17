@@ -24,7 +24,7 @@ import io.quarkus.eclipse.core.ProjectUtils;
 
 public class CreateProjectAction extends Action implements Runnable {
 
-	private String name, location, groupId, artefactId, version = null;
+	private String name, location, groupId, artefactId, version, className = null;
 	private HashMap<String, Object> context = new HashMap<String, Object>();
 	
 	public CreateProjectAction(
@@ -46,7 +46,7 @@ public class CreateProjectAction extends Action implements Runnable {
 	
 	@Override
 	public void run() {
-		ProjectUtils.createProject(name, location, groupId, artefactId, version, context);
+		ProjectUtils.createProject(name, location, groupId, artefactId, version, className, context);
 	}	
 
 }

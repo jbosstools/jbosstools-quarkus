@@ -43,6 +43,7 @@ public class CreateProjectActionTest {
 							"com.acme", 
 							"quarkus", 
 							"1.0.0-SHAPSHOT", 
+							null,
 							null);
 			createProjectAction.run();
 		});

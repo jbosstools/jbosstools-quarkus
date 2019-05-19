@@ -33,12 +33,14 @@ public class CreateProjectAction extends Action implements Runnable {
 			String groupId, 
 			String artefactId, 
 			String version, 
+			String className,
 			HashMap<String, Object> context) {
 		this.groupId = groupId;
 		this.artefactId = artefactId;
 		this.version = version;
 		this.name = name;
 		this.location = location;
+		this.className = className;
 		if (context != null) {
 			this.context = context;
 		}

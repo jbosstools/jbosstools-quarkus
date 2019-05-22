@@ -3,12 +3,13 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Core Plugin
-Bundle-SymbolicName: io.quarkus.eclipse.core
+Bundle-SymbolicName: io.quarkus.eclipse.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Automatic-Module-Name: io.quarkus.eclipse.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.resources,
+Require-Bundle: io.quarkus.eclipse.runtime,
+ org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.m2e.core,
- io.quarkus.eclipse.runtime
+ org.eclipse.debug.core;bundle-version="3.13.100",
+ org.eclipse.m2e.core
 Export-Package: io.quarkus.eclipse.core.project

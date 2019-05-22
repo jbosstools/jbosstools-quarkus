@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
@@ -42,6 +43,8 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import io.quarkus.cli.commands.AddExtensions;
 import io.quarkus.cli.commands.CreateProject;
 import io.quarkus.cli.commands.ListExtensions;
+import io.quarkus.cli.commands.writer.FileProjectWriter;
+import io.quarkus.cli.commands.writer.ProjectWriter;
 import io.quarkus.dependencies.Extension;
 import io.quarkus.maven.utilities.MojoUtils;
 
@@ -79,7 +82,8 @@ public class ProjectUtils {
 			}
 			File workspaceFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 			File projectFolder = new File(location);
-			new CreateProject(projectFolder)
+			ProjectWriter projectWriter = new FileProjectWriter(projectFolder);
+			new CreateProject(projectWriter)
 					.groupId(groupId)
 					.artifactId(artefactId)
 					.version(version)
@@ -118,8 +122,11 @@ public class ProjectUtils {
 		try {
 			if (currentProject != null && currentProject instanceof IProject) {
 				IResource resource = ((IProject)currentProject).findMember("pom.xml");
-				AddExtensions project = new AddExtensions(new File(resource.getRawLocation().toOSString()));
-				project.addExtensions(Collections.singleton(extension.getName()));
+				IPath path = resource.getRawLocation().removeLastSegments(1);
+				File file = new File(path.toOSString());
+				ProjectWriter projectWriter = new FileProjectWriter(file);
+				AddExtensions project = new AddExtensions(projectWriter, "pom.xml");
+				project.addExtensions(Collections.singleton(extension.getArtifactId()));
 				resource.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}		
 		} catch (IOException | CoreException e) {

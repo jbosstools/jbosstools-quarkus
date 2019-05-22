@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import io.quarkus.dependencies.Extension;
-import io.quarkus.eclipse.core.ProjectUtils;
+import io.quarkus.eclipse.core.project.ProjectUtils;
 import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {

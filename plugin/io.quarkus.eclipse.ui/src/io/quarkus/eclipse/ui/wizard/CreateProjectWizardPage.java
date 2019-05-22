@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import io.quarkus.eclipse.core.ProjectUtils;
+import io.quarkus.eclipse.core.project.ProjectUtils;
 
 public class CreateProjectWizardPage extends WizardPage {
 	

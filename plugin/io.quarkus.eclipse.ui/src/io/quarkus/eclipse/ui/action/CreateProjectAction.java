@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import org.eclipse.jface.action.Action;
 
-import io.quarkus.eclipse.core.ProjectUtils;
+import io.quarkus.eclipse.core.project.ProjectUtils;
 
 public class CreateProjectAction extends Action implements Runnable {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.core;
+package io.quarkus.eclipse.core.project;
 
 import java.io.File;
 import java.io.IOException;

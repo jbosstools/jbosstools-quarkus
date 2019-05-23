@@ -72,4 +72,12 @@
             type="io.quarkus.eclipse.core.launchConfigurationType">
       </launchConfigurationTabGroup>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="io.quarkus.eclipse.core.launchConfigurationType"
+            icon="icon/quarkus-16.png"
+            id="io.quarkus.eclipse.ui.launchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
 </plugin>

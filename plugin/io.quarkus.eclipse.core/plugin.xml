@@ -26,5 +26,4 @@
             name="Quarkus Launch Configuration">
       </launchConfigurationType>
    </extension>
-
 </plugin>

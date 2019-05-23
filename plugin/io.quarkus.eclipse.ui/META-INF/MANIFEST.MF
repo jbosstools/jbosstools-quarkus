@@ -10,6 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.quarkus.eclipse.core,
  io.quarkus.eclipse.runtime,
  org.eclipse.core.runtime,
+ org.eclipse.debug.ui,
  org.eclipse.jface,
  org.eclipse.ui,
  org.eclipse.ui.workbench

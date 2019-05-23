@@ -64,4 +64,12 @@
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="io.quarkus.eclipse.ui.launch.QuarkusLaunchConfigurationTabGroup"
+            id="io.quarkus.eclipse.ui.launchConfigurationTabGroup"
+            type="io.quarkus.eclipse.core.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
 </plugin>

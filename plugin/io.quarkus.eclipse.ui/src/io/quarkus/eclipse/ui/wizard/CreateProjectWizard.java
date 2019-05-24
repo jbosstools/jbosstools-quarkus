@@ -71,7 +71,7 @@ public class CreateProjectWizard extends Wizard implements INewWizard {
 	
 	private ImageDescriptor createImageDescriptor() {
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		URL url = FileLocator.find(bundle, new Path("icon/quarkus-64.png"));
+		URL url = FileLocator.find(bundle, new Path("icon/quarkus-32.png"));
 		return ImageDescriptor.createFromURL(url);
 	}
 	

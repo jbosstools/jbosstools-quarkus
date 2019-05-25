@@ -10,6 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.quarkus.eclipse.runtime,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.debug.core;bundle-version="3.13.100",
+ org.eclipse.debug.core,
+ org.eclipse.jdt.launching,
  org.eclipse.m2e.core
 Export-Package: io.quarkus.eclipse.core.project

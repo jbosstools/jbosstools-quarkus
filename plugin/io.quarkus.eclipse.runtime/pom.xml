@@ -54,6 +54,11 @@
                     <artifactItems>
                         <artifactItem>
                             <groupId>io.quarkus</groupId>
+                            <artifactId>quarkus-development-mode</artifactId>
+                            <version>${quarkus.version}</version>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>io.quarkus</groupId>
                             <artifactId>quarkus-devtools-common</artifactId>
                             <version>${quarkus.version}</version>
                         </artifactItem>

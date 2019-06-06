@@ -13,7 +13,8 @@ Require-Bundle: io.quarkus.eclipse.core,
  org.eclipse.debug.ui,
  org.eclipse.jface,
  org.eclipse.ui,
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ org.eclipse.jdt.launching
 Export-Package: io.quarkus.eclipse.ui.action,
  io.quarkus.eclipse.ui.perspective,
  io.quarkus.eclipse.ui.view,

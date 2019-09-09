@@ -3,10 +3,10 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: io.quarkus.eclipse.ui.test
+Bundle-SymbolicName: org.jboss.tools.quarkus.ui.test
 Bundle-Version: 0.0.1.qualifier
 Fragment-Host: io.quarkus.eclipse.ui
-Automatic-Module-Name: io.quarkus.eclipse.ui.test
+Automatic-Module-Name: org.jboss.tools.quarkus.ui.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.jdt.junit5.runtime,
  org.junit.jupiter.api,

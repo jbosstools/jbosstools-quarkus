@@ -32,7 +32,7 @@
     <packaging>pom</packaging>
     
     <modules>
-<!--    <module>io.quarkus.eclipse.bot.test</module> -->
+<!--    <module>org.jboss.tools.quarkus.bot.test</module> -->
         <module>org.jboss.tools.quarkus.core.test</module>
         <module>org.jboss.tools.quarkus.runtime.test</module>
         <module>org.jboss.tools.quarkus.ui.test</module>

@@ -28,7 +28,7 @@
     </parent>
     
     <groupId>io.quarkus.eclipse.test</groupId>
-    <artifactId>io.quarkus.eclipse.bot.test</artifactId>
+    <artifactId>org.jboss.tools.quarkus.bot.test</artifactId>
     
     <packaging>eclipse-test-plugin</packaging>
     

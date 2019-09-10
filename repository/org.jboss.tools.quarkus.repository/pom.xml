@@ -28,7 +28,7 @@
     </parent>
 
 	<groupId>io.quarkus.eclipse.repository</groupId>
-    <artifactId>io.quarkus.eclipse.repository</artifactId>
+    <artifactId>org.jboss.tools.quarkus.repository</artifactId>
 
     <packaging>eclipse-repository</packaging>
     

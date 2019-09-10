@@ -5,7 +5,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.jboss.tools.quarkus.ui.test
 Bundle-Version: 0.0.1.qualifier
-Fragment-Host: io.quarkus.eclipse.ui
+Fragment-Host: org.jboss.tools.quarkus.ui
 Automatic-Module-Name: org.jboss.tools.quarkus.ui.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.jdt.junit5.runtime,

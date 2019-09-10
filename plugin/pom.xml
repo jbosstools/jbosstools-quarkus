@@ -30,7 +30,7 @@
     <packaging>pom</packaging>
   
     <modules>
-        <module>io.quarkus.eclipse.cheatsheet</module>
+        <module>org.jboss.tools.quarkus.cheatsheet</module>
         <module>io.quarkus.eclipse.core</module>
         <module>io.quarkus.eclipse.runtime</module>
         <module>io.quarkus.eclipse.ui</module>

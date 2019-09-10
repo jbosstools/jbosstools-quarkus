@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <site>
-   <feature id="io.quarkus.eclipse.feature">
+   <feature id="org.jboss.tools.quarkus.feature">
       <category name="org.jboss.tools.quarkus"/>
    </feature>
    <category-def name="org.jboss.tools.quarkus" label="Quarkus"/>

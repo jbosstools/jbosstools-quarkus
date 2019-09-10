@@ -28,7 +28,7 @@
     </parent>
     
     <groupId>io.quarkus.eclipse.feature</groupId>
-    <artifactId>io.quarkus.eclipse.feature</artifactId>
+    <artifactId>org.jboss.tools.quarkus.feature</artifactId>
     
     <packaging>eclipse-feature</packaging>
     

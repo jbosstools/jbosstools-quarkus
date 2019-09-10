@@ -7,7 +7,7 @@ Bundle-SymbolicName: org.jboss.tools.quarkus.ui;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.quarkus.eclipse.core,
+Require-Bundle: org.jboss.tools.quarkus.core,
  io.quarkus.eclipse.runtime,
  org.eclipse.core.runtime,
  org.eclipse.debug.ui,

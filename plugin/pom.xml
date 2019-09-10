@@ -31,7 +31,7 @@
   
     <modules>
         <module>org.jboss.tools.quarkus.cheatsheet</module>
-        <module>io.quarkus.eclipse.core</module>
+        <module>org.jboss.tools.quarkus.core</module>
         <module>io.quarkus.eclipse.runtime</module>
         <module>org.jboss.tools.quarkus.ui</module>
     </modules>

@@ -3,9 +3,9 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Plugin
-Bundle-SymbolicName: io.quarkus.eclipse.runtime
+Bundle-SymbolicName: org.jboss.tools.quarkus.runtime
 Bundle-Version: 0.0.1.qualifier
-Automatic-Module-Name: io.quarkus.eclipse.runtime
+Automatic-Module-Name: org.jboss.tools.quarkus.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/jackson-annotations-2.9.8.jar,
  lib/jackson-core-2.9.8.jar,

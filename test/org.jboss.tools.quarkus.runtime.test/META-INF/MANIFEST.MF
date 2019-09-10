@@ -5,7 +5,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Test Fragment
 Bundle-SymbolicName: org.jboss.tools.quarkus.runtime.test
 Bundle-Version: 0.0.1.qualifier
-Fragment-Host: io.quarkus.eclipse.runtime
+Fragment-Host: org.jboss.tools.quarkus.runtime
 Automatic-Module-Name: org.jboss.tools.quarkus.runtime.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.jdt.junit5.runtime,

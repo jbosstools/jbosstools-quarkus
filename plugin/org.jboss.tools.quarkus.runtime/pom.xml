@@ -28,7 +28,7 @@
     </parent>
 
     <groupId>io.quarkus.eclipse.plugin</groupId>
-    <artifactId>io.quarkus.eclipse.runtime</artifactId>
+    <artifactId>org.jboss.tools.quarkus.runtime</artifactId>
  
     <packaging>eclipse-plugin</packaging>
 

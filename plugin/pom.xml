@@ -32,7 +32,7 @@
     <modules>
         <module>org.jboss.tools.quarkus.cheatsheet</module>
         <module>org.jboss.tools.quarkus.core</module>
-        <module>io.quarkus.eclipse.runtime</module>
+        <module>org.jboss.tools.quarkus.runtime</module>
         <module>org.jboss.tools.quarkus.ui</module>
     </modules>
     

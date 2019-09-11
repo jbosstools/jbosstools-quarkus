@@ -28,7 +28,7 @@
     </parent>
     
     <groupId>org.jboss.tools.quarkus</groupId>
-    <artifactId>feature</artifactId>
+    <artifactId>features</artifactId>
     
     <packaging>pom</packaging>
     

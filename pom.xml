@@ -37,7 +37,7 @@
     </properties>
     
     <modules>
-        <module>feature</module>
+        <module>features</module>
         <module>plugins</module>
         <module>repository</module>
         <module>tests</module>

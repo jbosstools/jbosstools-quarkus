@@ -27,7 +27,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <groupId>io.quarkus.eclipse.feature</groupId>
+    <groupId>org.jboss.tools.quarkus.feature</groupId>
     <artifactId>org.jboss.tools.quarkus.feature</artifactId>
     
     <packaging>eclipse-feature</packaging>

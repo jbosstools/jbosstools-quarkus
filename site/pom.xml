@@ -27,12 +27,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>repository</artifactId>
+    <groupId>org.jboss.tools.quarkus</groupId>
+    <artifactId>site</artifactId>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>org.jboss.tools.quarkus.repository</module>
+        <module>org.jboss.tools.quarkus.site</module>
     </modules>
     
 </project>

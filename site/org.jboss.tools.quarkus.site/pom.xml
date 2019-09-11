@@ -22,13 +22,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
-        <artifactId>repository</artifactId>
+        <groupId>org.jboss.tools.quarkus</groupId>
+        <artifactId>site</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-	<groupId>io.quarkus.eclipse.repository</groupId>
-    <artifactId>org.jboss.tools.quarkus.repository</artifactId>
+	<groupId>org.jboss.tools.quarkus.site</groupId>
+    <artifactId>org.jboss.tools.quarkus.site</artifactId>
 
     <packaging>eclipse-repository</packaging>
     

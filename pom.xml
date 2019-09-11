@@ -39,7 +39,7 @@
     <modules>
         <module>features</module>
         <module>plugins</module>
-        <module>repository</module>
+        <module>site</module>
         <module>tests</module>
     </modules>
     

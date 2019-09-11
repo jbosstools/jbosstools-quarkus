@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
+        <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>plugin</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <groupId>io.quarkus.eclipse.plugin</groupId>
+    <groupId>org.jboss.tools.quarkus.plugin</groupId>
     <artifactId>org.jboss.tools.quarkus.cheatsheet</artifactId>
   
     <packaging>eclipse-plugin</packaging>

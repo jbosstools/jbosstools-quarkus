@@ -20,23 +20,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>org.jboss.tools.quarkus</groupId>
+        <artifactId>tests</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.jboss.tools.quarkus</groupId>
-    <artifactId>test</artifactId>
-
-    <packaging>pom</packaging>
+    <groupId>org.jboss.tools.quarkus.test</groupId>
+    <artifactId>org.jboss.tools.quarkus.runtime.test</artifactId>
     
-    <modules>
-<!--    <module>org.jboss.tools.quarkus.bot.test</module> -->
-        <module>org.jboss.tools.quarkus.core.test</module>
-        <module>org.jboss.tools.quarkus.runtime.test</module>
-        <module>org.jboss.tools.quarkus.ui.test</module>
-    </modules>
+    <packaging>eclipse-test-plugin</packaging>
     
 </project>

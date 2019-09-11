@@ -27,7 +27,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.jboss.tools.quarkus.test</groupId>
+    <groupId>org.jboss.tools.quarkus.tests</groupId>
     <artifactId>org.jboss.tools.quarkus.core.test</artifactId>
 
     <packaging>eclipse-test-plugin</packaging>

@@ -27,6 +27,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
+    <groupId>org.jboss.tools.quarkus</groupId>
     <artifactId>test</artifactId>
 
     <packaging>pom</packaging>

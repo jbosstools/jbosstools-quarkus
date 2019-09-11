@@ -22,12 +22,12 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
+        <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>test</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>io.quarkus.eclipse.test</groupId>
+    <groupId>org.jboss.tools.quarkus.test</groupId>
     <artifactId>org.jboss.tools.quarkus.core.test</artifactId>
 
     <packaging>eclipse-test-plugin</packaging>

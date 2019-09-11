@@ -22,8 +22,8 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
-        <artifactId>feature</artifactId>
+        <groupId>org.jboss.tools.quarkus</groupId>
+        <artifactId>features</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     

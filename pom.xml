@@ -38,7 +38,7 @@
     
     <modules>
         <module>feature</module>
-        <module>plugin</module>
+        <module>plugins</module>
         <module>repository</module>
         <module>tests</module>
     </modules>

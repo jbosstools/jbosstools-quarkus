@@ -15,26 +15,21 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- 
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
-  
+    
     <parent>
-        <groupId>io.quarkus.eclipse</groupId>
-        <artifactId>parent</artifactId>
+        <groupId>org.jboss.tools.quarkus</groupId>
+        <artifactId>plugins</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.jboss.tools.quarkus</groupId>
-    <artifactId>plugin</artifactId>
-    
-    <packaging>pom</packaging>
-  
-    <modules>
-        <module>org.jboss.tools.quarkus.cheatsheet</module>
-        <module>org.jboss.tools.quarkus.core</module>
-        <module>org.jboss.tools.quarkus.runtime</module>
-        <module>org.jboss.tools.quarkus.ui</module>
-    </modules>
-    
+    <groupId>org.jboss.tools.quarkus.plugins</groupId>
+    <artifactId>org.jboss.tools.quarkus.ui</artifactId>
+
+    <packaging>eclipse-plugin</packaging>
+
 </project>

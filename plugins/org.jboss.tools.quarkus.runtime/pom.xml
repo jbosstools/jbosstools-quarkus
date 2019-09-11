@@ -23,11 +23,11 @@
 
     <parent>
         <groupId>org.jboss.tools.quarkus</groupId>
-        <artifactId>plugin</artifactId>
+        <artifactId>plugins</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.jboss.tools.quarkus.plugin</groupId>
+    <groupId>org.jboss.tools.quarkus.plugins</groupId>
     <artifactId>org.jboss.tools.quarkus.runtime</artifactId>
  
     <packaging>eclipse-plugin</packaging>

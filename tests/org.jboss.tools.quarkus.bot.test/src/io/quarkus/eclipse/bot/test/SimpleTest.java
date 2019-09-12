@@ -1,4 +1,4 @@
-package io.quarkus.eclipse.bot.test;
+package org.jboss.tools.quarkus.bot.test;
 
 
 import static org.junit.Assert.assertTrue;

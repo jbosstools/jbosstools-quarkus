@@ -20,10 +20,10 @@ You will need to have Maven installed. You can build the project by issuing `mvn
 
 <img src="images/build.png" width="400"/>
 
-When the build finishes you will find an installable Eclipse repository in the `repository/io.quarkus.eclipse.repository/target` folder. 
+When the build finishes you will find an installable Eclipse repository in the `repository/org.jboss.tools.quarkus.site/target` folder. 
 
 <img src="images/repository.png" width="400"/>
 
-The name of the repository is `io.quarkus.eclipse.repository-x.y.z-SNAPSHOT.zip`.
+The name of the repository is `org.jboss.tools.quarkus.site-x.y.z-SNAPSHOT.zip`.
 
 Now you can proceed with the installation of your repository in your Eclipse workbench by following the [installation instructions](../installation/install.md).

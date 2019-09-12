@@ -35,9 +35,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 import io.quarkus.dependencies.Extension;
-import io.quarkus.eclipse.core.project.ProjectUtils;
 import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {

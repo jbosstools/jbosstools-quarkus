@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.core.launch;
+package org.jboss.tools.quarkus.core.launch;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;

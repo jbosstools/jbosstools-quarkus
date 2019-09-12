@@ -25,10 +25,10 @@ import java.lang.reflect.Proxy;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.jboss.tools.quarkus.core.launch.LaunchUtils;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.dev.DevModeMain;
-import io.quarkus.eclipse.core.launch.LaunchUtils;
 
 public class LaunchUtilsTest {
 	

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.core.launch;
+package org.jboss.tools.quarkus.core.launch;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;

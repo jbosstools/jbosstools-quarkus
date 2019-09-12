@@ -13,5 +13,5 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.eclipse.debug.core,
  org.eclipse.jdt.launching,
  org.eclipse.m2e.core
-Export-Package: io.quarkus.eclipse.core.launch,
- io.quarkus.eclipse.core.project
+Export-Package: org.jboss.tools.quarkus.core.launch,
+ org.jboss.tools.quarkus.core.project

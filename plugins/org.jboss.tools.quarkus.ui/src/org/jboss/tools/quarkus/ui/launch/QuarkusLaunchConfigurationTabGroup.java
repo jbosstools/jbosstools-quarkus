@@ -21,8 +21,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-
-import io.quarkus.eclipse.core.launch.LaunchUtils;
+import org.jboss.tools.quarkus.core.launch.LaunchUtils;
 
 public class QuarkusLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 

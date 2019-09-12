@@ -25,10 +25,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import io.quarkus.eclipse.core.project.ProjectUtils;
 
 public class ProjectUtilsTest {
 	

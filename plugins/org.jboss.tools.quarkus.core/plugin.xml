@@ -20,8 +20,8 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="io.quarkus.eclipse.core.launch.QuarkusLaunchConfigurationDelegate"
-            id="io.quarkus.eclipse.core.launchConfigurationType"
+            delegate="org.jboss.tools.quarkus.core.launch.QuarkusLaunchConfigurationDelegate"
+            id="org.jboss.tools.quarkus.core.launchConfigurationType"
             modes="run, debug"
             name="Quarkus Launch Configuration">
       </launchConfigurationType>

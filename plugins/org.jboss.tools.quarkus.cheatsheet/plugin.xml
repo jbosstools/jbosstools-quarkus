@@ -20,11 +20,11 @@
    <extension
          point="org.eclipse.ui.cheatsheets.cheatSheetContent">
       <category
-            id="io.quarkus.eclipse.cheatsheet"
+            id="org.jboss.tools.quarkus.cheatsheet"
             name="Quarkus">
       </category>
       <cheatsheet
-            category="io.quarkus.eclipse.cheatsheet"
+            category="org.jboss.tools.quarkus.cheatsheet"
             composite="false"
             contentFile="content/getting-started-guide.xml"
             id="org.eclipse.ui.cheatsheet.gettingStartedGuide"

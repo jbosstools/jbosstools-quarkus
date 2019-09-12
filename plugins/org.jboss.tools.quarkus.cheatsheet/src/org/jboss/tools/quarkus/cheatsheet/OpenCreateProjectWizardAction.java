@@ -14,26 +14,34 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.cheatsheet;
+package org.jboss.tools.quarkus.cheatsheet;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.cheatsheets.ICheatSheetAction;
 import org.eclipse.ui.cheatsheets.ICheatSheetManager;
 
-public class ShowQuarkusPerspectiveAction extends Action implements ICheatSheetAction {
+import io.quarkus.eclipse.ui.wizard.CreateProjectWizard;
+
+public class OpenCreateProjectWizardAction extends Action implements ICheatSheetAction {
 
 	@Override
 	public void run(String[] params, ICheatSheetManager manager) {
-		try {
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-			workbench.showPerspective("io.quarkus.eclipse.ui.perspective", window);
-		} catch (WorkbenchException e) {
-			Activator.DEFAULT.logError(e);
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+		CreateProjectWizard createProjectWizard = new CreateProjectWizard();
+		createProjectWizard.init(workbench, null);
+		WizardDialog dialog = new WizardDialog(window.getShell(), createProjectWizard);
+		dialog.create();
+		int result = dialog.open();
+		if (result == Window.CANCEL) {
+			notifyResult(false);
+		} else if (result == Window.OK) {
+			notifyResult(true);
 		}
 	}
 

@@ -13,4 +13,4 @@ Require-Bundle: org.jboss.tools.quarkus.ui,
  org.eclipse.ui,
  org.eclipse.ui.cheatsheets
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: io.quarkus.eclipse.cheatsheet.Activator
+Bundle-Activator: org.jboss.tools.quarkus.cheatsheet.Activator

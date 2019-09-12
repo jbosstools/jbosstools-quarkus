@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.cheatsheet;
+package org.jboss.tools.quarkus.cheatsheet;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,7 +22,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class Activator extends AbstractUIPlugin {
 	
-	public final static String ID = "io.quarkus.eclipse.cheatsheet";
+	public final static String ID = "org.jboss.tools.quarkus.cheatsheet";
 	public final static Activator DEFAULT = new Activator();
 
 	public void logError(Throwable t) {

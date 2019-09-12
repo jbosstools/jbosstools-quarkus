@@ -33,8 +33,8 @@ This guide covers:<br/>
    <item 
          title="Switch to the Quarkus perspective">
       <action 
-              pluginId="io.quarkus.eclipse.cheatsheet"
-              class="io.quarkus.eclipse.cheatsheet.ShowQuarkusPerspectiveAction"/>
+              pluginId="org.jboss.tools.quarkus.cheatsheet"
+              class="org.jboss.tools.quarkus.cheatsheet.ShowQuarkusPerspectiveAction"/>
       <description>
 A lot of the Quarkus functionality is more easily accessible when you are working in the Quarkus perspective. 
 You can change to the Quarkus perspective by bringing up the list of perspectives pushing the perspectives <img href='perspectives.png'/> icon
@@ -46,8 +46,8 @@ entry.
    <item
          title="Bootstrapping the Project">
       <action
-            pluginId="io.quarkus.eclipse.cheatsheet"
-            class="io.quarkus.eclipse.cheatsheet.OpenCreateProjectWizardAction"/>      
+            pluginId="org.jboss.tools.quarkus.cheatsheet"
+            class="org.jboss.tools.quarkus.cheatsheet.OpenCreateProjectWizardAction"/>      
       <description>
 The most general way to create a Quarkus project in Eclipse is to open up the 'New' wizard by selecting 'File->New->Other...' 
 or by pressing 'Ctrl+N' (or 'Cmd+N' on OS X) and subsequently selecting 'Quarkus->Quarkus Project'.<br/>

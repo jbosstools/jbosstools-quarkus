@@ -99,7 +99,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean.version}</version>
                 <configuration>
                     <filesets>
                         <fileset>

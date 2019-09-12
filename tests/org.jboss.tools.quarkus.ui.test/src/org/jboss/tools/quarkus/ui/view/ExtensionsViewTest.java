@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.view;
+package org.jboss.tools.quarkus.ui.view;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
+
+import io.quarkus.eclipse.ui.view.ExtensionsView;
 
 public class ExtensionsViewTest {
 	

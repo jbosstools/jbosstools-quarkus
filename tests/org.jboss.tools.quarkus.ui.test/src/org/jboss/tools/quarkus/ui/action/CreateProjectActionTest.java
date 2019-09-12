@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.action;
+package org.jboss.tools.quarkus.ui.action;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,6 +25,8 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.junit.jupiter.api.Test;
+
+import io.quarkus.eclipse.ui.action.CreateProjectAction;
 
 public class CreateProjectActionTest {
 

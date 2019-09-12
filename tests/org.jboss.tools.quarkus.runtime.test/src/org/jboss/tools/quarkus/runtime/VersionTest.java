@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.runtime;
+package org.jboss.tools.quarkus.runtime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

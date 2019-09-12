@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.core.project;
+package org.jboss.tools.quarkus.core.project;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

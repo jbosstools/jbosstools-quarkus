@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.core.launch;
+package org.jboss.tools.quarkus.core.launch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,6 +28,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.dev.DevModeMain;
+import io.quarkus.eclipse.core.launch.LaunchUtils;
 
 public class LaunchUtilsTest {
 	

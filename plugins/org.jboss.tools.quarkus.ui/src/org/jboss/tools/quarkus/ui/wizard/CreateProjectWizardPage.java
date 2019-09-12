@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.wizard;
+package org.jboss.tools.quarkus.ui.wizard;
 
 import java.io.File;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.wizard;
+package org.jboss.tools.quarkus.ui.wizard;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -27,10 +27,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.jboss.tools.quarkus.ui.action.CreateProjectAction;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-
-import io.quarkus.eclipse.ui.action.CreateProjectAction;
 
 public class CreateProjectWizard extends Wizard implements INewWizard {
 	

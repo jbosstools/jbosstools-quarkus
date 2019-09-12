@@ -20,28 +20,28 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="io.quarkus.eclipse.ui.wizards"
+            id="org.jboss.tools.quarkus.ui.wizards"
             name="Quarkus">
       </category>
       <wizard
-            category="io.quarkus.eclipse.ui.wizards"
-            class="io.quarkus.eclipse.ui.wizard.CreateProjectWizard"
+            category="org.jboss.tools.quarkus.ui.wizards"
+            class="org.jboss.tools.quarkus.ui.wizard.CreateProjectWizard"
             icon="icon/quarkus-16.png"
-            id="io.quarkus.eclipse.ui.wizard.createProject"
+            id="org.jboss.tools.quarkus.ui.wizard.createProject"
             name="Quarkus Project">
       </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="io.quarkus.eclipse.ui.views"
+            id="org.jboss.tools.quarkus.ui.views"
             name="Quarkus">
       </category>
       <view
-            category="io.quarkus.eclipse.ui.views"
-            class="io.quarkus.eclipse.ui.view.ExtensionsView"
+            category="org.jboss.tools.quarkus.ui.views"
+            class="org.jboss.tools.quarkus.ui.view.ExtensionsView"
             icon="icon/quarkus-16.png"
-            id="io.quarkus.eclipse.ui.view.extensionsView"
+            id="org.jboss.tools.quarkus.ui.view.extensionsView"
             name="Quarkus Extensions"
             restorable="true">
       </view>
@@ -49,35 +49,35 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="io.quarkus.eclipse.ui.perspective.PerspectiveFactory"
+            class="org.jboss.tools.quarkus.ui.perspective.PerspectiveFactory"
             icon="icon/quarkus-16.png"
-            id="io.quarkus.eclipse.ui.perspective"
+            id="org.jboss.tools.quarkus.ui.perspective"
             name="Quarkus">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="io.quarkus.eclipse.ui.perspective">
+            targetID="org.jboss.tools.quarkus.ui.perspective">
          <newWizardShortcut
-               id="io.quarkus.eclipse.ui.wizard.createProject">
+               id="org.jboss.tools.quarkus.ui.wizard.createProject">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="io.quarkus.eclipse.ui.launch.QuarkusLaunchConfigurationTabGroup"
-            id="io.quarkus.eclipse.ui.launchConfigurationTabGroup"
-            type="io.quarkus.eclipse.core.launchConfigurationType">
+            class="org.jboss.tools.quarkus.ui.launch.QuarkusLaunchConfigurationTabGroup"
+            id="org.jboss.tools.quarkus.launchConfigurationTabGroup"
+            type="org.jboss.tools.quarkus.core.launchConfigurationType">
       </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            configTypeID="io.quarkus.eclipse.core.launchConfigurationType"
+            configTypeID="org.jboss.tools.quarkus.core.launchConfigurationType"
             icon="icon/quarkus-16.png"
-            id="io.quarkus.eclipse.ui.launchConfigurationTypeImage">
+            id="org.jboss.tools.quarkus.ui.launchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
 </plugin>

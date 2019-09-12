@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.perspective;
+package org.jboss.tools.quarkus.ui.perspective;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-
-import io.quarkus.eclipse.ui.view.ExtensionsView;
+import org.jboss.tools.quarkus.ui.view.ExtensionsView;
 
 public class PerspectiveFactory implements IPerspectiveFactory {
 

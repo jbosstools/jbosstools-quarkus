@@ -24,8 +24,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.cheatsheets.ICheatSheetAction;
 import org.eclipse.ui.cheatsheets.ICheatSheetManager;
-
-import io.quarkus.eclipse.ui.wizard.CreateProjectWizard;
+import org.jboss.tools.quarkus.ui.wizard.CreateProjectWizard;
 
 public class OpenCreateProjectWizardAction extends Action implements ICheatSheetAction {
 

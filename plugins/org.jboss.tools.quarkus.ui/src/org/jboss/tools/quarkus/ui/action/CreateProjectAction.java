@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.action;
+package org.jboss.tools.quarkus.ui.action;
 
 import java.util.HashMap;
 

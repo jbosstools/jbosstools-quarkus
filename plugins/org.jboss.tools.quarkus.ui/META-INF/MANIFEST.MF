@@ -15,7 +15,7 @@ Require-Bundle: org.jboss.tools.quarkus.core,
  org.eclipse.ui,
  org.eclipse.ui.workbench,
  org.eclipse.jdt.launching
-Export-Package: io.quarkus.eclipse.ui.action,
- io.quarkus.eclipse.ui.perspective,
- io.quarkus.eclipse.ui.view,
- io.quarkus.eclipse.ui.wizard
+Export-Package: org.jboss.tools.quarkus.ui.action,
+ org.jboss.tools.quarkus.ui.perspective,
+ org.jboss.tools.quarkus.ui.view,
+ org.jboss.tools.quarkus.ui.wizard

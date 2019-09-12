@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.quarkus.eclipse.ui.view;
+package org.jboss.tools.quarkus.ui.view;
 
 import java.util.List;
 import java.util.Set;
@@ -42,7 +42,7 @@ import io.quarkus.maven.utilities.MojoUtils;
 
 public class ExtensionsView extends ViewPart {
 	
-	public static final String ID = "io.quarkus.eclipse.ui.view.extensionsView";
+	public static final String ID = "org.jboss.tools.quarkus.ui.view.extensionsView";
 
 	private Table table = null;
 	private Object currentProject = null;

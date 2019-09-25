@@ -134,10 +134,9 @@ public class ExtensionsView extends ViewPart {
 	private void refreshView() {
 		Set<?> installed = ProjectUtils.findInstalledExtensions(currentProject);
 		for (TableItem tableItem : table.getItems()) {
-			String credentials = 
-					MojoUtils.credentials(
-							((Extension)tableItem.getData()).toDependency(true));
-			tableItem.setChecked(installed.contains(credentials));
+			String credential = 
+					MojoUtils.credentials(((Extension)tableItem.getData()).toDependency(true));
+			tableItem.setChecked(installed.contains(credential));
 		}
 	}
 	

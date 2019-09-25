@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -46,7 +45,7 @@ import io.quarkus.cli.commands.ListExtensions;
 import io.quarkus.cli.commands.writer.FileProjectWriter;
 import io.quarkus.cli.commands.writer.ProjectWriter;
 import io.quarkus.dependencies.Extension;
-import io.quarkus.maven.utilities.MojoUtils;
+import io.quarkus.generators.BuildTool;
 
 public class ProjectUtils {
 	
@@ -55,11 +54,12 @@ public class ProjectUtils {
 			if (currentProject != null && currentProject instanceof IProject) {
 				IResource resource = ((IProject)currentProject).findMember("pom.xml");
 				if (resource != null) {
-					File pomFile = new File(resource.getRawLocation().toOSString());
-					Model model = MojoUtils.readPom(pomFile);
-					ListExtensions listExtensions = new ListExtensions(model);
-					Map<?,?> extensions = (Map<?,?>)getFindInstalledMethod().invoke(listExtensions);
-					return extensions.keySet(); 
+				    IPath path = resource.getRawLocation().removeLastSegments(1);
+				    File file = new File(path.toOSString());
+				    ProjectWriter projectWriter = new FileProjectWriter(file);
+				    ListExtensions listExtensions = new ListExtensions(projectWriter, BuildTool.MAVEN);
+				    Map<?,?> extensions = (Map<?,?>)getFindInstalledMethod().invoke(listExtensions);
+				    return extensions.keySet(); 
 				}
 			}
 		} catch (IOException | InvocationTargetException | IllegalAccessException e) {
@@ -125,7 +125,7 @@ public class ProjectUtils {
 				IPath path = resource.getRawLocation().removeLastSegments(1);
 				File file = new File(path.toOSString());
 				ProjectWriter projectWriter = new FileProjectWriter(file);
-				AddExtensions project = new AddExtensions(projectWriter, "pom.xml");
+				AddExtensions project = new AddExtensions(projectWriter, BuildTool.MAVEN);
 				project.addExtensions(Collections.singleton(extension.getArtifactId()));
 				resource.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}		

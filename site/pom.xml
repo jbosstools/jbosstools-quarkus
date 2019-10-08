@@ -28,7 +28,7 @@
     </parent>
     
     <groupId>org.jboss.tools.quarkus</groupId>
-    <artifactId>openshift.site</artifactId>
+    <artifactId>quarkus.site</artifactId>
 
     <packaging>eclipse-repository</packaging>
     <properties>

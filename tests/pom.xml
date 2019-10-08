@@ -29,6 +29,7 @@
     
     <groupId>org.jboss.tools.quarkus</groupId>
     <artifactId>tests</artifactId>
+    <name>quarkus.tests</name>
 
     <packaging>pom</packaging>
     

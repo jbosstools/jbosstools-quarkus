@@ -27,6 +27,7 @@
     
     <groupId>org.jboss.tools.quarkus</groupId>
     <artifactId>plugins</artifactId>
+    <name>quarkus.plugins</name>
     
     <packaging>pom</packaging>
   

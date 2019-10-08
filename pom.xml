@@ -36,7 +36,7 @@
         <jackson.version>2.9.8</jackson.version>
         <maven.version>3.6.0</maven.version>
         <plexus.version>3.1.1</plexus.version>
-        <quarkus.version>0.23.0</quarkus.version>
+        <quarkus.version>0.23.2</quarkus.version>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
     </properties>
     

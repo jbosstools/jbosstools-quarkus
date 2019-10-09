@@ -41,10 +41,10 @@
     </properties>
     
     <modules>
-        <module>features</module>
         <module>plugins</module>
-        <module>site</module>
         <module>tests</module>
+        <module>features</module>
+        <module>site</module>
     </modules>
     
     <build>

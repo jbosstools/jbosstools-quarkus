@@ -29,11 +29,26 @@
     
     <groupId>org.jboss.tools.quarkus</groupId>
     <artifactId>features</artifactId>
+    <name>quarkus.features</name>
     
     <packaging>pom</packaging>
     
     <modules>
         <module>org.jboss.tools.quarkus.feature</module>
+        <module>org.jboss.tools.quarkus.test.feature</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho.extras</groupId>
+                <artifactId>tycho-source-feature-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-p2-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
     
 </project>

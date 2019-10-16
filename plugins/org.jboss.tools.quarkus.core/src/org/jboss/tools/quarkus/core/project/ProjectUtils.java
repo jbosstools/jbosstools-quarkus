@@ -42,6 +42,8 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import io.quarkus.cli.commands.AddExtensions;
 import io.quarkus.cli.commands.CreateProject;
 import io.quarkus.cli.commands.ListExtensions;
+import io.quarkus.cli.commands.file.BuildFile;
+import io.quarkus.cli.commands.file.MavenBuildFile;
 import io.quarkus.cli.commands.writer.FileProjectWriter;
 import io.quarkus.cli.commands.writer.ProjectWriter;
 import io.quarkus.dependencies.Extension;
@@ -57,7 +59,8 @@ public class ProjectUtils {
 				    IPath path = resource.getRawLocation().removeLastSegments(1);
 				    File file = new File(path.toOSString());
 				    ProjectWriter projectWriter = new FileProjectWriter(file);
-				    ListExtensions listExtensions = new ListExtensions(projectWriter, BuildTool.MAVEN);
+				    BuildFile buildFile = new MavenBuildFile(projectWriter);
+				    ListExtensions listExtensions = new ListExtensions(buildFile);
 				    Map<?,?> extensions = (Map<?,?>)getFindInstalledMethod().invoke(listExtensions);
 				    return extensions.keySet(); 
 				}

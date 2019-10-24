@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <!-- Quarkus Language -->
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-names="application.properties"
+            id="org.jboss.tools.quarkus.lsp4e"
+            name="Application Properties"
+            priority="normal">
+      </content-type>
+   </extension>
+      
+   <extension
+         point="org.eclipse.ui.editors">
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+   </extension>
+      
+   <extension
+         point="org.eclipse.lsp4e.languageServer">
+      <server
+            class="org.jboss.tools.quarkus.lsp4e.QuarkusLanguageServer"
+            id="org.jboss.tools.quarkus.lsp4e"
+            label="Quarkus Language Server"
+            clientImpl="org.jboss.tools.quarkus.lsp4e.QuarkusLanguageClient"
+            serverInterface="com.redhat.quarkus.ls.api.QuarkusLanguageServerAPI"
+            singleton="true" >
+      </server>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e"
+            id="org.jboss.tools.quarkus.lsp4e">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.eclipse.jdt.core.javaSource"
+            id="org.jboss.tools.quarkus.lsp4e">
+      </contentTypeMapping>
+   </extension>
+   
+   <extension
+         point="org.eclipse.tm4e.registry.grammars">
+      <grammar
+            path="./syntaxes/java-properties.tmLanguage"
+            scopeName="properties">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e"
+            scopeName="properties">
+      </scopeNameContentTypeBinding>
+   </extension>
+
+   <extension
+         point="org.eclipse.tm4e.languageconfiguration.languageConfigurations">
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e"
+            path="language-configurations/language-configuration.json">
+      </languageConfiguration>
+   </extension>
+        
+</plugin>

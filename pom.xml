@@ -38,7 +38,17 @@
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
+        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
     </properties>
+
+	<repositories>
+		<repository>
+			<id>quarkus-jdt</id>
+			<layout>p2</layout>
+			<url>${quarkus-jdt-site}</url>
+		</repository>
+	</repositories>
+
     
     <modules>
         <module>plugins</module>

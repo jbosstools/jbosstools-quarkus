@@ -36,10 +36,6 @@
             contentType="org.jboss.tools.quarkus.lsp4e"
             id="org.jboss.tools.quarkus.lsp4e">
       </contentTypeMapping>
-      <contentTypeMapping
-            contentType="org.eclipse.jdt.core.javaSource"
-            id="org.jboss.tools.quarkus.lsp4e">
-      </contentTypeMapping>
    </extension>
    
    <extension

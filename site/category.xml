@@ -20,7 +20,6 @@
       <description>JBoss Tools OpenShift Nightly Build Update Site: contains all features in this build.</description>
    </category-def>
    <feature id="org.jboss.tools.quarkus.feature"><category name="site"/></feature>
-   <bundle id="com.redhat.quarkus.jdt.core"><category name="site"/></bundle>
    <feature id="org.jboss.tools.quarkus.test.feature"><category name="site"/></feature>
 
    <feature id="org.jboss.tools.quarkus.feature.source"><category name="site"/></feature>

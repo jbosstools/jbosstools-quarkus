@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -19,18 +21,18 @@ import org.osgi.framework.BundleContext;
  * 
  * @author Angelo ZERR
  */
-public class QuarkusPlugin extends AbstractUIPlugin {
+public class QuarkusLSPPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.boss.tools.quarkus.lsp4e"; //$NON-NLS-1$
 
 	// The shared instance
-	private static QuarkusPlugin plugin;
+	private static QuarkusLSPPlugin plugin;
 
 	/**
 	 * The constructor
 	 */
-	public QuarkusPlugin() {
+	public QuarkusLSPPlugin() {
 	}
 
 	@Override
@@ -50,16 +52,21 @@ public class QuarkusPlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static QuarkusPlugin getDefault() {
+	public static QuarkusLSPPlugin getDefault() {
 		return plugin;
 	}
 
 	public static String getPluginId() {
-		return QuarkusPlugin.PLUGIN_ID;
+		return QuarkusLSPPlugin.PLUGIN_ID;
 	}
 
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
+	}
+
+	public static void logException(String errMsg, Throwable ex) {
+		getDefault().getLog().log(new Status(IStatus.ERROR, getPluginId(), errMsg, ex));
+		
 	}
 
 //	public static void log(Throwable e) {

@@ -12,11 +12,14 @@ package org.jboss.tools.quarkus.lsp4e;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -25,6 +28,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
+
+import com.redhat.quarkus.settings.QuarkusCodeLensSettings;
+import com.redhat.quarkus.settings.QuarkusGeneralClientSettings;
 
 /**
  * Quarkus language server.
@@ -45,8 +51,8 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 			setCommands(commands);
 			setWorkingDirectory(System.getProperty("user.dir"));
 		} catch (IOException e) {
-			QuarkusPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
-					QuarkusPlugin.getDefault().getBundle().getSymbolicName(), e.getMessage(), e));
+			QuarkusLSPPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
+					QuarkusLSPPlugin.getDefault().getBundle().getSymbolicName(), e.getMessage(), e));
 		}
 	}
 
@@ -60,6 +66,29 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 			javaPath = f.getAbsolutePath();
 		}
 		return javaPath;
+	}
+
+	@Override
+	public Object getInitializationOptions(URI rootUri) {
+		/*QuarkusGeneralClientSettings settings = new QuarkusGeneralClientSettings();
+		QuarkusCodeLensSettings codeLensSettings = new QuarkusCodeLensSettings();
+		codeLensSettings.setUrlCodeLensEnabled(true);
+		settings.setCodeLens(codeLensSettings);
+		return settings;*/
+		Map<String, Object> root = new HashMap();
+		Map<String, Object> settings = new HashMap();
+		Map<String, Object> quarkus = new HashMap();
+		Map<String, Object> tools = new HashMap();
+		Map<String, Object> trace = new HashMap();
+		trace.put("server", "verbose");
+		tools.put("trace", trace);
+		Map<String, Object> codeLens = new HashMap();
+		codeLens.put("urlCodeLensEnabled", "true");
+		tools.put("codeLens", codeLens);
+		quarkus.put("tools", tools);
+		settings.put("quarkus", quarkus);
+		root.put("settings", settings);
+		return root;
 	}
 
 	@Override

@@ -10,4 +10,6 @@ Automatic-Module-Name: org.jboss.tools.quarkus.ui.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.jdt.junit5.runtime,
  org.junit.jupiter.api,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ com.fasterxml.jackson.core.jackson-core,
+ com.fasterxml.jackson.core.jackson-databind

@@ -11,12 +11,14 @@
 package org.jboss.tools.quarkus.lsp4e.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ls.core.internal.handlers.JsonRpcHelpers;
 import org.eclipse.lsp4j.Range;
 import com.redhat.quarkus.jdt.core.IJDTUtils;
 
@@ -69,7 +71,9 @@ public class JDTUtilsImpl implements IJDTUtils {
 		}*/
 		//TODO: verify we need to synchronise on jobs
 	}
-
-
-
+	
+	@Override
+	public int toOffset(IBuffer buffer, int line, int column) {
+		return JsonRpcHelpers.toOffset(buffer, line, column);
+	}	
 }

@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.cheatsheets.ICheatSheetAction;
 import org.eclipse.ui.cheatsheets.ICheatSheetManager;
-import org.jboss.tools.quarkus.ui.wizard.CreateProjectWizard;
+import org.jboss.tools.quarkus.ui.wizard.CodeProjectWizard;
 
 public class OpenCreateProjectWizardAction extends Action implements ICheatSheetAction {
 
@@ -32,7 +32,7 @@ public class OpenCreateProjectWizardAction extends Action implements ICheatSheet
 	public void run(String[] params, ICheatSheetManager manager) {
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-		CreateProjectWizard createProjectWizard = new CreateProjectWizard();
+		CodeProjectWizard createProjectWizard = new CodeProjectWizard();
 		createProjectWizard.init(workbench, null);
 		WizardDialog dialog = new WizardDialog(window.getShell(), createProjectWizard);
 		dialog.create();

@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ls.core.internal.handlers.JsonRpcHelpers;
 import org.eclipse.lsp4j.Range;
 import com.redhat.quarkus.jdt.core.IJDTUtils;
 

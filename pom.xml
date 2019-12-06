@@ -56,9 +56,11 @@
 
     
     <modules>
+        <module>features</module>
+        <module>itests</module>
         <module>plugins</module>
         <module>tests</module>
-        <module>features</module>
+        <module>test-framework</module>
         <module>site</module>
     </modules>
     

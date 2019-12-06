@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RedDeer API for quarkus UI Tests
+Bundle-SymbolicName: org.jboss.tools.quarkus.reddeer
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: 
+ org.jboss.tools.quarkus.ui,
+ org.eclipse.reddeer.go
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: jar
+Bundle-Vendor: Red Hat
+Automatic-Module-Name: org.jboss.tools.quarkus.reddeer
+Export-Package: org.jboss.tools.quarkus.reddeer.perspective,
+ org.jboss.tools.quarkus.reddeer.view,
+ org.jboss.tools.quarkus.reddeer.wizard

@@ -33,11 +33,11 @@ public class QuarkusCoreConstants {
 
     public static final String CODE_EXTENSIONS_PARAMETER_NAME = "e";
 
-    public static final String CODE_CLIENT_NAME_PARAMETER_NAME = "Client-Name";
+    public static final String CODE_CLIENT_NAME_PARAMETER_NAME = "cn";
 
     public static final String CODE_CLIENT_NAME_PARAMETER_VALUE = "JBoss%20Tools%20Quarkus";
 
-    public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME = "Client-Contact-Email";
+    public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME = "cne";
 
     public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE = "tools%40jboss.org";
 

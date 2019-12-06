@@ -18,7 +18,7 @@ public class QuarkusModel {
     private List<QuarkusCategory> categories = new ArrayList<>();
 
     public QuarkusModel(List<QuarkusExtension> extensions) {
-        Collections.sort(extensions, (e1, e2) -> e1.getOrder() - e1.getOrder());
+        Collections.sort(extensions, (e1, e2) -> e1.getOrder() - e2.getOrder());
         final QuarkusCategory[] currentCategory = {null};
         extensions.forEach(e -> {
             if (currentCategory[0] == null || !e.getCategory().equals(currentCategory[0].getName())) {

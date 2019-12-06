@@ -35,7 +35,7 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
 
     protected CodeProjectInfoWizardPage(IWizard wizard,
             CodeProjectModel model) {
-        super("Project type", "Select the code.quarkus.io endpoint and project type", "first", wizard, null);
+        super("Project type", "Select the code.quarkus.io endpoint and project type", "second", wizard, null);
         this.model = model;
         setImageDescriptor(CodeProjectWizard.QUARKUS_LOGO);
     }
@@ -65,9 +65,9 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
         .span(2,1).align(SWT.FILL, SWT.CENTER)
         .applyTo(restExplanation);
     createTextWidget(parent, model, dbc, "Class name:", 
-            CLASSNAME_PROPERTY, new MandatoryStringValidator("Please specify an artifact id"));
+            CLASSNAME_PROPERTY, new MandatoryStringValidator("Please specify a Java class name"));
     createTextWidget(parent, model, dbc, "Path:", 
-            PATH_PROPERTY, new MandatoryStringValidator("Please specify a group id"));
+            PATH_PROPERTY, new MandatoryStringValidator("Please specify a path"));
     
     }
 

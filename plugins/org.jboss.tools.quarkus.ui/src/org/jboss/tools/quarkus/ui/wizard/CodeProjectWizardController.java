@@ -66,29 +66,18 @@ public class CodeProjectWizardController {
         return status;
     }
 
-    private IStatus getZip(IProgressMonitor monitor) {
-        QuarkusModelRegistry manager = QuarkusModelRegistry.getDefault();
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        IStatus status = null;
-        try {
-            status =  manager.zip(model.getEndpoint(),
-                    model.getTool(),
-                    model.getGroupId(), 
-                    model.getArtifactId(), 
-                    model.getVersion(),
-                    model.getClassName(),
-                    model.getPath(),
-                    model.getSelectedExtensions(),
-                    output, monitor);
-            if (!monitor.isCanceled() 
-                    && status.isOK()) {
-                status = unzip(output.toByteArray(), model.getLocation());
-            }
-        } finally {
-            //NOCODE
-        }
-        return status;
-    }
+	private IStatus getZip(IProgressMonitor monitor) {
+		QuarkusModelRegistry manager = QuarkusModelRegistry.getDefault();
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		IStatus status = null;
+		status = manager.zip(model.getEndpoint(), model.getTool(), model.getGroupId(), model.getArtifactId(),
+		        model.getVersion(), model.getClassName(), model.getPath(), model.getSelectedExtensions(), output,
+		        monitor);
+		if (!monitor.isCanceled() && status.isOK()) {
+			status = unzip(output.toByteArray(), model.getLocation());
+		}
+		return status;
+	}
 
     private IStatus createProject(IProgressMonitor monitor) {
         switch (model.getTool()) {
@@ -103,7 +92,6 @@ public class CodeProjectWizardController {
 
 
     private IProject createGeneralProject(IProgressMonitor monitor) throws CoreException {
-        IStatus status = Status.OK_STATUS;
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
             IProjectDescription description = workspace.newProjectDescription(model.getProjectName());
             description.setLocation(model.getLocation());

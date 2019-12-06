@@ -42,7 +42,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
     private final CodeProjectModel model;
 
     protected CodeProjectExtensionsWizardPage(IWizard wizard, CodeProjectModel model) {
-        super("Quarkus extensions", "Select the Quarkus extensions for your project", "second", wizard, null);
+        super("Quarkus extensions", "Select the Quarkus extensions for your project", "third", wizard, null);
         this.model = model;
         setImageDescriptor(CodeProjectWizard.QUARKUS_LOGO);
     }
@@ -53,8 +53,8 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
     	//  explanation
     	Label explanation = new Label(parent, SWT.WRAP);
-    	explanation.setText("Clicking on a category with display the extensions in the middle column."
-    			+ " Double clicking on an extension with add/remove the extension from the selected extensions list."
+    	explanation.setText("Clicking on a category will display the extensions in the middle column."
+    			+ " Double clicking on an extension will add/remove the extension from the selected extensions list."
     			+ " The current selected extensions are displayed in the third column.");
     	GridDataFactory.fillDefaults()
     		.span(3, 1).align(SWT.FILL, SWT.FILL).grab(true, false)

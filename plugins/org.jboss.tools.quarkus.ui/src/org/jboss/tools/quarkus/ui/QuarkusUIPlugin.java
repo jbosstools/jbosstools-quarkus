@@ -18,7 +18,6 @@ import org.osgi.framework.BundleContext;
 /**
  * Quarkus plugin
  * 
- * @author Angelo ZERR
  */
 public class QuarkusUIPlugin extends AbstractUIPlugin {
 

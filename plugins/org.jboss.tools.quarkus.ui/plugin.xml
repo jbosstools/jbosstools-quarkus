@@ -27,7 +27,7 @@
             category="org.jboss.tools.quarkus.ui.wizards"
             class="org.jboss.tools.quarkus.ui.wizard.CodeProjectWizard"
             icon="icon/quarkus-16.png"
-            id="org.jboss.tools.quarkus.ui.wizard.codeProject"
+            id="org.jboss.tools.quarkus.ui.wizard.createProject"
             name="Quarkus Project"
             project="true">
       </wizard>

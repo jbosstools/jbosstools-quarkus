@@ -47,6 +47,11 @@
 			<layout>p2</layout>
 			<url>${quarkus-jdt-site}</url>
 		</repository>
+		<repository>
+			<id>jbosstools-base</id>
+			<layout>p2</layout>
+			<url>${jbosstools-base-site}</url>
+		</repository>		
 	</repositories>
 
     

@@ -24,6 +24,37 @@ import org.eclipse.jdt.internal.ui.javaeditor.DocumentAdapter;
  */
 public class JsonRpcHelpers {
 	/**
+	 * Convert line, column to a document offset.
+	 * @param buffer
+	 * @param line
+	 * @param column
+	 * @return
+	 */
+	public static int toOffset(IBuffer buffer, int line, int column){
+		if (buffer != null) {
+			return toOffset(toDocument(buffer), line, column);
+		}
+		return -1;
+	}
+
+	/**
+	 * Convert line, column to a document offset.
+	 * 
+	 * @param document
+	 * @param line
+	 * @param column
+	 * @return
+	 */
+	public static int toOffset(IDocument document, int line, int column) {
+		try {
+			return document.getLineOffset(line) + column;
+		} catch (BadLocationException e) {
+			QuarkusLSPPlugin.logException(e.getMessage(), e);
+		}
+		return -1;
+	}
+
+	/**
 	 * Convert offset to line number and column.
 	 * @param buffer
 	 * @param line

@@ -25,10 +25,11 @@
       </category>
       <wizard
             category="org.jboss.tools.quarkus.ui.wizards"
-            class="org.jboss.tools.quarkus.ui.wizard.CreateProjectWizard"
+            class="org.jboss.tools.quarkus.ui.wizard.CodeProjectWizard"
             icon="icon/quarkus-16.png"
             id="org.jboss.tools.quarkus.ui.wizard.createProject"
-            name="Quarkus Project">
+            name="Quarkus Project"
+            project="true">
       </wizard>
    </extension>
    <extension

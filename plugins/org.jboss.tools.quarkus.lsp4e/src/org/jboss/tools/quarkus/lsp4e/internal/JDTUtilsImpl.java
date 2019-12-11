@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.internal;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClassFile;
@@ -18,8 +20,10 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
-import com.redhat.quarkus.jdt.core.IJDTUtils;
+
+import com.redhat.microprofile.jdt.core.utils.IJDTUtils;
 
 public class JDTUtilsImpl implements IJDTUtils {
 	private static final IJDTUtils INSTANCE = new JDTUtilsImpl();
@@ -74,5 +78,20 @@ public class JDTUtilsImpl implements IJDTUtils {
 	@Override
 	public int toOffset(IBuffer buffer, int line, int column) {
 		return JsonRpcHelpers.toOffset(buffer, line, column);
+	}
+
+	@Override
+	public IFile findFile(String uriString) {
+		return JDTUtils.findFile(uriString);
+	}
+
+	@Override
+	public void discoverSource(IClassFile classFile, IProgressMonitor monitor) throws CoreException {
+		// TODO implement discoverSource
+	}
+
+	@Override
+	public Location toLocation(IJavaElement element) throws JavaModelException {
+		return JDTUtils.toLocation(element);
 	}	
 }

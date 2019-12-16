@@ -29,9 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
 
-import com.redhat.quarkus.settings.QuarkusCodeLensSettings;
-import com.redhat.quarkus.settings.QuarkusGeneralClientSettings;
-
 /**
  * Quarkus language server.
  * 
@@ -45,9 +42,9 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 		commands.add(computeJavaPath());
 		commands.add("-classpath");
 		try {
-			URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.quarkus.ls-uber.jar"));
+			URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.microprofile.ls-uber.jar"));
 			commands.add(new java.io.File(url.getPath()).getAbsolutePath());
-			commands.add("com.redhat.quarkus.ls.QuarkusServerLauncher");
+			commands.add("com.redhat.microprofile.ls.MicroProfileServerLauncher");
 			setCommands(commands);
 			setWorkingDirectory(System.getProperty("user.dir"));
 		} catch (IOException e) {

@@ -29,7 +29,7 @@
             id="org.jboss.tools.quarkus.lsp4e"
             label="Quarkus Language Server"
             clientImpl="org.jboss.tools.quarkus.lsp4e.QuarkusLanguageClient"
-            serverInterface="com.redhat.quarkus.ls.api.QuarkusLanguageServerAPI"
+            serverInterface="com.redhat.microprofile.ls.api.MicroProfileLanguageServerAPI"
             singleton="true" >
       </server>
       <contentTypeMapping

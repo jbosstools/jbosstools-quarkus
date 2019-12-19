@@ -104,7 +104,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
             @Override
             public String getText(Object element) {
                 QuarkusExtension extension = (QuarkusExtension) element;
-                return extension.getName();
+                return extension.asLabel();
             }
         });
         listExtensionsViewer.addDoubleClickListener(e -> {
@@ -130,7 +130,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
             @Override
             public String getText(Object element) {
             	QuarkusExtension extension = (QuarkusExtension) element;
-                return extension.getName();
+                return extension.asLabel();
             }
         });
         listSelectedExtensionsViewer.addDoubleClickListener(e -> {

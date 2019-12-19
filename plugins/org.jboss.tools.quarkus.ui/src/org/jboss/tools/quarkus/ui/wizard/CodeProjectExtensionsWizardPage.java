@@ -49,7 +49,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
     @Override
     protected void doCreateControls(Composite parent, DataBindingContext dbc) {
-        GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(3).applyTo(parent);
+        GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(3).equalWidth(true).applyTo(parent);
 
     	//  explanation
     	Label explanation = new Label(parent, SWT.WRAP);
@@ -63,14 +63,14 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         // categories
         Composite categoriesContainer = new Composite(parent, SWT.DEFAULT);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(categoriesContainer);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(categoriesContainer);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(categoriesContainer);
 
         Label lblCategories = new Label(categoriesContainer, SWT.WRAP);
         lblCategories.setText("Categories");
         GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(lblCategories);
 
-        List listCategories = new List(categoriesContainer, SWT.SINGLE | SWT.READ_ONLY);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).hint(300, SWT.DEFAULT).applyTo(listCategories);
+        List listCategories = new List(categoriesContainer, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(listCategories);
         ListViewer listCategoriesViewer = new ListViewer(listCategories);
         listCategoriesViewer.setContentProvider(new ObservableListContentProvider());
         listCategoriesViewer.setInput(BeanProperties.list(CATEGORIES_PROPERTY).observe(model));
@@ -89,14 +89,14 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         // extensions
         Composite extensionsContainer = new Composite(parent, SWT.DEFAULT);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(extensionsContainer);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(extensionsContainer);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(extensionsContainer);
 
         Label lblExtensions = new Label(extensionsContainer, SWT.WRAP);
         lblExtensions.setText("Extensions");
         GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(lblExtensions);
 
-        List listExtensions = new List(extensionsContainer, SWT.SINGLE | SWT.READ_ONLY);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).hint(300, SWT.DEFAULT).applyTo(listExtensions);
+        List listExtensions = new List(extensionsContainer, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(listExtensions);
         ListViewer listExtensionsViewer = new ListViewer(listExtensions);
         listExtensionsViewer.setContentProvider(new ObservableListContentProvider());
         listExtensionsViewer.setInput(BeanProperties.list(EXTENSIONS_PROPERTY).observe(model));
@@ -115,14 +115,14 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         // selected extensions
         Composite selectedExtensionsContainer = new Composite(parent, SWT.DEFAULT);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(selectedExtensionsContainer);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(selectedExtensionsContainer);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(selectedExtensionsContainer);
 
         Label lblselectedExtensions = new Label(selectedExtensionsContainer, SWT.WRAP);
         lblselectedExtensions.setText("Selected");
         GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(lblselectedExtensions);
 
-        List listSelectedExtensions = new List(selectedExtensionsContainer, SWT.SINGLE | SWT.READ_ONLY);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).hint(300, SWT.DEFAULT).applyTo(listSelectedExtensions);
+        List listSelectedExtensions = new List(selectedExtensionsContainer, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+        GridDataFactory.fillDefaults().grab(true,  true).applyTo(listSelectedExtensions);
         ListViewer listSelectedExtensionsViewer = new ListViewer(listSelectedExtensions);
         listSelectedExtensionsViewer.setContentProvider(new ObservableSetContentProvider());
         listSelectedExtensionsViewer.setInput(BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model));
@@ -132,6 +132,11 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
             	QuarkusExtension extension = (QuarkusExtension) element;
                 return extension.getName();
             }
+        });
+        listSelectedExtensionsViewer.addDoubleClickListener(e -> {
+        	ListViewer viewer = (ListViewer) e.getSource();
+        	QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getList().getSelectionIndex());
+			model.toggleSelectedExtension(extension);
         });
     }
 

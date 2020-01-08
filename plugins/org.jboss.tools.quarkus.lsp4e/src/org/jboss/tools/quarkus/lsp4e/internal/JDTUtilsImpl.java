@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.internal;
 
+import java.io.Reader;
+import java.util.Scanner;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -17,12 +20,15 @@ import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ui.JavadocContentAccess;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
 
+import com.redhat.microprofile.commons.DocumentFormat;
 import com.redhat.microprofile.jdt.core.utils.IJDTUtils;
 
 public class JDTUtilsImpl implements IJDTUtils {
@@ -93,5 +99,20 @@ public class JDTUtilsImpl implements IJDTUtils {
 	@Override
 	public Location toLocation(IJavaElement element) throws JavaModelException {
 		return JDTUtils.toLocation(element);
-	}	
+	}
+
+	@Override
+	public String getJavadoc(IMember member, DocumentFormat documentFormat) throws JavaModelException {
+		boolean markdown = DocumentFormat.Markdown.equals(documentFormat);
+		Reader reader = markdown ? JDTJavadocContentAccess.getMarkdownContentReader(member)
+				: JDTJavadocContentAccess.getPlainTextContentReader(member);
+		return reader != null ? toString(reader) : null;
+	}
+
+	private static String toString(Reader reader) {
+		try (Scanner s = new java.util.Scanner(reader)) {
+			s.useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";
+		}
+	}
 }

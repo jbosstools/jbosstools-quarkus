@@ -16,8 +16,8 @@
   -->
 <site>
    <description>To install these features, point Eclipse at this site.</description>
-   <category-def label="JBoss Tools OpenShift Nightly Build Update Site" name="site">
-      <description>JBoss Tools OpenShift Nightly Build Update Site: contains all features in this build.</description>
+   <category-def label="JBoss Tools Quarkus Nightly Build Update Site" name="site">
+      <description>JBoss Tools Quarkus Nightly Build Update Site: contains all features in this build.</description>
    </category-def>
    <feature id="org.jboss.tools.quarkus.feature"><category name="site"/></feature>
    <feature id="org.jboss.tools.quarkus.test.feature"><category name="site"/></feature>

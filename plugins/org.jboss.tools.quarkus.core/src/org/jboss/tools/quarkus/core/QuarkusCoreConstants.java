@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2019-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution,
@@ -48,5 +48,9 @@ public class QuarkusCoreConstants {
             + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE;
 
     public static final String DOWNLOAD_SUFFIX = "api/download";
+
+	public static final String QUARKUS_RUNTIME_CLASS_NAME = "io.quarkus.runtime.StartupContext";
+	
+	public static final String QUARKUS_PROCESS_FACTORY = QuarkusCorePlugin.PLUGIN_ID + ".processFactory";
 
 }

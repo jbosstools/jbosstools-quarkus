@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat, Inc.
+ * Copyright 2019-2020 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,27 @@
 
 package org.jboss.tools.quarkus.core.launch;
 
+import org.eclipse.core.externaltools.internal.IExternalToolConstants;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-
-import io.quarkus.dev.DevModeMain;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class LaunchUtils {
 	
 	public static void initializeQuarkusLaunchConfiguration(
-			ILaunchConfigurationWorkingCopy workingCopy) {
-		workingCopy.setAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
-				DevModeMain.class.getName());
+			ILaunchConfigurationWorkingCopy workingCopy) throws CoreException {
+		String projectName = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getTool(project).toOSString());
+		workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
+		if (ProjectUtils.isMavenProject(project)) {
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev");
+		} else {
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "quarkusDev");
+		}
 	}
 
 }

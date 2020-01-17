@@ -66,4 +66,8 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
         getDefault().getLog().log(new Status(IStatus.ERROR, getPluginId(), errMsg, ex));
         
     }
+
+	public static void logInfo(String message) {
+		getDefault().getLog().log(new Status(IStatus.INFO, getPluginId(), message));
+	}
 }

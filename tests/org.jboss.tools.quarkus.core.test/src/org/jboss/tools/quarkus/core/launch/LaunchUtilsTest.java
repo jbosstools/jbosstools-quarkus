@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat, Inc.
+ * Copyright 2019-2020 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,46 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jboss.tools.quarkus.core.launch;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.when;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
+import java.io.File;
+import org.eclipse.core.externaltools.internal.IExternalToolConstants;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.jboss.tools.quarkus.core.code.utils.ProjectHelpers;
 import org.jboss.tools.quarkus.core.launch.LaunchUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import io.quarkus.dev.DevModeMain;
+import org.mockito.Mockito;
 
 public class LaunchUtilsTest {
 	
-	private Object[] arguments = null;
+	private ILaunchConfigurationWorkingCopy configuration;
+	
+	@BeforeEach
+	public void setUp() {
+		configuration = Mockito.mock(ILaunchConfigurationWorkingCopy.class);
+	}
 	
 	@Test
-	public void testInitializeQuarkusLaunchConfiguration() {
-		ILaunchConfigurationWorkingCopy lcwc = (ILaunchConfigurationWorkingCopy)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { ILaunchConfigurationWorkingCopy.class }, 
-				new TestLaunchConfigurationWorkingCopyInvocationHandler());
-		assertNull(arguments);
-		LaunchUtils.initializeQuarkusLaunchConfiguration(lcwc);
-		assertEquals(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, arguments[0]);
-		assertEquals(DevModeMain.class.getName(), arguments[1]);
+	public void testInitializeQuarkusLaunchConfigurationWithMaven() throws Exception {
+		IProject project = ProjectHelpers.loadProject(new File("projects/maven/code-with-quarkus-maven"));
+		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), isNull(String.class))).thenReturn(project.getName());
+		LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("mvnw"));
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("compile quarkus:dev"));
 	}
-	
-	private class TestLaunchConfigurationWorkingCopyInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			arguments = args;
-			return null;
-		}		
+
+
+	@Test
+	public void testInitializeQuarkusLaunchConfigurationWithGradle() throws Exception {
+		IProject project = ProjectHelpers.loadProject(new File("projects/gradle/code-with-quarkus-gradle"));
+		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), isNull(String.class))).thenReturn(project.getName());
+		LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("gradlew"));
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("quarkusDev"));
 	}
-	
 }
 

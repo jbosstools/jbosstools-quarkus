@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat, Inc.
+ * Copyright 2019-2020 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.core.project.LocalProjectScanner;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
+import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 
 import io.quarkus.cli.commands.AddExtensions;
 import io.quarkus.cli.commands.CreateProject;
@@ -155,4 +160,45 @@ public class ProjectUtils {
 		return ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
 	}
 	
+	public static boolean isJavaProject(IProject project) {
+		try {
+			return project.hasNature(JavaCore.NATURE_ID);
+		} catch (CoreException e) {
+			return false;
+		}
+	}
+	
+	public static boolean isMavenProject(IProject project) {
+		try {
+			return project.hasNature("org.eclipse.m2e.core.maven2Nature");
+		} catch (CoreException e) {
+			return false;
+		}
+	}
+	
+	public static boolean isQuarkusProject(IProject project) {
+		return isJavaProject(project) && isQuarkusProject(JavaCore.create(project));
+	}
+
+	public static boolean isQuarkusProject(IJavaProject javaProject) {
+		try {
+			return javaProject.findType(QuarkusCoreConstants.QUARKUS_RUNTIME_CLASS_NAME) != null;
+		} catch (JavaModelException e) {
+			return false;
+		}
+	}
+
+	public static IPath getTool(IProject project) {
+		if (isMavenProject(project)) {
+			if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
+				return project.getLocation().append("mvnw.cmd");
+			} else {
+				return project.getLocation().append("mvnw");
+			}
+		} else if (Platform.OS_WIN32.equals(Platform.getOS())) {
+			return project.getLocation().append("gradlew.bat");
+		} else {
+			return project.getLocation().append("gradlew");
+		}
+	}
 }

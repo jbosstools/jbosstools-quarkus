@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2019-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution,
@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class QuarkusCorePlugin extends AbstractUIPlugin {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "org.boss.tools.quarkus.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.jboss.tools.quarkus.core"; //$NON-NLS-1$
 
     // The shared instance
     private static QuarkusCorePlugin plugin;
@@ -66,4 +66,8 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
         getDefault().getLog().log(new Status(IStatus.ERROR, getPluginId(), errMsg, ex));
         
     }
+
+	public static void logInfo(String message) {
+		getDefault().getLog().log(new Status(IStatus.INFO, getPluginId(), message));
+	}
 }

@@ -17,7 +17,11 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.jboss.tools.foundation.core,
  com.fasterxml.jackson.core.jackson-databind,
  org.eclipse.ui.workbench,
- com.fasterxml.jackson.core.jackson-core
+ com.fasterxml.jackson.core.jackson-core,
+ org.eclipse.core.externaltools,
+ org.eclipse.jdt.core,
+ com.sun.jna.platform,
+ com.sun.jna
 Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,
  org.jboss.tools.quarkus.core.launch,

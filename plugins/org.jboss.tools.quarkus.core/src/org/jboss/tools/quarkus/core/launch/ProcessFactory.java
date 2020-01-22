@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Red Hat, Inc.
+ * Copyright 2020 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.jboss.tools.quarkus.core.launch;
 
-package org.jboss.tools.quarkus.ui.launch;
+import java.util.Map;
 
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
-import org.eclipse.debug.ui.CommonTab;
-import org.eclipse.debug.ui.ILaunchConfigurationDialog;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.IProcessFactory;
+import org.eclipse.debug.core.model.IProcess;
 
-public class QuarkusLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
+/**
+ * @author Jeff MAURY
+ *
+ */
+public class ProcessFactory implements IProcessFactory {
 
 	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		setTabs(new ILaunchConfigurationTab[] { new QuarkusProjectTab(), new CommonTab() });
+	public IProcess newProcess(ILaunch launch, Process process, String label, Map<String, String> attributes) {
+		return new RuntimeProcessWithJVMAttach(launch, process, label, attributes);
 	}
+
 }

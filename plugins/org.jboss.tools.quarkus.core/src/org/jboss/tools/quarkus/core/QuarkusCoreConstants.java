@@ -49,7 +49,7 @@ public class QuarkusCoreConstants {
 
     public static final String DOWNLOAD_SUFFIX = "api/download";
 
-	public static final String QUARKUS_RUNTIME_CLASS_NAME = "io.quarkus.runtime.StartupContext";
+	public static final String QUARKUS_RUNTIME_CLASS_NAME = "io.quarkus.runtime.LaunchMode";
 	
 	public static final String QUARKUS_PROCESS_FACTORY = QuarkusCorePlugin.PLUGIN_ID + ".processFactory";
 

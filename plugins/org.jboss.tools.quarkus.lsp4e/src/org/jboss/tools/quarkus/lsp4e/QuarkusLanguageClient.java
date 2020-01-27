@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.lsp4e.LanguageClientImpl;
 import org.eclipse.lsp4j.CodeLens;
@@ -65,12 +67,18 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	@Override
 	public CompletableFuture<MicroProfileProjectInfo> getProjectInfo(MicroProfileProjectInfoParams params) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
-			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			final MicroProfileProjectInfo[] projectInfo = new MicroProfileProjectInfo[1];
+			Job job = Job.create("MicroProfile properties collector", (ICoreRunnable) monitor -> {
+				projectInfo[0] = PropertiesManager.getInstance().getMicroProfileProjectInfo(params,
+				        JDTUtilsImpl.getInstance(), monitor);
+			});
+			job.schedule();
 			try {
-				return PropertiesManager.getInstance().getMicroProfileProjectInfo(params, JDTUtilsImpl.getInstance(), monitor);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+				job.join();
+			} catch (InterruptedException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 			}
+			return projectInfo[0];
 		});
 	}
 

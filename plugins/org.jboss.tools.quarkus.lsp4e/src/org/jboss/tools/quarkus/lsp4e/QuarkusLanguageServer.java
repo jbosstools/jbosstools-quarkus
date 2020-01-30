@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,19 +73,26 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 		codeLensSettings.setUrlCodeLensEnabled(true);
 		settings.setCodeLens(codeLensSettings);
 		return settings;*/
-		Map<String, Object> root = new HashMap();
-		Map<String, Object> settings = new HashMap();
-		Map<String, Object> quarkus = new HashMap();
-		Map<String, Object> tools = new HashMap();
-		Map<String, Object> trace = new HashMap();
+		Map<String, Object> root = new HashMap<>();
+		Map<String, Object> settings = new HashMap<>();
+		Map<String, Object> quarkus = new HashMap<>();
+		Map<String, Object> tools = new HashMap<>();
+		Map<String, Object> trace = new HashMap<>();
 		trace.put("server", "verbose");
 		tools.put("trace", trace);
-		Map<String, Object> codeLens = new HashMap();
+		Map<String, Object> codeLens = new HashMap<>();
 		codeLens.put("urlCodeLensEnabled", "true");
 		tools.put("codeLens", codeLens);
 		quarkus.put("tools", tools);
 		settings.put("quarkus", quarkus);
 		root.put("settings", settings);
+		Map<String, Object> extendedClientCapabilities = new HashMap<>();
+		Map<String, Object> commands = new HashMap<>();
+		Map<String, Object> commandsKind = new HashMap<>();
+		commandsKind.put("valueSet", Arrays.asList("quarkus.command.configuration.update", "quarkus.command.open.uri"));
+		commands.put("commandsKind", commandsKind);
+		extendedClientCapabilities.put("commands", commands);
+		root.put("extendedClientCapabilities", extendedClientCapabilities);
 		return root;
 	}
 

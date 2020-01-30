@@ -61,5 +61,12 @@
             path="language-configurations/language-configuration.json">
       </languageConfiguration>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.jboss.tools.quarkus.lsp4e.internal.OpenBrowserHandler"
+            commandId="quarkus.command.open.uri">
+      </handler>
+   </extension>
         
 </plugin>

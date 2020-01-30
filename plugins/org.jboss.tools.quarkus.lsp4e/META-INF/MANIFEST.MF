@@ -22,7 +22,10 @@ Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.jdt.core.manipulation,
  org.eclipse.jdt.ui,
  com.redhat.microprofile.jdt.core,
- org.jsoup;bundle-version="1.8.3"
+ org.jsoup;bundle-version="1.8.3",
+ org.eclipse.ui,
+ org.jboss.tools.foundation.ui,
+ org.apache.commons.lang3
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy

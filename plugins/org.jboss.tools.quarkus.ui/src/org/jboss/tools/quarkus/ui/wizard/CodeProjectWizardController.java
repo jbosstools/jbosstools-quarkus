@@ -145,7 +145,6 @@ public class CodeProjectWizardController {
     }
     
     private void makeExecutable() throws IOException {
-    	IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
     	IPath toolPath = ProjectUtils.getTool(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName()));
     	Files.setPosixFilePermissions(toolPath.toFile().toPath(), PosixFilePermissions.fromString("rwxr--r--"));
     }

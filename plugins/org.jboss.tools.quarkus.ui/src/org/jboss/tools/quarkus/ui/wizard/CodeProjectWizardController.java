@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -34,6 +35,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -47,6 +49,7 @@ import org.eclipse.m2e.core.project.LocalProjectScanner;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.jboss.tools.quarkus.core.code.model.QuarkusModelRegistry;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 
 public class CodeProjectWizardController {
@@ -107,6 +110,9 @@ public class CodeProjectWizardController {
             IProject project = createGeneralProject(monitor);
             BuildConfiguration buildConfig = BuildConfiguration.forRootProjectDirectory(project.getLocation().toFile()).build();
             GradleCore.getWorkspace().createBuild(buildConfig).synchronize(monitor);
+            makeExecutable();
+        } catch (IOException e) {
+        	status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e);   
         } catch (CoreException e) {
             status = e.getStatus();
         }
@@ -127,12 +133,21 @@ public class CodeProjectWizardController {
             scanner.run(monitor);
             ProjectImportConfiguration projectImportConfiguration = new ProjectImportConfiguration();
             configurationManager.importProjects(collect(scanner.getProjects()), projectImportConfiguration, monitor);
+            makeExecutable();
+        } catch (IOException e) {
+        	status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e);   
         } catch (InterruptedException e) {
             status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e); 
         } catch (CoreException e) {
             status = e.getStatus();
         }
         return status;
+    }
+    
+    private void makeExecutable() throws IOException {
+    	IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+    	IPath toolPath = ProjectUtils.getTool(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName()));
+    	Files.setPosixFilePermissions(toolPath.toFile().toPath(), PosixFilePermissions.fromString("rwxr--r--"));
     }
     
     private void unzipEntry(IPath location, ZipInputStream stream, ZipEntry entry)

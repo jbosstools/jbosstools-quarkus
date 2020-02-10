@@ -23,7 +23,7 @@
             delegate="org.jboss.tools.quarkus.core.launch.QuarkusLaunchConfigurationDelegate"
             id="org.jboss.tools.quarkus.core.launchConfigurationType"
             modes="run, debug"
-            name="Quarkus Launch Configuration">
+            name="Quarkus Application">
       </launchConfigurationType>
    </extension>
    <extension

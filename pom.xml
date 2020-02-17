@@ -38,7 +38,8 @@
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/microprofile-jdt/latest/all/repo/</quarkus-jdt-site>
+        <!--<quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/microprofile-jdt/latest/all/repo/</quarkus-jdt-site>-->
+		<quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/microprofile-jdt/latest/all/repo/</quarkus-jdt-site>
     </properties>
 
 	<repositories>

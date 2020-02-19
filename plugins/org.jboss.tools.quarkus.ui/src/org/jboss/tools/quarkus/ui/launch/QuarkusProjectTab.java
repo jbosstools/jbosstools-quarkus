@@ -94,7 +94,7 @@ public class QuarkusProjectTab extends AbstractJavaMainTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		IJavaElement javaElement = getContext();
-		if (javaElement != null) {
+		if (javaElement != null && ProjectUtils.isQuarkusProject(javaElement.getJavaProject())) {
 			initializeJavaProject(javaElement, config);
 		}
 		else {

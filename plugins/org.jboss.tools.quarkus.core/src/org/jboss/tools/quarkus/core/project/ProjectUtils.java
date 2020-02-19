@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -188,17 +189,31 @@ public class ProjectUtils {
 		}
 	}
 
-	public static IPath getTool(IProject project) {
+	private static String getToolScript(IProject project) {
 		if (isMavenProject(project)) {
 			if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
-				return project.getLocation().append("mvnw.cmd");
+				return "mvnw.cmd";
 			} else {
-				return project.getLocation().append("mvnw");
+				return "mvnw";
 			}
 		} else if (Platform.OS_WIN32.equals(Platform.getOS())) {
-			return project.getLocation().append("gradlew.bat");
+			return "gradlew.bat";
 		} else {
-			return project.getLocation().append("gradlew");
+			return "gradlew";
 		}
+	}
+	public static IPath getTool(IProject project) {
+		String script = getToolScript(project);
+		IPath path = project.getLocation();
+		boolean changed = true;
+		while (changed) {
+			if (path.append(script).toFile().exists()) {
+				return path.append(script);
+			}
+			IPath newPath = path.removeLastSegments(1);
+			changed = !newPath.equals(path);
+			path = newPath;
+		}
+		return null;
 	}
 }

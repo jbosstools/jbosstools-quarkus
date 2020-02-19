@@ -10,10 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.project;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -27,12 +36,14 @@ import org.junit.runner.RunWith;
 /**
  * 
  * @author jkopriva@redhat.com
+ * @editor olkornii@redhat.com
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class CreateNewProjectTest {
 
 	private static String MAVEN_PROJECT_NAME = "testProjectMaven";
+	private static String GRADLE_PROJECT_NAME = "testProjectGradle";
 
 	@Test
 	public void testNewNewQuarkusMavenProject() {
@@ -50,6 +61,40 @@ public class CreateNewProjectTest {
 		qw.finish(TimePeriod.VERY_LONG);
 
 		assertTrue(new ProjectExplorer().containsProject(MAVEN_PROJECT_NAME));
+		checkProblemsView();
+	}
+
+	// https://issues.redhat.com/browse/JBIDE-27057
+	@Test(expected = RedDeerException.class)
+	public void testNewNewQuarkusGradleProject() {
+		new WorkbenchShell().setFocus();
+
+		QuarkusWizard qw = new QuarkusWizard();
+		qw.open();
+		assertTrue(qw.isOpen());
+
+		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
+		wp.setProjectName(GRADLE_PROJECT_NAME);
+		wp.setGradleProjectType();
+
+		qw.next();
+		qw.finish(TimePeriod.VERY_LONG);
+
+		assertTrue(new ProjectExplorer().containsProject(GRADLE_PROJECT_NAME));
+
+		try {
+			checkProblemsView();
+		} catch (AssertionError e) {
+			throw new RedDeerException("There should be no errors in imported project!");
+		}
+	}
+
+	private void checkProblemsView() {
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
+		assertEquals("There should be no errors in imported project", 0, problems.size());
+
 	}
 
 	@After

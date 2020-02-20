@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2019-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution,
@@ -61,7 +61,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
     		.applyTo(explanation);
 
         // categories
-        Composite categoriesContainer = new Composite(parent, SWT.DEFAULT);
+        Composite categoriesContainer = new Composite(parent, SWT.NONE);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(categoriesContainer);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(categoriesContainer);
 
@@ -87,7 +87,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
                 .to(selectedCategoryObservable).in(dbc);
 
         // extensions
-        Composite extensionsContainer = new Composite(parent, SWT.DEFAULT);
+        Composite extensionsContainer = new Composite(parent, SWT.NONE);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(extensionsContainer);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(extensionsContainer);
 
@@ -113,7 +113,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         });
 
         // selected extensions
-        Composite selectedExtensionsContainer = new Composite(parent, SWT.DEFAULT);
+        Composite selectedExtensionsContainer = new Composite(parent, SWT.NONE);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(selectedExtensionsContainer);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).applyTo(selectedExtensionsContainer);
 

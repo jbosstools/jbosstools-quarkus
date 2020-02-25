@@ -124,11 +124,11 @@ public class QuarkusExtension {
     }
     
     public String asLabel() {
-        StringBuffer buffer = new StringBuffer(getName());
+    	StringBuilder builder = new StringBuilder(getName());
         if ("preview".equalsIgnoreCase(getStatus())) {
-            buffer.append(" (Preview)");
+            builder.append(" (Preview)");
         }
-        return buffer.toString();
+        return builder.toString();
     }
     
     @Override

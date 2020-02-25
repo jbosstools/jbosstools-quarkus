@@ -31,10 +31,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
 
 public class ProjectHelpers {
-	public static IProject loadProject(File projectDir) throws CoreException, Exception {
-		// Load existing "hibernate-orm-resteasy" maven project
-		String projectName = projectDir.getName();
-
+	/*
+	 * Utility class should not be instantiated.
+	 */
+	private ProjectHelpers() {
+		throw new IllegalStateException("Utility class");
+	}
+	
+	public static IProject loadProject(File projectDir) throws CoreException, IOException, InterruptedException {
 		// Move project to working directory
 		File projectFolder = copyProjectToWorkingDirectory(projectDir);
 
@@ -92,7 +96,7 @@ public class ProjectHelpers {
 		return to;
 	}
 
-	private static void waitForBackgroundJobs(IProgressMonitor monitor) throws Exception {
+	private static void waitForBackgroundJobs(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		JobHelpers.waitForJobsToComplete(monitor);
 	}
 	

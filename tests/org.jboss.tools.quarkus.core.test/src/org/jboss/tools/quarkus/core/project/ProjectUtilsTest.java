@@ -25,11 +25,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.jboss.tools.quarkus.core.project.ProjectUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ProjectUtilsTest {
+	
+	private static final String PROJECT_NAME = "com.acme.quarkus";
 	
 	// TODO Reenable this test
 	@Disabled
@@ -38,12 +39,12 @@ public class ProjectUtilsTest {
 		IProject project = ResourcesPlugin
 				.getWorkspace()
 				.getRoot()
-				.getProject("com.acme.quarkus");
+				.getProject(PROJECT_NAME);
 		assertFalse(project.exists());
 		ProjectUtils.createProject(
 				"quarkus", 
 				project.getLocation().toOSString(),
-				"com.acme.quarkus", 
+				PROJECT_NAME, 
 				"com.acme", 
 				"1.0.0-SHAPSHOT", 
 				null,
@@ -54,13 +55,13 @@ public class ProjectUtilsTest {
 	@Test 
 	public void testProjectExists() {
 		try {
-			assertFalse(ProjectUtils.projectExists("com.acme.quarkus"));
+			assertFalse(ProjectUtils.projectExists(PROJECT_NAME));
 			ResourcesPlugin
 					.getWorkspace()
 					.getRoot()
-					.getProject("com.acme.quarkus")
-					.create(new NullProgressMonitor());;
-			assertTrue(ProjectUtils.projectExists("com.acme.quarkus"));
+					.getProject(PROJECT_NAME)
+					.create(new NullProgressMonitor());
+			assertTrue(ProjectUtils.projectExists(PROJECT_NAME));
 			assertFalse(ProjectUtils.projectExists(null));
 			assertFalse(ProjectUtils.projectExists(""));
 		}

@@ -23,6 +23,15 @@ import org.eclipse.jdt.internal.ui.javaeditor.DocumentAdapter;
  *
  */
 public class JsonRpcHelpers {
+	
+	/*
+	 * Utility class should not be instantiated
+	 */
+	private JsonRpcHelpers() {
+		throw new IllegalStateException("Utility class");
+	}
+	
+	
 	/**
 	 * Convert line, column to a document offset.
 	 * @param buffer

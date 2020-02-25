@@ -83,7 +83,7 @@ public class ProjectUtils {
 			String artefactId, 
 			String version, 
 			String className,
-			HashMap<String, Object> context) {
+			Map<String, Object> context) {
 		try {
 			if (context == null) {
 				context = new HashMap<String, Object>();

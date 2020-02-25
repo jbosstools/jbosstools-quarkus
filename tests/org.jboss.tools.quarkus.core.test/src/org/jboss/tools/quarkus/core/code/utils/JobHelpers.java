@@ -35,8 +35,11 @@ import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 @SuppressWarnings("restriction")
 public final class JobHelpers {
 
+	/*
+	 * Utility class should not be instantiated.
+	 */
 	private JobHelpers() {
-		//no instantiation
+		throw new IllegalStateException("Utility class");
 	}
 
 	private static final int POLLING_DELAY = 10;
@@ -79,6 +82,7 @@ public final class JobHelpers {
 			workspace.run(new IWorkspaceRunnable() {
 				@Override
 				public void run(IProgressMonitor monitor) {
+					// ignore default implementation
 				}
 			}, workspace.getRoot(), 0, monitor);
 
@@ -89,6 +93,7 @@ public final class JobHelpers {
 				try {
 					Thread.sleep(10);
 				} catch(InterruptedException e) {
+					// Swallow exception
 				}
 			}
 			if (processed) {

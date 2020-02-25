@@ -28,6 +28,7 @@ public class CodeProjectWizard extends WizardDialog {
 	 * Opens wizard from File menu
 	 * (does not need opened perspective)
 	 */
+	@Override
 	public void open() {
 		new WorkbenchShell().setFocus();		
 		new NewWizard().open();

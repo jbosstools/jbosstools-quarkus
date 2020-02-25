@@ -16,12 +16,8 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class QuarkusModelTest {
 	private static QuarkusModelRegistry registry;
@@ -32,7 +28,7 @@ public class QuarkusModelTest {
 	}
 	
 	@Test
-	public void testCategories() throws CoreException, JsonParseException, JsonMappingException, IOException  {
+	public void testCategories() throws IOException {
 		QuarkusModel model = registry.readModel(new File("resources/extensions.json"));
 		assertNotNull(model);
 		assertNotNull(model.getCategories());

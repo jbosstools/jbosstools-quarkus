@@ -15,6 +15,13 @@ package org.jboss.tools.quarkus.core;
  *
  */
 public class QuarkusCoreConstants {
+	
+	/*
+	 * This class should not be instantiated.
+	 */
+	private QuarkusCoreConstants() {
+		throw new IllegalStateException("Constants class");
+	}
     /*
      * Parameter names for the download request. See
      * http://editor.swagger.io/?url=https://code.quarkus.io/openapi for reference.

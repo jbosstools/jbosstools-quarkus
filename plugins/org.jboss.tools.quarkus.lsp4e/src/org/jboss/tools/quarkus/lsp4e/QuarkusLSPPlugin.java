@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -28,12 +27,6 @@ public class QuarkusLSPPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	private static QuarkusLSPPlugin plugin;
-
-	/**
-	 * The constructor
-	 */
-	public QuarkusLSPPlugin() {
-	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {

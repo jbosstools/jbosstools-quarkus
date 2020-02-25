@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ui.JavadocContentAccess;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
 

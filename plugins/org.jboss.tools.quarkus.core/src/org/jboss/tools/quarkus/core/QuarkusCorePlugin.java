@@ -27,12 +27,6 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
     // The shared instance
     private static QuarkusCorePlugin plugin;
 
-    /**
-     * The constructor
-     */
-    public QuarkusCorePlugin() {
-    }
-
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);

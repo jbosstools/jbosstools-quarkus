@@ -15,11 +15,24 @@ package org.jboss.tools.quarkus.reddeer.common;
  * @author jkopriva@redhat.com
  */
 public class QuarkusLabels {
+	/*
+	 * This class should not be instantiated.
+	 */
+	private QuarkusLabels() {
+		throw new IllegalStateException("Labels class");
+	}
 
 	/**
 	 * Shell title labels.
 	 */
 	public static class Shell {
+		/*
+		 * This class should not be instantiated.
+		 */
+		private Shell() {
+			throw new IllegalStateException("Shell labels class");
+		}
+		
 		public static final String PERSPECTIVE_NAME = "Quarkus";
 		public static final String QUARKUS_CATEGORY = "Quarkus";
 		public static final String EXTENSION_VIEW = "Quarkus Extensions";
@@ -30,6 +43,13 @@ public class QuarkusLabels {
 	
 	
 	public static class TextLabels {
+		/*
+		 * This class should not be instantiated.
+		 */
+		private TextLabels() {
+			throw new IllegalStateException("Text labels class");
+		}
+		
 		public static final String FILE_CONTEXT_MENU = "File";
 		public static final String NEW_CONTEXT_ITEM = "New";
 		

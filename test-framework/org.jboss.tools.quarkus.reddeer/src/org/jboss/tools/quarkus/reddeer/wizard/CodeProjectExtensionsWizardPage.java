@@ -40,7 +40,7 @@ public class CodeProjectExtensionsWizardPage extends WizardPage {
 	 * @param category
 	 */
 	public void selectCategory(String category) {
-		new DefaultList(QuarkusLabels.TextLabels.EXTENSIONS_CATEGORIES).select(category);;
+		new DefaultList(QuarkusLabels.TextLabels.EXTENSIONS_CATEGORIES).select(category);
 	}
 	
 	/**
@@ -58,6 +58,6 @@ public class CodeProjectExtensionsWizardPage extends WizardPage {
 	 * @param extension
 	 */
 	public void selectExtension(String extension) {
-		new DefaultList(QuarkusLabels.TextLabels.EXTENSIONS_NAMES).select(extension);;
+		new DefaultList(QuarkusLabels.TextLabels.EXTENSIONS_NAMES).select(extension);
 	}
 }

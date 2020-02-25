@@ -18,7 +18,6 @@ package org.jboss.tools.quarkus.ui.view;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.jboss.tools.quarkus.ui.view.ExtensionsView;
 import org.junit.jupiter.api.Test;
 
 public class ExtensionsViewTest {

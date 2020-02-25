@@ -22,8 +22,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class Activator extends AbstractUIPlugin {
 	
-	public final static String ID = "org.jboss.tools.quarkus.cheatsheet";
-	public final static Activator DEFAULT = new Activator();
+	public static final String ID = "org.jboss.tools.quarkus.cheatsheet";
+	public static final Activator DEFAULT = new Activator();
 
 	public void logError(Throwable t) {
 		IStatus status = new Status(

@@ -92,7 +92,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param projectName the projectName to set
      */
     public void setProjectName(String projectName) {
-        firePropertyChange(PROJECT_NAME_PROPERTY, this.projectName, this.projectName = projectName);
+        firePropertyChange(PROJECT_NAME_PROPERTY, this.projectName, projectName);
+        this.projectName = projectName;
         updateLocation();
     }
     
@@ -119,7 +120,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param useDefaultLocation the useDefaultLocation to set
      */
     public void setUseDefaultLocation(boolean useDefaultLocation) {
-        firePropertyChange(USE_DEFAULT_LOCATION_PROPERTY, this.useDefaultLocation, this.useDefaultLocation = useDefaultLocation);
+        firePropertyChange(USE_DEFAULT_LOCATION_PROPERTY, this.useDefaultLocation, useDefaultLocation);
+        this.useDefaultLocation = useDefaultLocation;
         updateLocation();
     }
 
@@ -134,7 +136,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param location the location to set
      */
     public void setLocation(IPath location) {
-        firePropertyChange(LOCATION_PROPERTY, this.location, this.location = location);
+        firePropertyChange(LOCATION_PROPERTY, this.location, location);
+        this.location = location;
     }
 
     /**
@@ -148,7 +151,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param groupId the groupId to set
      */
     public void setGroupId(String groupId) {
-        firePropertyChange(GROUPID_PROPERTY, this.groupId, this.groupId = groupId);
+        firePropertyChange(GROUPID_PROPERTY, this.groupId, groupId);
+        this.groupId = groupId;
     }
 
     /**
@@ -162,7 +166,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param artifactId the artifactId to set
      */
     public void setArtifactId(String artifactId) {
-        firePropertyChange(ARTIFACTID_PROPERTY, this.artifactId, this.artifactId = artifactId);
+        firePropertyChange(ARTIFACTID_PROPERTY, this.artifactId, artifactId);
+        this.artifactId = artifactId;
     }
 
     /**
@@ -176,7 +181,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param version the version to set
      */
     public void setVersion(String version) {
-        firePropertyChange(VERSION_PROPERTY, this.version, this.version = version);
+        firePropertyChange(VERSION_PROPERTY, this.version, version);
+        this.version = version;
     }
 
     /**
@@ -190,7 +196,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param className the className to set
      */
     public void setClassName(String className) {
-        firePropertyChange(CLASSNAME_PROPERTY, this.className, this.className = className);
+        firePropertyChange(CLASSNAME_PROPERTY, this.className, className);
+        this.className = className;
     }
 
     /**
@@ -204,7 +211,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param path the path to set
      */
     public void setPath(String path) {
-        firePropertyChange(PATH_PROPERTY, this.path, this.path = path);
+        firePropertyChange(PATH_PROPERTY, this.path, path);
+        this.path = path;
     }
 
     /**
@@ -218,7 +226,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param tool the tool to set
      */
     public void setTool(Tool tool) {
-        firePropertyChange(TOOL_PROPERTY, this.tool, this.tool = tool);
+        firePropertyChange(TOOL_PROPERTY, this.tool, tool);
+        this.tool = tool;
     }
 
     /**
@@ -232,7 +241,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param endpoint the endpoint to set
      */
     public void setEndpoint(String endpoint) {
-        firePropertyChange(ENDPOINT_PROPERTY, this.endpoint, this.endpoint = endpoint);
+        firePropertyChange(ENDPOINT_PROPERTY, this.endpoint, endpoint);
+        this.endpoint = endpoint;
     }
 
     public void setModel(QuarkusModel model) {
@@ -247,7 +257,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param categories the categories to set
      */
     public void setCategories(List<QuarkusCategory> categories) {
-        firePropertyChange(CATEGORIES_PROPERTY, this.categories, this.categories = categories);
+        firePropertyChange(CATEGORIES_PROPERTY, this.categories, categories);
+        this.categories = categories;
         if (!categories.isEmpty()) {
             setSelectedCategory(categories.get(0));
         }
@@ -264,7 +275,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param selectedCategory the selectedCategory to set
      */
     public void setSelectedCategory(QuarkusCategory selectedCategory) {
-        firePropertyChange(SELECTED_CATEGORY_PROPERTY, this.selectedCategory, this.selectedCategory = selectedCategory);
+        firePropertyChange(SELECTED_CATEGORY_PROPERTY, this.selectedCategory, selectedCategory);
+        this.selectedCategory = selectedCategory;
         setExtensions(selectedCategory.getExtensions());
     }
 
@@ -279,7 +291,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param extensions the extensions to set
      */
     public void setExtensions(List<QuarkusExtension> extensions) {
-        firePropertyChange(EXTENSIONS_PROPERTY, this.extensions, this.extensions = extensions);
+        firePropertyChange(EXTENSIONS_PROPERTY, this.extensions, extensions);
+        this.extensions = extensions;
     }
 
     /**
@@ -293,7 +306,8 @@ public class CodeProjectModel extends ObservablePojo {
      * @param selectedExtensions the selectedExtensions to set
      */
     public void setSelectedExtensions(Set<QuarkusExtension> selectedExtensions) {
-        firePropertyChange(SELECTED_EXTENSIONS_PROPERTY, this.selectedExtensions, this.selectedExtensions = selectedExtensions);
+        firePropertyChange(SELECTED_EXTENSIONS_PROPERTY, this.selectedExtensions, selectedExtensions);
+        this.selectedExtensions = selectedExtensions;
     }
     
     public void toggleSelectedExtension(QuarkusExtension extension) {

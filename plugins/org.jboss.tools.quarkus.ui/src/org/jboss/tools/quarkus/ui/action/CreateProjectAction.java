@@ -17,14 +17,20 @@
 package org.jboss.tools.quarkus.ui.action;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class CreateProjectAction extends Action implements Runnable {
 
-	private String name, location, groupId, artefactId, version, className = null;
-	private HashMap<String, Object> context = new HashMap<String, Object>();
+	private String name = null;
+	private String location = null;
+	private String groupId = null; 
+	private String artefactId = null; 
+	private String version = null; 
+	private String className = null;
+	private Map<String, Object> context = new HashMap<String, Object>();
 	
 	public CreateProjectAction(
 			String name,
@@ -33,7 +39,7 @@ public class CreateProjectAction extends Action implements Runnable {
 			String artefactId, 
 			String version, 
 			String className,
-			HashMap<String, Object> context) {
+			Map<String, Object> context) {
 		this.groupId = groupId;
 		this.artefactId = artefactId;
 		this.version = version;

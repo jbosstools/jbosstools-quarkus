@@ -26,6 +26,13 @@ import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class LaunchUtils {
 	
+	/*
+	 * Utility class should not be instantiated.
+	 */
+	private LaunchUtils() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static void initializeQuarkusLaunchConfiguration(
 			ILaunchConfigurationWorkingCopy workingCopy) throws CoreException {
 		String projectName = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);

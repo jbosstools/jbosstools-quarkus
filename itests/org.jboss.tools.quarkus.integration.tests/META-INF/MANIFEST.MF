@@ -4,7 +4,12 @@ Bundle-Name: Quarkus Integration Tests
 Bundle-SymbolicName: org.jboss.tools.quarkus.integration.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.reddeer.go,
- org.jboss.tools.quarkus.reddeer
+ org.jboss.tools.quarkus.reddeer,
+ org.eclipse.m2e.editor.xml,
+ org.eclipse.jdt,
+ org.eclipse.m2e.lifecyclemapping.defaults,
+ org.eclipse.buildship.ui,
+ org.gradle.toolingapi
 Import-Package: org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar

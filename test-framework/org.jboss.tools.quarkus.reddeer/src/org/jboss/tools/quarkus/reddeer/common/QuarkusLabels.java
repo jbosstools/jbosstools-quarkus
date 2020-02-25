@@ -26,12 +26,15 @@ public class QuarkusLabels {
 		public static final String NEW_QUARKUS_PROJECT_WIZARD = "New Quarkus project";
 		public static final String QUARKUS_PROJECT = "Quarkus Project";
 		public static final String NEW_QUARKUS_PROJECT = "New Quarkus Project";
+		public static final String RUN_CONFIGURATION = "Run Configurations";
 	}
 	
 	
 	public static class TextLabels {
 		public static final String FILE_CONTEXT_MENU = "File";
 		public static final String NEW_CONTEXT_ITEM = "New";
+		public static final String RUN_AS_CONTEXT_MENU_ITEM = "Run As";
+		public static final String RUN_CONFIGURATION_CONTEXT_MENU_ITEM = "Run Configurations...";
 		
 		//Project type labels
 		public static final String PROJECT_NAME = "Project name:";
@@ -50,5 +53,12 @@ public class QuarkusLabels {
 		//Extension selection labels
 		public static final String EXTENSIONS_CATEGORIES = "Categories";
 		public static final String EXTENSIONS_NAMES = "Extensions";
+		
+		//Launch configuration labels
+		public static final String QUARKUS_LAUNCH_CONFIGURATION = "Quarkus Launch Configuration";
+		
+		//Run Configuration labels
+		public static final String QUARKUS_APPLICATION_TREE_ITEM = "Quarkus Application";
+		public static final String CONFIGURATION = "Configuration";
 	}
 }

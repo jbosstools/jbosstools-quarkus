@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuarkusExtension {
     @JsonProperty("category")
@@ -123,13 +125,15 @@ public class QuarkusExtension {
         this.selected = selected;
     }
     
-    public String asLabel() {
-        StringBuffer buffer = new StringBuffer(getName());
-        if ("preview".equalsIgnoreCase(getStatus())) {
-            buffer.append(" (Preview)");
-        }
-        return buffer.toString();
-    }
+	public String asLabel() {
+		StringBuilder builder = new StringBuilder(getName());
+		String status = getStatus();
+		if (StringUtils.isNotBlank(status) && !"stable".equalsIgnoreCase(status)) {
+			builder.append(" (").append(Character.toUpperCase(status.charAt(0))).append(status.substring(1))
+			        .append(')');
+		}
+		return builder.toString();
+	}
     
     @Override
     public int hashCode() {

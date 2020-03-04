@@ -169,7 +169,7 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
 		    
 		    if (Tool.GRADLE.equals(tool)) {
 		    	if (isDirectChildOfWorkspaceRootFolder(location) && !projectName.equals(locationFile.getName())) {
-			    	return ValidationStatus.error("Gradle projects at the root the workspace must be using a folder with the same name");
+			    	return ValidationStatus.error("Gradle projects at the root of the workspace must be using a folder with the same name");
 			    }
 		    }
 			return ValidationStatus.ok();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2019-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution,
@@ -14,6 +14,8 @@ import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.LOCATION_PROPER
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.PROJECT_NAME_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.TOOL_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.USE_DEFAULT_LOCATION_PROPERTY;
+
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -21,11 +23,17 @@ import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.MultiValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
@@ -115,7 +123,7 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
         .applyTo(mavenSeparator);
 
     // project name
-    createTextWidget(parent, model, dbc, "Project name:", PROJECT_NAME_PROPERTY,
+    ISWTObservableValue<String> projectNameObservable = createTextWidget(parent, model, dbc, "Project name:", PROJECT_NAME_PROPERTY,
             new EclipseProjectValidator("Please specify an Eclipse project", "Project already exists"));
     //use default location
     Button buttonUseDefaultLocation = new Button(parent, SWT.CHECK);
@@ -139,7 +147,8 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
     GridDataFactory.fillDefaults()
         .align(SWT.FILL, SWT.CENTER).grab(true, false)
         .applyTo(txtLocation);
-    Binding locationBinding = ValueBindingBuilder.bind(WidgetProperties.text(SWT.Modify).observe(txtLocation))
+    ISWTObservableValue<String> txtLocationObservable = WidgetProperties.text(SWT.Modify).observe(txtLocation);
+    Binding locationBinding = ValueBindingBuilder.bind(txtLocationObservable)
             .validatingAfterGet(new MandatoryStringValidator("Please specify a location for you project"))
             .converting(IConverter.create(String.class, IPath.class, CodeProjectTypeWizardPage::string2IPath))
             .to(BeanProperties.value(LOCATION_PROPERTY).observe(model)).in(dbc);
@@ -148,8 +157,33 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
             .to(BeanProperties.value(USE_DEFAULT_LOCATION_PROPERTY).observe(model))
             .converting(new InvertingBooleanConverter()).in(dbc);
     ControlDecorationSupport.create(locationBinding, SWT.LEFT | SWT.TOP, null, new RequiredControlDecorationUpdater());
+    
+    dbc.addValidationStatusProvider(new MultiValidator() {
+		
+		@Override
+		protected IStatus validate() {
+		    Tool tool = (Tool) projectTypeObservable.getValue();
+		    String projectName = projectNameObservable.getValue();
+		    String location = txtLocationObservable.getValue();
+		    File   locationFile = new File(location);
+		    
+		    if (Tool.GRADLE.equals(tool)) {
+		    	if (isDirectChildOfWorkspaceRootFolder(location) && !projectName.equals(locationFile.getName())) {
+			    	return ValidationStatus.error("Gradle projects at the root of the workspace must be using a folder with the same name");
+			    }
+		    }
+			return ValidationStatus.ok();
+		}
+	});
 
     loadModel();
+    }
+    
+    private boolean isDirectChildOfWorkspaceRootFolder(String location) {
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IPath rootLocationPath = workspace.getRoot().getLocation();
+        IPath locationPath = Path.fromOSString(location);
+        return rootLocationPath.equals(locationPath) || rootLocationPath.equals(locationPath.removeLastSegments(1));
     }
     
     private void loadModel() {
@@ -162,7 +196,7 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
     }
 
     
-    static Text createTextWidget(Composite parent, CodeProjectModel model, DataBindingContext dbc, String label, String property, IValidator<String> validator) {
+    static ISWTObservableValue<String> createTextWidget(Composite parent, CodeProjectModel model, DataBindingContext dbc, String label, String property, IValidator<String> validator) {
         Label lbl = new Label(parent, SWT.NONE);
         lbl.setText(label);
         GridDataFactory.fillDefaults()
@@ -173,11 +207,12 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
         GridDataFactory.fillDefaults()
             .align(SWT.FILL, SWT.CENTER).grab(true, false)
             .applyTo(text);
-        Binding binding = ValueBindingBuilder.bind(WidgetProperties.text(SWT.Modify).observe(text))
+        ISWTObservableValue<String> textObservable = WidgetProperties.text(SWT.Modify).observe(text);
+        Binding binding = ValueBindingBuilder.bind(textObservable)
                 .validatingAfterConvert(validator)
                 .to(BeanProperties.value(property).observe(model)).in(dbc);
         ControlDecorationSupport.create(binding, SWT.LEFT | SWT.TOP, null, new RequiredControlDecorationUpdater());
-        return text;
+        return textObservable;
     }
     
     @Override

@@ -35,12 +35,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.internal.MavenPluginActivator;
@@ -145,8 +145,12 @@ public class CodeProjectWizardController {
     }
     
     private void makeExecutable() throws IOException {
-    	IPath toolPath = ProjectUtils.getTool(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName()));
-    	Files.setPosixFilePermissions(toolPath.toFile().toPath(), PosixFilePermissions.fromString("rwxr--r--"));
+			if (!Platform.OS_WIN32.equals(Platform.getOS())) {
+				IPath toolPath = ProjectUtils
+				        .getTool(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName()));
+				Files.setPosixFilePermissions(toolPath.toFile().toPath(),
+				        PosixFilePermissions.fromString("rwxr--r--"));
+			}
     }
     
     private void unzipEntry(IPath location, ZipInputStream stream, ZipEntry entry)

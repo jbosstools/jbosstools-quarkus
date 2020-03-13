@@ -21,13 +21,15 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.lsp4e.LanguageClientImpl;
 import org.eclipse.lsp4j.CodeLens;
+import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
+import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 
 import com.redhat.microprofile.commons.MicroProfileJavaCodeLensParams;
-import com.redhat.microprofile.commons.MicroProfileJavaHoverInfo;
+import com.redhat.microprofile.commons.MicroProfileJavaDiagnosticsParams;
 import com.redhat.microprofile.commons.MicroProfileJavaHoverParams;
 import com.redhat.microprofile.commons.MicroProfileProjectInfo;
 import com.redhat.microprofile.commons.MicroProfileProjectInfoParams;
@@ -113,11 +115,25 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	}
 
 	@Override
-	public CompletableFuture<MicroProfileJavaHoverInfo> getJavaHover(MicroProfileJavaHoverParams javaParams) {
+	public CompletableFuture<Hover> getJavaHover(MicroProfileJavaHoverParams javaParams) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
 				return PropertiesManagerForJava.getInstance().hover(javaParams, JDTUtilsImpl.getInstance(), monitor);
+			} catch (JavaModelException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}	
+		});
+	}
+
+	@Override
+	public CompletableFuture<List<PublishDiagnosticsParams>> getJavaDiagnostics(
+	        MicroProfileJavaDiagnosticsParams javaParams) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManagerForJava.getInstance().diagnostics(javaParams, JDTUtilsImpl.getInstance(), monitor);
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;

@@ -4,7 +4,7 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Core Plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.core;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.jboss.tools.quarkus.runtime,

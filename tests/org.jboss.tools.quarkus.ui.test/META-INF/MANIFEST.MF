@@ -4,7 +4,7 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.jboss.tools.quarkus.ui.test
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.jboss.tools.quarkus.ui
 Automatic-Module-Name: org.jboss.tools.quarkus.ui.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Integration Tests
 Bundle-SymbolicName: org.jboss.tools.quarkus.integration.tests;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.reddeer.go,
  org.jboss.tools.quarkus.reddeer
 Import-Package: org.eclipse.core.resources

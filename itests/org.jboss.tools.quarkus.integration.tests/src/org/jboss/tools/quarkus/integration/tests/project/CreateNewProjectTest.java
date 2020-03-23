@@ -12,12 +12,8 @@ package org.jboss.tools.quarkus.integration.tests.project;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
@@ -25,7 +21,9 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
@@ -43,7 +41,8 @@ import org.junit.runner.RunWith;
 public class CreateNewProjectTest {
 
 	private static String MAVEN_PROJECT_NAME = "testProjectMaven";
-	private static String GRADLE_PROJECT_NAME = "testProjectGradle";
+	private static String GRADLE_PROJECT_NAME = "code-with-quarkus"; // w8 for JBIDE-27073
+																		// https://issues.redhat.com/browse/JBIDE-27073
 
 	@Test
 	public void testNewNewQuarkusMavenProject() {
@@ -64,8 +63,7 @@ public class CreateNewProjectTest {
 		checkProblemsView();
 	}
 
-	// https://issues.redhat.com/browse/JBIDE-27057
-	@Test(expected = RedDeerException.class)
+	@Test
 	public void testNewNewQuarkusGradleProject() {
 		new WorkbenchShell().setFocus();
 
@@ -78,15 +76,12 @@ public class CreateNewProjectTest {
 		wp.setGradleProjectType();
 
 		qw.next();
+		new LabeledText(TextLabels.ARTIFACT_ID).setText(GRADLE_PROJECT_NAME);
 		qw.finish(TimePeriod.VERY_LONG);
 
 		assertTrue(new ProjectExplorer().containsProject(GRADLE_PROJECT_NAME));
+		checkProblemsView();
 
-		try {
-			checkProblemsView();
-		} catch (AssertionError e) {
-			throw new RedDeerException("There should be no errors in imported project!");
-		}
 	}
 
 	private void checkProblemsView() {

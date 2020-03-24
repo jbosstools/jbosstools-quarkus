@@ -12,6 +12,7 @@ package org.jboss.tools.quarkus.lsp4e.core.health;
 
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.redhat.microprofile.jdt.core.health.JavaDiagnosticsMicroProfileHealthTest;
 
@@ -19,6 +20,7 @@ import com.redhat.microprofile.jdt.core.health.JavaDiagnosticsMicroProfileHealth
  * @author Red Hat Developers
  *
  */
+@Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
 public class JDTJavaDiagnosticsMicroProfileHealthTest extends JavaDiagnosticsMicroProfileHealthTest {
 	@BeforeClass
 	public static void init() {

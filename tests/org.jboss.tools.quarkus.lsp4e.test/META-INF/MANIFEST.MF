@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
+Bundle-ManifestVersion: 2
+Bundle-Name: Quarkus Eclipse LSP4E Test Fragment
+Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e.test
+Fragment-Host: org.jboss.tools.quarkus.lsp4e
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.redhat.microprofile.jdt.core,
+ org.junit

@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.lsp4e.LanguageClientImpl;
+import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
@@ -28,6 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 
+import com.redhat.microprofile.commons.MicroProfileJavaCodeActionParams;
 import com.redhat.microprofile.commons.MicroProfileJavaCodeLensParams;
 import com.redhat.microprofile.commons.MicroProfileJavaDiagnosticsParams;
 import com.redhat.microprofile.commons.MicroProfileJavaHoverParams;
@@ -138,6 +140,20 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
 			}	
+		});
+	}
+
+	@Override
+	public CompletableFuture<List<CodeAction>> getJavaCodeAction(MicroProfileJavaCodeActionParams javaParams) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return (List<CodeAction>) PropertiesManagerForJava.getInstance().codeAction(javaParams,
+						JDTUtilsImpl.getInstance(), monitor);
+			} catch (JavaModelException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return Collections.emptyList();
+			}
 		});
 	}
 }

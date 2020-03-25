@@ -29,8 +29,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class CreateNewQuarkusConfigurationGradleTest extends AbstractLaunchConfigurationTest {
 
-	private static String GRADLE_PROJECT_NAME = "code-with-quarkus"; // w8ing for fix
-																		// https://issues.redhat.com/browse/JBIDE-27073
+	private static String GRADLE_PROJECT_NAME = "testgrdlconf";
 	private static ConsoleView consoleView;
 
 	@BeforeClass

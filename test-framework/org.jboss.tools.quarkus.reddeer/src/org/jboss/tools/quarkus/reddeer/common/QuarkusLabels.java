@@ -35,6 +35,10 @@ public class QuarkusLabels {
 		public static final String NEW_CONTEXT_ITEM = "New";
 		public static final String RUN_AS_CONTEXT_MENU_ITEM = "Run As";
 		public static final String RUN_CONFIGURATION_CONTEXT_MENU_ITEM = "Run Configurations...";
+		public static final String OPEN_WITH = "Open With";
+		public static final String MAVEN_CONTEXT_MENU_ITEM = "Maven";
+		public static final String GRADLE_CONTEXT_MENU_ITEM = "Gradle";
+		public static final String CUT_CONTEXT_MENU_ITEM = "Cut";
 		
 		//Project type labels
 		public static final String PROJECT_NAME = "Project name:";
@@ -49,6 +53,10 @@ public class QuarkusLabels {
 		public static final String VERSION = "Version:";
 		public static final String REST_CLASS_NAME = "Class name:";
 		public static final String REST_PATH = "Path:";
+		public static final String UPDATE_MAVEN_PROJECT = "Update Project...";
+		
+		//Gradle labels
+		public static final String REFRESH_GRADLE_PROJECT = "Refresh Gradle Project";
 		
 		//Extension selection labels
 		public static final String EXTENSIONS_CATEGORIES = "Categories";
@@ -60,5 +68,9 @@ public class QuarkusLabels {
 		//Run Configuration labels
 		public static final String QUARKUS_APPLICATION_TREE_ITEM = "Quarkus Application";
 		public static final String CONFIGURATION = "Configuration";
+		
+		//Text editors labels
+		public static final String GENERIC_TEXT_EDITOR = "Generic Text Editor";
+		public static final String TEXT_EDITOR = "Text Editor";
 	}
 }

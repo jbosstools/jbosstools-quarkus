@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class CreateNewQuarkusConfigurationMavenTest extends AbstractLaunchConfigurationTest {
 
-	private static String MAVEN_PROJECT_NAME = "testProjectMaven";
+	private static String MAVEN_PROJECT_NAME = "testmvnconf";
 	private static ConsoleView consoleView;
 
 	@BeforeClass
@@ -41,5 +41,6 @@ public class CreateNewQuarkusConfigurationMavenTest extends AbstractLaunchConfig
 	@Test
 	public void testNewQuarkusMavenConfiguration() {
 		testNewQuarkusConfiguration(MAVEN_PROJECT_NAME, consoleView);
+
 	}
 }

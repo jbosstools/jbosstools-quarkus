@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,6 +45,9 @@ public class QuarkusExtension {
     
     @JsonProperty("status")
     private String status;
+    
+    @JsonProperty("tags")
+    private List<String> tags = new ArrayList<String>();
 
     private boolean selected;
 
@@ -117,6 +121,20 @@ public class QuarkusExtension {
 		this.status = status;
 	}
 
+	/**
+	 * @return the tags
+	 */
+	public List<String> getTags() {
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
 	public boolean isSelected() {
         return selected;
     }
@@ -127,10 +145,15 @@ public class QuarkusExtension {
     
 	public String asLabel() {
 		StringBuilder builder = new StringBuilder(getName());
-		String status = getStatus();
-		if (StringUtils.isNotBlank(status) && !"stable".equalsIgnoreCase(status)) {
-			builder.append(" (").append(Character.toUpperCase(status.charAt(0))).append(status.substring(1))
-			        .append(')');
+		List<String> tags = getTags();
+		if (!tags.isEmpty()) {
+			builder.append(" (").append(tags.stream().map(tag -> Character.toUpperCase(tag.charAt(0)) + tag.substring(1)).collect(Collectors.joining(","))).append(')');
+		} else {
+			String status = getStatus();
+			if (StringUtils.isNotBlank(status) && !"stable".equalsIgnoreCase(status)) {
+				builder.append(" (").append(Character.toUpperCase(status.charAt(0))).append(status.substring(1))
+				        .append(')');
+			}
 		}
 		return builder.toString();
 	}

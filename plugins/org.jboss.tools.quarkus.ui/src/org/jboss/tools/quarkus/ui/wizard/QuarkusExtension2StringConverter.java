@@ -12,7 +12,6 @@ package org.jboss.tools.quarkus.ui.wizard;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.conversion.Converter;
-import org.jboss.tools.common.util.StringUtil;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
 
 /**

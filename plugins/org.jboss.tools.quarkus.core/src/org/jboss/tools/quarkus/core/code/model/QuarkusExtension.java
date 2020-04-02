@@ -48,8 +48,13 @@ public class QuarkusExtension {
     
     @JsonProperty("tags")
     private List<String> tags = new ArrayList<String>();
+    
+    @JsonProperty("guide")
+    private String guide;
 
     private boolean selected;
+    
+    
 
     public String getCategory() {
         return category;
@@ -133,6 +138,20 @@ public class QuarkusExtension {
 	 */
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	/**
+	 * @return the guide
+	 */
+	public String getGuide() {
+		return guide;
+	}
+
+	/**
+	 * @param guide the guide to set
+	 */
+	public void setGuide(String guide) {
+		this.guide = guide;
 	}
 
 	public boolean isSelected() {

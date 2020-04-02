@@ -25,7 +25,8 @@ Require-Bundle: org.jboss.tools.quarkus.core,
  org.apache.commons.io,
  org.eclipse.buildship.core,
  org.eclipse.jdt.debug.ui,
- org.eclipse.jdt.core
+ org.eclipse.jdt.core,
+ org.apache.commons.lang3
 Export-Package: org.jboss.tools.quarkus.ui.action,
  org.jboss.tools.quarkus.ui.perspective,
  org.jboss.tools.quarkus.ui.view,

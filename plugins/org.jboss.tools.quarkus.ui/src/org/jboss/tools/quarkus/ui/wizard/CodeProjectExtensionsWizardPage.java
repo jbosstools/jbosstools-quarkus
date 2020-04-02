@@ -18,6 +18,8 @@ import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.SELECTED_EXTENS
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableSetContentProvider;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
@@ -27,15 +29,19 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
+import org.jboss.tools.foundation.ui.util.BrowserUtility;
 import org.jboss.tools.quarkus.core.code.model.QuarkusCategory;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
+import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 
 public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPage {
 
@@ -138,9 +144,29 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         	QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getList().getSelectionIndex());
 			model.toggleSelectedExtension(extension);
         });
+        
+        // selected extension detail
+    	Link extensionDetail = new Link(parent, SWT.WRAP);
+    	GridDataFactory.fillDefaults()
+    		.span(3, 1).align(SWT.FILL, SWT.FILL).grab(true, false)
+    		.applyTo(extensionDetail);
+    	
+        ISWTObservableValue<String> extensionDetailObservable = WidgetProperties.text().observe(extensionDetail);
+        ValueBindingBuilder.bind(ViewerProperties.singleSelection().observe(listExtensionsViewer)).converting(new QuarkusExtension2StringConverter())
+                .to(extensionDetailObservable).in(dbc);
+        ValueBindingBuilder.bind(ViewerProperties.singleSelection().observe(listExtensionsViewer))
+        .to(BeanProperties.value("data").observe(extensionDetail)).in(dbc);
+        extensionDetail.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> openBrowser((QuarkusExtension) extensionDetail.getData())));
+
     }
 
-    @Override
+	private void openBrowser(QuarkusExtension extension) {
+		if (extension != null) {
+			new BrowserUtility().checkedCreateExternalBrowser(extension.getGuide(), QuarkusUIPlugin.PLUGIN_ID, QuarkusUIPlugin.getDefault().getLog());
+		}
+	}
+
+	@Override
     protected void onPageActivated(DataBindingContext dbc) {
         setToPreferredVerticalSize(getShell());
     }

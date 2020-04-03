@@ -237,6 +237,12 @@ public class CodeProjectModel extends ObservablePojo {
 
     public void setModel(QuarkusModel model) {
         setCategories(model.getCategories());
+        model.getCategories().forEach(category -> category.getExtensions().forEach(extension -> {
+        	if (extension.isDefaultExtension()) {
+        		selectedExtensions.add(extension);
+        	}
+        	
+        }));
     }
     
     public List<QuarkusCategory> getCategories() {
@@ -297,12 +303,14 @@ public class CodeProjectModel extends ObservablePojo {
     }
     
     public void toggleSelectedExtension(QuarkusExtension extension) {
-        Set<QuarkusExtension> newSelectedExtensions = new HashSet<QuarkusExtension>(selectedExtensions);
-        if (newSelectedExtensions.contains(extension)) {
-            newSelectedExtensions.remove(extension);
-        } else {
-            newSelectedExtensions.add(extension);
-        }
-        setSelectedExtensions(newSelectedExtensions);
+    	if (!extension.isDefaultExtension()) {
+            Set<QuarkusExtension> newSelectedExtensions = new HashSet<QuarkusExtension>(selectedExtensions);
+            if (newSelectedExtensions.contains(extension)) {
+                newSelectedExtensions.remove(extension);
+            } else {
+                newSelectedExtensions.add(extension);
+            }
+            setSelectedExtensions(newSelectedExtensions);
+    	}
     }
 }

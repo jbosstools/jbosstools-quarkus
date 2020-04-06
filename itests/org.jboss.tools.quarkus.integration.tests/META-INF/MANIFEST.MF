@@ -9,8 +9,10 @@ Require-Bundle: org.eclipse.reddeer.go,
  org.eclipse.jdt,
  org.eclipse.m2e.lifecyclemapping.defaults,
  org.eclipse.buildship.ui,
- org.gradle.toolingapi
-Import-Package: org.eclipse.core.resources
+ org.gradle.toolingapi,
+ com.redhat.microprofile.jdt.quarkus,
+ org.jboss.tools.quarkus.core
+Import-Package: org.eclipse.core.resources, org.jboss.tools.quarkus.lsp4e
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin

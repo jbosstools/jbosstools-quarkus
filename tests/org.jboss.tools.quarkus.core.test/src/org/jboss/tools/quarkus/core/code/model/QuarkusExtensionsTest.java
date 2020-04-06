@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class QuarkusExtensionsTest {
 	private static final String AMAZON_DYNAMODB_CLIENT_EXPERIMENTAL_LABEL = "Amazon DynamoDB client (Experimental)";
@@ -93,5 +95,25 @@ public class QuarkusExtensionsTest {
         assertEquals(1, model.getCategories().get(0).getExtensions().size());
         assertEquals(AMAZON_DYNAMODB_CLIENT_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).getName());
         assertEquals("Amazon DynamoDB client (Preview,Experimental)", model.getCategories().get(0).getExtensions().get(0).asLabel());
+    }
+
+    @Test
+    public void checkExtensionWithDefault() throws IOException {
+        QuarkusModel model = new QuarkusModel(load("/single-extension-with-default.json"));
+        assertEquals(1, model.getCategories().size());
+        assertEquals(1, model.getCategories().get(0).getExtensions().size());
+        assertEquals(RESTEASY_JAX_RS_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).getName());
+        assertEquals(RESTEASY_JAX_RS_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).asLabel());
+        assertTrue(model.getCategories().get(0).getExtensions().get(0).isDefaultExtension());
+    }
+    
+    @Test
+    public void checkExtensionWithoutDefault() throws IOException {
+        QuarkusModel model = new QuarkusModel(load("/single-extension-without-default.json"));
+        assertEquals(1, model.getCategories().size());
+        assertEquals(1, model.getCategories().get(0).getExtensions().size());
+        assertEquals(RESTEASY_JAX_RS_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).getName());
+        assertEquals(RESTEASY_JAX_RS_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).asLabel());
+        assertFalse(model.getCategories().get(0).getExtensions().get(0).isDefaultExtension());
     }
 }

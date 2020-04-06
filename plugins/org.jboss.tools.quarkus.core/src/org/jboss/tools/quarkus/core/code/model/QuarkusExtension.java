@@ -54,6 +54,9 @@ public class QuarkusExtension {
     
     @JsonProperty("default")
     private boolean defaultExtension;
+    
+    @JsonProperty("shortId")
+    private String shortId;
 
     public String getCategory() {
         return category;
@@ -165,6 +168,20 @@ public class QuarkusExtension {
 	 */
 	public void setDefaultExtension(boolean defaultExtension) {
 		this.defaultExtension = defaultExtension;
+	}
+
+	/**
+	 * @return the shortId
+	 */
+	public String getShortId() {
+		return shortId;
+	}
+
+	/**
+	 * @param shortId the shortId to set
+	 */
+	public void setShortId(String shortId) {
+		this.shortId = shortId;
 	}
 
 	public String asLabel() {

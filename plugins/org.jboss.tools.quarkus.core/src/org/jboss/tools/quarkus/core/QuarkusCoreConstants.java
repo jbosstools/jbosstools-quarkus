@@ -32,6 +32,7 @@ public class QuarkusCoreConstants {
     public static final String CODE_PATH_PARAMETER_NAME = "p";
 
     public static final String CODE_EXTENSIONS_PARAMETER_NAME = "e";
+    public static final String CODE_EXTENSIONS_SHORT_PARAMETER_NAME = "s";
 
     public static final String CODE_CLIENT_NAME_PARAMETER_NAME = "cn";
 

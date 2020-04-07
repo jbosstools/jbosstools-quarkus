@@ -19,7 +19,7 @@ import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_CLIENT_CONT
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_CLIENT_NAME_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_CLIENT_NAME_PARAMETER_VALUE;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_URL;
-import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_EXTENSIONS_PARAMETER_NAME;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_EXTENSIONS_SHORT_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_GROUP_ID_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_PATH_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_TOOL_PARAMETER_NAME;
@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -109,7 +110,7 @@ public class QuarkusModelRegistry {
         builder.append(CODE_VERSION_PARAMETER_NAME).append('=').append(version).append('&');
         builder.append(CODE_CLASSNAME_PARAMETER_NAME).append('=').append(className).append('&');
         builder.append(CODE_PATH_PARAMETER_NAME).append('=').append(path).append('&');
-        selected.forEach(extension -> builder.append(CODE_EXTENSIONS_PARAMETER_NAME).append('=').append(extension.getId()).append('&'));
+        builder.append(CODE_EXTENSIONS_SHORT_PARAMETER_NAME).append('=').append(selected.stream().map(e -> e.getShortId()).collect(Collectors.joining("."))).append('&');
         builder.append(CODE_CLIENT_NAME_PARAMETER_NAME).append('=').append(CODE_CLIENT_NAME_PARAMETER_VALUE).append('&');
         builder.append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME).append('=').append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE);
         try {

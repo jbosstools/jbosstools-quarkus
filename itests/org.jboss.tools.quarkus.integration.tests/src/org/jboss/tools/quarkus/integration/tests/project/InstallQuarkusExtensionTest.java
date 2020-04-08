@@ -31,10 +31,9 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
-import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
-import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,21 +47,13 @@ import org.junit.runner.RunWith;
 public class InstallQuarkusExtensionTest {
 	
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-
+	
 	@BeforeClass
 	public static void prepareWorkspace() {
-		QuarkusWizard qw = new QuarkusWizard();
-		qw.open();
-		assertTrue(qw.isOpen());
+		AbstractCreateNewProjectTest.testCreateNewProject("test", TextLabels.MAVEN_TYPE);
+		AbstractCreateNewProjectTest.checkJdkVersion("test", TextLabels.MAVEN_TYPE);
 
-		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
-		wp.setProjectName("test");
-		wp.setMavenProjectType();
-
-		qw.next();
-		qw.finish(TimePeriod.VERY_LONG);
-
-		assertTrue(new ProjectExplorer().containsProject("test"));
+		AbstractCreateNewProjectTest.checkProblemsView();
 	}
 
 	@Test

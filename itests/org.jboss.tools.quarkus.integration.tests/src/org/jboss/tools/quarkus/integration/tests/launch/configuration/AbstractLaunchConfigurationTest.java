@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,12 +24,9 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
-import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
-import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
 import org.junit.After;
+import org.jboss.tools.quarkus.integration.tests.project.AbstractCreateNewProjectTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -44,27 +39,10 @@ import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 public abstract class AbstractLaunchConfigurationTest {
 	public static void createNewQuarkusProject(String projectName, String projectType) {
-		new WorkbenchShell().setFocus();
+		AbstractCreateNewProjectTest.testCreateNewProject(projectName, projectType);
+		AbstractCreateNewProjectTest.checkJdkVersion(projectName, projectType);
 
-		QuarkusWizard qw = new QuarkusWizard();
-		qw.open();
-		assertTrue(qw.isOpen());
-
-		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
-		wp.setProjectName(projectName);
-		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
-			wp.setMavenProjectType();
-		} else if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-			wp.setGradleProjectType();
-		}
-
-		qw.next();
-		if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-			new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
-		}
-		qw.finish(TimePeriod.VERY_LONG);
-
-		assertTrue(new ProjectExplorer().containsProject(projectName));
+		AbstractCreateNewProjectTest.checkProblemsView();
 	}
 
 	public void testNewQuarkusConfiguration(String projectName, ConsoleView consoleView) {
@@ -123,13 +101,13 @@ public abstract class AbstractLaunchConfigurationTest {
 		}
 		new DefaultToolItem("Terminate").click();
 	}
-	
+
 	public void deleteNewQuarkusConfiguration(String projectName) {
 		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
 		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
-		
+
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
-		
+
 		new DefaultToolItem("Delete selected launch configuration(s)").click();
 		new PushButton("Delete").click();
 		new PushButton("Close").click();

@@ -65,7 +65,7 @@ public class InstallQuarkusExtensionTest {
 		new ProjectExplorer().selectProjects("test");
 		ExtensionsView ev = new ExtensionsView();
 		ev.open();
-		ev.getExtension("RESTEasy");
+		ev.getExtension("RESTEasy").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		

@@ -37,6 +37,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.IProjectConfigurationManager;
@@ -215,5 +217,16 @@ public class ProjectUtils {
 			path = newPath;
 		}
 		return null;
+	}
+
+	/**
+	 * @param project the Eclipse project
+	 * @return the path to the JRE/JDK attached to the project
+	 * @throws CoreException 
+	 */
+	public static String getJavaHome(IProject project) throws CoreException {
+		IJavaProject javaProject = JavaCore.create(project);
+		IVMInstall install = JavaRuntime.getVMInstall(javaProject);
+		return install.getInstallLocation().getAbsolutePath();
 	}
 }

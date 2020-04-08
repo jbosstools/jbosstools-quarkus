@@ -16,11 +16,14 @@
 
 package org.jboss.tools.quarkus.core.launch;
 
+import java.util.Collections;
+
 import org.eclipse.core.externaltools.internal.IExternalToolConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
@@ -32,6 +35,7 @@ public class LaunchUtils {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getTool(project).toOSString());
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
+		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
 		if (ProjectUtils.isMavenProject(project)) {
 			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev");
 		} else {

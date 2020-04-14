@@ -33,11 +33,14 @@ import com.redhat.microprofile.commons.MicroProfileJavaCodeActionParams;
 import com.redhat.microprofile.commons.MicroProfileJavaCodeLensParams;
 import com.redhat.microprofile.commons.MicroProfileJavaDiagnosticsParams;
 import com.redhat.microprofile.commons.MicroProfileJavaHoverParams;
+import com.redhat.microprofile.commons.MicroProfileJavaProjectLabelsParams;
 import com.redhat.microprofile.commons.MicroProfileProjectInfo;
 import com.redhat.microprofile.commons.MicroProfileProjectInfoParams;
 import com.redhat.microprofile.commons.MicroProfilePropertyDefinitionParams;
+import com.redhat.microprofile.commons.ProjectLabelInfoEntry;
 import com.redhat.microprofile.jdt.core.IMicroProfilePropertiesChangedListener;
 import com.redhat.microprofile.jdt.core.MicroProfileCorePlugin;
+import com.redhat.microprofile.jdt.core.ProjectLabelManager;
 import com.redhat.microprofile.jdt.core.PropertiesManager;
 import com.redhat.microprofile.jdt.core.PropertiesManagerForJava;
 import com.redhat.microprofile.ls.api.MicroProfileLanguageClientAPI;
@@ -62,10 +65,10 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 		// The listener should be removed when language server is shutdown, how to
 		// manage that????
 		if (SINGLETON_LISTENER != null) {
-			MicroProfileCorePlugin.getDefault().removeQuarkusPropertiesChangedListener(SINGLETON_LISTENER);
+			MicroProfileCorePlugin.getDefault().removeMicroProfilePropertiesChangedListener(SINGLETON_LISTENER);
 		}
 		SINGLETON_LISTENER = listener;
-		MicroProfileCorePlugin.getDefault().addQuarkusPropertiesChangedListener(listener);
+		MicroProfileCorePlugin.getDefault().addMicroProfilePropertiesChangedListener(listener);
 	}
 
 	@Override
@@ -154,6 +157,16 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return Collections.emptyList();
 			}
+		});
+	}
+
+	@Override
+	public CompletableFuture<ProjectLabelInfoEntry> getJavaProjectlabels(
+	        MicroProfileJavaProjectLabelsParams javaParams) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return ProjectLabelManager.getInstance().getProjectLabelInfo(javaParams, JDTUtilsImpl.getInstance(),
+			        monitor);
 		});
 	}
 }

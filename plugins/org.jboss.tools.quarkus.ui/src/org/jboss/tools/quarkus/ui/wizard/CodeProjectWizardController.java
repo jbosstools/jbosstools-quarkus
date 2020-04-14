@@ -147,7 +147,7 @@ public class CodeProjectWizardController {
     private void makeExecutable() throws IOException {
 			if (!Platform.OS_WIN32.equals(Platform.getOS())) {
 				IPath toolPath = ProjectUtils
-				        .getTool(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName()));
+				        .getToolSupport(ResourcesPlugin.getWorkspace().getRoot().getProject(model.getProjectName())).getScriptPath();
 				Files.setPosixFilePermissions(toolPath.toFile().toPath(),
 				        PosixFilePermissions.fromString("rwxr--r--"));
 			}

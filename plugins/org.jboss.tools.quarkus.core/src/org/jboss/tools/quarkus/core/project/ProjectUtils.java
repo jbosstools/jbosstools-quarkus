@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,6 +47,9 @@ import org.eclipse.m2e.core.project.LocalProjectScanner;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
+import org.jboss.tools.quarkus.tool.GradleToolSupport;
+import org.jboss.tools.quarkus.tool.MavenToolSupport;
+import org.jboss.tools.quarkus.tool.ToolSupport;
 
 import io.quarkus.cli.commands.AddExtensions;
 import io.quarkus.cli.commands.CreateProject;
@@ -131,14 +135,12 @@ public class ProjectUtils {
 
 	public static void installExtension(Object currentProject, Extension extension) {
 		try {
-			if (currentProject != null && currentProject instanceof IProject) {
-				IResource resource = ((IProject)currentProject).findMember("pom.xml");
-				IPath path = resource.getRawLocation().removeLastSegments(1);
-				File file = new File(path.toOSString());
-				ProjectWriter projectWriter = new FileProjectWriter(file);
-				AddExtensions project = new AddExtensions(projectWriter, BuildTool.MAVEN);
-				project.addExtensions(Collections.singleton(extension.getArtifactId()));
-				resource.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			if (currentProject instanceof IProject) {
+				IProject project = (IProject) currentProject;
+				ToolSupport support = getToolSupport(project);
+				List<String> commands = support.getAddExtensionParameters(extension.getArtifactId());
+				support.execute(project.getLocation().toFile(), commands);
+				project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}		
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);
@@ -190,34 +192,13 @@ public class ProjectUtils {
 			return false;
 		}
 	}
-
-	private static String getToolScript(IProject project) {
+	
+	public static ToolSupport getToolSupport(IProject project) {
 		if (isMavenProject(project)) {
-			if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
-				return "mvnw.cmd";
-			} else {
-				return "mvnw";
-			}
-		} else if (Platform.OS_WIN32.equals(Platform.getOS())) {
-			return "gradlew.bat";
-		} else {
-			return "gradlew";
-		}
+			return new MavenToolSupport(project);
+		} else return new GradleToolSupport(project);
 	}
-	public static IPath getTool(IProject project) {
-		String script = getToolScript(project);
-		IPath path = project.getLocation();
-		boolean changed = true;
-		while (changed) {
-			if (path.append(script).toFile().exists()) {
-				return path.append(script);
-			}
-			IPath newPath = path.removeLastSegments(1);
-			changed = !newPath.equals(path);
-			path = newPath;
-		}
-		return null;
-	}
+
 
 	/**
 	 * @param project the Eclipse project

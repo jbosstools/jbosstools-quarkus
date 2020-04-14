@@ -22,10 +22,13 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.eclipse.jdt.core,
  com.sun.jna.platform,
  com.sun.jna,
- org.apache.commons.lang3
+ org.apache.commons.lang3,
+ org.apache.commons.exec,
+ org.apache.commons.io
 Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,
  org.jboss.tools.quarkus.core.launch,
- org.jboss.tools.quarkus.core.project
+ org.jboss.tools.quarkus.core.project,
+ org.jboss.tools.quarkus.tool
 Bundle-Activator: org.jboss.tools.quarkus.core.QuarkusCorePlugin
 Bundle-ActivationPolicy: lazy

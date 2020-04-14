@@ -19,6 +19,7 @@ package org.jboss.tools.quarkus.ui.view;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -29,12 +30,14 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
+import org.jboss.tools.common.ui.notification.LabelNotification;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 import io.quarkus.dependencies.Extension;
@@ -86,10 +89,7 @@ public class ExtensionsView extends ViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (currentProject != null) {
-					ProjectUtils.installExtension(
-							currentProject, 
-							(Extension)table.getSelection()[0].getData());
-					refreshView();
+					handleAddExtension(e.display.getActiveShell());
 				}
 			}		
 			@Override
@@ -138,6 +138,17 @@ public class ExtensionsView extends ViewPart {
 					MojoUtils.credentials(((Extension)tableItem.getData()).toDependency(true));
 			tableItem.setChecked(installed.contains(credential));
 		}
+	}
+
+	private void handleAddExtension(Shell shell) {
+		Extension extension = (Extension) table.getSelection()[0].getData();
+		LabelNotification notification = LabelNotification.openNotification(shell,
+		        "Adding extension " + extension.getName());
+		Job.create("Adding extension " + extension.getName(), monitor -> {
+			ProjectUtils.installExtension(currentProject, extension);
+			LabelNotification.openNotification(notification, shell, "Extension " + extension.getName() + " added");
+			shell.getDisplay().asyncExec(() -> refreshView());
+		}).schedule();
 	}
 	
 }

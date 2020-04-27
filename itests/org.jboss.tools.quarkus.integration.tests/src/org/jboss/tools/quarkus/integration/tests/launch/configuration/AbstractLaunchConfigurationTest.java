@@ -85,7 +85,7 @@ public abstract class AbstractLaunchConfigurationTest {
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
 
 		new PushButton("Run").click();
-		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (main) Installed features: [cdi, resteasy]"),
+		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"),
 				TimePeriod.getCustom(600));
 
 		String urlContent = "";

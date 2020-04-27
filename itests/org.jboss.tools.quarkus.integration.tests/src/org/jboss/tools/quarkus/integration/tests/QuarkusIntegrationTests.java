@@ -11,8 +11,9 @@
 package org.jboss.tools.quarkus.integration.tests;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.quarkus.integration.tests.common.ApplicationPropertiesContentAssistTest;
 import org.jboss.tools.quarkus.integration.tests.common.PerspectiveTest;
+import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesContentAssistTest;
+import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesNewExtensionContentAssistTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationGradleTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMavenTest;
 import org.jboss.tools.quarkus.integration.tests.project.CreateNewProjectTest;
@@ -29,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	PerspectiveTest.class,
 	ApplicationPropertiesContentAssistTest.class,
+	ApplicationPropertiesNewExtensionContentAssistTest.class,
 	CreateNewProjectTest.class,
 	CreateNewQuarkusConfigurationMavenTest.class,
 	CreateNewQuarkusConfigurationGradleTest.class,

@@ -4,7 +4,7 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Core Test Fragment
 Bundle-SymbolicName: org.jboss.tools.quarkus.core.test
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Fragment-Host: org.jboss.tools.quarkus.core
 Automatic-Module-Name: org.jboss.tools.quarkus.core.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

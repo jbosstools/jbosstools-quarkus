@@ -21,6 +21,7 @@ import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ID_REM
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 
 public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
+	private static final String JWDP_HANDSHAKE = "JDWP-Handshake";
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
@@ -76,6 +78,7 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 		long start = System.currentTimeMillis();
 		while (System.currentTimeMillis() - start < 60_000 && !monitor.isCanceled()) {
 			try (Socket socket = new Socket("localhost", port)) {
+				socket.getOutputStream().write(JWDP_HANDSHAKE.getBytes(StandardCharsets.US_ASCII));
 				return;
 			} catch (ConnectException e) {
 				try {

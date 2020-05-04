@@ -42,7 +42,14 @@ public class QuarkusCoreConstants {
 
     public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE = "tools%40jboss.org";
 
-    public static final String CODE_ENDPOINT_URL = "https://code.quarkus.io";
+    public static final String CODE_ENDPOINT_URL_PROPERTY_NAME = "jbosstools.quarkus.code.url";
+    
+    public static final String CODE_ENDPOINT_URL_PRODUCTION = "https://code.quarkus.io";
+    
+    public static final String CODE_ENDPOINT_URL_TEST = "https://stage.code.quarkus.io";
+    		
+    
+    public static final String CODE_ENDPOINT_URL = System.getProperty(CODE_ENDPOINT_URL_PROPERTY_NAME, CODE_ENDPOINT_URL_PRODUCTION);
 
     public static final String EXTENSIONS_SUFFIX = "api/extensions?" + CODE_CLIENT_NAME_PARAMETER_NAME + "="
             + CODE_CLIENT_NAME_PARAMETER_VALUE + "&" + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME + "="

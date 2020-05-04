@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.core.code.model;
 
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_URL_PROPERTY_NAME;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_URL_TEST;
 import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.core.runtime.CoreException;
@@ -22,6 +24,7 @@ public class QuarkusModelRegistryTest {
 	
 	@BeforeClass
 	public static void setup() {
+		System.setProperty(CODE_ENDPOINT_URL_PROPERTY_NAME, CODE_ENDPOINT_URL_TEST);
 		registry = QuarkusModelRegistry.getDefault();
 	}
 	

@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.lsp4e,
  org.jsoup;bundle-version="1.8.3",
  org.eclipse.ui,
  org.jboss.tools.foundation.ui,
- org.apache.commons.lang3
+ org.apache.commons.lang3,
+ org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy

@@ -68,5 +68,12 @@
             commandId="quarkus.command.open.uri">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.ide.editorAssociationOverride">
+      <editorAssociationOverride
+            class="org.jboss.tools.quarkus.lsp4e.internal.ui.QuarkusDefaultEditorAssociationOverride"
+            id="org.jboss.tools.quarkus.lsp4e.editorAssociationOverride">
+      </editorAssociationOverride>
+   </extension>
         
 </plugin>

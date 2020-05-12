@@ -33,7 +33,7 @@
     <packaging>eclipse-plugin</packaging>
 
     <properties>
-        <quarkus-ls.version>0.7.0-SNAPSHOT</quarkus-ls.version>
+        <quarkus-ls.version>0.8.0-SNAPSHOT</quarkus-ls.version>
         <enforcer.skip>true</enforcer.skip>
     </properties>
 

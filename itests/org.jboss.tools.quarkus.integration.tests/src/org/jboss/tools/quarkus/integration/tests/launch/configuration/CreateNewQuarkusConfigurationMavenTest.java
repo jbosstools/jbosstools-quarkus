@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 
-import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -30,17 +29,15 @@ import org.junit.runner.RunWith;
 public class CreateNewQuarkusConfigurationMavenTest extends AbstractLaunchConfigurationTest {
 
 	private static String MAVEN_PROJECT_NAME = "testmvnconf";
-	private static ConsoleView consoleView;
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
 		createNewQuarkusProject(MAVEN_PROJECT_NAME, TextLabels.MAVEN_TYPE);
-		consoleView = new ConsoleView();
 	}
 
 	@Test
 	public void testNewQuarkusMavenConfiguration() {
-		testNewQuarkusConfiguration(MAVEN_PROJECT_NAME, consoleView);
+		testNewQuarkusConfiguration(MAVEN_PROJECT_NAME);
 
 	}
 }

@@ -12,6 +12,7 @@ package org.jboss.tools.quarkus.integration.tests.project;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.junit.Test;
@@ -24,7 +25,7 @@ import org.junit.runner.RunWith;
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class CreateNewProjectTest extends AbstractCreateNewProjectTest {
+public class CreateNewProjectTest extends AbstractQuarkusTest {
 
 	private static String MAVEN_PROJECT_NAME = "testmvn";
 	private static String GRADLE_PROJECT_NAME = "testgrdl";
@@ -33,7 +34,6 @@ public class CreateNewProjectTest extends AbstractCreateNewProjectTest {
 	public void testNewNewQuarkusMavenProject() {
 		testCreateNewProject(MAVEN_PROJECT_NAME, TextLabels.MAVEN_TYPE);
 		checkJdkVersion(MAVEN_PROJECT_NAME, TextLabels.MAVEN_TYPE);
-
 		checkProblemsView();
 	}
 

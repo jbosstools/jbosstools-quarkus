@@ -40,6 +40,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
+import org.jboss.tools.quarkus.core.QuarkusCoreUsageStats;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 	private static final String JWDP_HANDSHAKE = "JDWP-Handshake";
@@ -52,12 +54,12 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 		if ("debug".equals(mode)) {
 			((RuntimeProcessWithJVMAttach)tool).setJvmLaunch(createRemoteJavaDebugConfiguration(configuration, monitor));
 		}
+		QuarkusCoreUsageStats.getInstance().startApplication(mode, ProjectUtils.getToolSupport(getProject(configuration)));
 	}
 
 	private ILaunch createRemoteJavaDebugConfiguration(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException {
 		waitForPortAvailable(5005, monitor);
-		String projectName = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		IProject project = getProject(configuration);
 		String name = "Quarkus remote " + project.getName();
 		ILaunchConfigurationType launchConfigurationType = DebugPlugin.getDefault().getLaunchManager()
 				.getLaunchConfigurationType(ID_REMOTE_JAVA_APPLICATION);
@@ -72,6 +74,11 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 			launchConfiguration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getName());
 		return launchConfiguration.launch("debug", monitor);
 		
+	}
+
+	private IProject getProject(ILaunchConfiguration configuration) throws CoreException {
+		String projectName = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 	}
 
 	private void waitForPortAvailable(int port, IProgressMonitor monitor) throws CoreException{
@@ -92,5 +99,4 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 		}
 		throw new CoreException(new Status(IStatus.ERROR, QuarkusCorePlugin.PLUGIN_ID, "Can't connect to JVM"));
 	}
-
 }

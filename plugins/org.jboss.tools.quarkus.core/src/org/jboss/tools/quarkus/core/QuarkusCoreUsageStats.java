@@ -25,6 +25,8 @@ public class QuarkusCoreUsageStats {
 	private static QuarkusCoreUsageStats INSTANCE = null;
 
 	private UsageEventType startApplication;
+	
+	private UsageEventType startLS;
 
 	public static QuarkusCoreUsageStats getInstance() {
 		if (INSTANCE == null) {
@@ -37,6 +39,9 @@ public class QuarkusCoreUsageStats {
 		this.startApplication = createEventType("startApplication", // actionName
 				"mode: run/debug", // labelDescription
 				"type: 0=maven/1=gradle");
+		this.startLS = createEventType("startLS", // actionName
+				"Number of microprofile-ls start", // labelDescription
+				UsageEventType.HOW_MANY_TIMES_VALUE_DESCRIPTION);
 	}
 
 	private UsageEventType createEventType(String actionName, String labelDescription, String valueDescription) {
@@ -49,6 +54,10 @@ public class QuarkusCoreUsageStats {
 
 	public void startApplication(String mode, ToolSupport tool) {
 		UsageReporter.getInstance().trackEvent(startApplication.event(mode, getTool(tool)));
+	}
+	
+	public void startLS() {
+		UsageReporter.getInstance().countEvent(startLS.event());
 	}
 	
 	private static int getTool(ToolSupport tool) {

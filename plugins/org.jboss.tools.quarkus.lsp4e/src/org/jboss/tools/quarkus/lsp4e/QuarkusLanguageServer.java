@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
+import org.jboss.tools.quarkus.core.QuarkusCoreUsageStats;
 
 /**
  * Quarkus language server.
@@ -64,6 +65,12 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 			javaPath = f.getAbsolutePath();
 		}
 		return javaPath;
+	}
+
+	@Override
+	public void start() throws IOException {
+		super.start();
+		QuarkusCoreUsageStats.getInstance().startLS();
 	}
 
 	@Override

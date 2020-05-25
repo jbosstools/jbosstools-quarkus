@@ -24,7 +24,8 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  com.sun.jna,
  org.apache.commons.lang3,
  org.apache.commons.exec,
- org.apache.commons.io
+ org.apache.commons.io,
+ org.jboss.tools.usage
 Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,
  org.jboss.tools.quarkus.core.launch,

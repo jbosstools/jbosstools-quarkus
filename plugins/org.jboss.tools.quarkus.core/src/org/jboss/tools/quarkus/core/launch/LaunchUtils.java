@@ -35,6 +35,7 @@ public class LaunchUtils {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getToolSupport(project).getScriptPath().toOSString());
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
+		workingCopy.setAttribute(IExternalToolConstants.ATTR_BUILD_SCOPE, "${projects:" + project.getName() + "}");
 		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
 		if (ProjectUtils.isMavenProject(project)) {
 			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev");

@@ -22,7 +22,6 @@ import java.nio.charset.Charset;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 
-
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -30,12 +29,11 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,16 +44,15 @@ import org.junit.runner.RunWith;
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class InstallQuarkusExtensionTest {
-	
+public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
+
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-	
+
 	@BeforeClass
 	public static void prepareWorkspace() {
-		AbstractCreateNewProjectTest.testCreateNewProject("test", TextLabels.MAVEN_TYPE);
-		AbstractCreateNewProjectTest.checkJdkVersion("test", TextLabels.MAVEN_TYPE);
-
-		AbstractCreateNewProjectTest.checkProblemsView();
+		testCreateNewProject("test", TextLabels.MAVEN_TYPE);
+		checkJdkVersion("test", TextLabels.MAVEN_TYPE);
+		checkProblemsView();
 	}
 
 	@Test
@@ -68,7 +65,7 @@ public class InstallQuarkusExtensionTest {
 		ev.getExtension("RESTEasy").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		
+
 		try {
 			String pomContent = readFile(WORKSPACE + "/" + "test" + "/pom.xml");
 			assertTrue(pomContent.contains("quarkus-resteasy"));
@@ -76,26 +73,18 @@ public class InstallQuarkusExtensionTest {
 			e.printStackTrace();
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-	
+
 	public static String readFile(String path) throws IOException {
-		  FileInputStream stream = new FileInputStream(new File(path));
-		  try {
-		    FileChannel fc = stream.getChannel();
-		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-		    /* Instead of using default, pass in a decoder. */
-		    return Charset.defaultCharset().decode(bb).toString();
-		  }
-		  finally {
-		    stream.close();
-		  }
-	}
-	
-	@After                   
-	public void deleteProject() {
-		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects(true);
+		FileInputStream stream = new FileInputStream(new File(path));
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			/* Instead of using default, pass in a decoder. */
+			return Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			stream.close();
+		}
 	}
 }

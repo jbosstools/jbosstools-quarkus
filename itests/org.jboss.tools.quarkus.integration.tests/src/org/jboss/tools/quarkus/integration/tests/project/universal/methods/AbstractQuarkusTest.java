@@ -8,11 +8,15 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.quarkus.integration.tests.project;
+package org.jboss.tools.quarkus.integration.tests.project.universal.methods;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -21,12 +25,14 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
@@ -37,11 +43,11 @@ import org.junit.After;
  * @author olkornii@redhat.com
  *
  */
-public abstract class AbstractCreateNewProjectTest {
+public abstract class AbstractQuarkusTest {
 
 	private static String jdkVersion11 = "11";
 	private static String propertyName = "java.specification.version";
-	
+
 	private static String pomFile = "pom.xml";
 	private static String gradleBuildFile = "build.gradle";
 
@@ -86,7 +92,7 @@ public abstract class AbstractCreateNewProjectTest {
 		String actualSource;
 		String actualTarget;
 		String openFile;
-		
+
 		if (!isFound) {
 			if (projectType.equals(TextLabels.GRADLE_TYPE)) {
 				javaVersion = javaVersion.replaceAll("\\.", "_");
@@ -117,13 +123,15 @@ public abstract class AbstractCreateNewProjectTest {
 		changeLine(ed, actualTarget, newTarget);
 
 		ed.save();
+		ed.close();
+
 		new ProjectExplorer().selectProjects(projectName);
 
 		if (projectType.equals(TextLabels.GRADLE_TYPE)) {
 			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
 		} else {
 			new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
-			new PushButton("OK").click();
+			new OkButton().click();
 		}
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -144,10 +152,37 @@ public abstract class AbstractCreateNewProjectTest {
 
 	}
 
+	public static void checkUrlContent(String should_be) {
+		String urlContent = "";
+
+		try {
+			urlContent = getUrlContent("http://localhost:8080/hello");
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Wrong URL!", e);
+		}
+
+		assertEquals("Should be <" + should_be + "> , but is <" + urlContent + ">", should_be, urlContent);
+	}
+
+	public static String getUrlContent(String readedURL) throws IOException {
+
+		URL localhost = new URL(readedURL);
+		String inputLine = "";
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(localhost.openStream()));) {
+			inputLine = in.readLine();
+			in.close();
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Can`t read from url!", e);
+		}
+		return inputLine;
+	}
+
 	@After
 	public void deleteProject() {
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.deleteAllProjects(true);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

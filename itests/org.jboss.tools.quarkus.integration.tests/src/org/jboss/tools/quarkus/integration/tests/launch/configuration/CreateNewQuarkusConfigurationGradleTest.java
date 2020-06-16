@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 
-import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
@@ -30,16 +29,14 @@ import org.junit.runner.RunWith;
 public class CreateNewQuarkusConfigurationGradleTest extends AbstractLaunchConfigurationTest {
 
 	private static String GRADLE_PROJECT_NAME = "testgrdlconf";
-	private static ConsoleView consoleView;
 
 	@BeforeClass
 	public static void testNewNewQuarkusGradleProject() {
 		createNewQuarkusProject(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
-		consoleView = new ConsoleView();
 	}
 
 	@Test
 	public void testNewQuarkusGradleConfiguration() {
-		testNewQuarkusConfiguration(GRADLE_PROJECT_NAME, consoleView);
+		testNewQuarkusConfiguration(GRADLE_PROJECT_NAME);
 	}
 }

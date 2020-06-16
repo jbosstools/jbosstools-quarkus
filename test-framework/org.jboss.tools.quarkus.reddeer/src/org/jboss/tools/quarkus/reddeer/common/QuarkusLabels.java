@@ -27,6 +27,7 @@ public class QuarkusLabels {
 		public static final String QUARKUS_PROJECT = "Quarkus Project";
 		public static final String NEW_QUARKUS_PROJECT = "New Quarkus Project";
 		public static final String RUN_CONFIGURATION = "Run Configurations";
+		public static final String DEBUG_CONFIGURATION = "Debug Configurations";
 	}
 	
 	
@@ -35,6 +36,8 @@ public class QuarkusLabels {
 		public static final String NEW_CONTEXT_ITEM = "New";
 		public static final String RUN_AS_CONTEXT_MENU_ITEM = "Run As";
 		public static final String RUN_CONFIGURATION_CONTEXT_MENU_ITEM = "Run Configurations...";
+		public static final String DEBUG_AS_CONTEXT_MENU_ITEM = "Debug As";
+		public static final String DEBUG_CONFIGURATION_CONTEXT_MENU_ITEM = "Debug Configurations...";
 		public static final String OPEN_WITH = "Open With";
 		public static final String MAVEN_CONTEXT_MENU_ITEM = "Maven";
 		public static final String GRADLE_CONTEXT_MENU_ITEM = "Gradle";
@@ -72,5 +75,10 @@ public class QuarkusLabels {
 		//Text editors labels
 		public static final String GENERIC_TEXT_EDITOR = "Generic Text Editor";
 		public static final String TEXT_EDITOR = "Text Editor";
+		public static final String JAVA_EDITOR = "Java Editor";
+		
+		//Button names
+		public static final String CLOSE = "Close";
+		public static final String DEBUG = "Debug";
 	}
 }

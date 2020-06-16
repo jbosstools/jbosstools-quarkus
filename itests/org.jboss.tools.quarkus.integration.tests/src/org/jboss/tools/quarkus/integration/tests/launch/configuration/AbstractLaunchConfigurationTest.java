@@ -10,23 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-
-import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
-import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.junit.After;
-import org.jboss.tools.quarkus.integration.tests.project.AbstractCreateNewProjectTest;
+import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -37,18 +30,17 @@ import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
  *
  */
 
-public abstract class AbstractLaunchConfigurationTest {
+public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTest {
 	public static void createNewQuarkusProject(String projectName, String projectType) {
-		AbstractCreateNewProjectTest.testCreateNewProject(projectName, projectType);
-		AbstractCreateNewProjectTest.checkJdkVersion(projectName, projectType);
-
-		AbstractCreateNewProjectTest.checkProblemsView();
+		testCreateNewProject(projectName, projectType);
+		checkJdkVersion(projectName, projectType);
+		checkProblemsView();
 	}
 
-	public void testNewQuarkusConfiguration(String projectName, ConsoleView consoleView) {
+	public void testNewQuarkusConfiguration(String projectName) {
 		createNewQuarkusConfiguration(projectName);
 		checkNewQuarkusConfiguration(projectName);
-		runNewQuarkusConfiguration(projectName, consoleView);
+		runNewQuarkusConfiguration(projectName);
 		deleteNewQuarkusConfiguration(projectName);
 	}
 
@@ -63,10 +55,10 @@ public abstract class AbstractLaunchConfigurationTest {
 
 		new PushButton("Browse...").click();
 		new DefaultTableItem(projectName).select();
-		new PushButton("OK").click();
+		new OkButton().click();
 
-		new PushButton("Apply").click();
-		new PushButton("Close").click();
+		new QuarkusLaunchConfigurationTabGroup().apply();
+		new PushButton(TextLabels.CLOSE).click();
 	}
 
 	public void checkNewQuarkusConfiguration(String projectName) {
@@ -75,30 +67,22 @@ public abstract class AbstractLaunchConfigurationTest {
 
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
 
-		new PushButton("Close").click();
+		new PushButton(TextLabels.CLOSE).click();
 	}
 
-	public void runNewQuarkusConfiguration(String projectName, ConsoleView consoleView) {
+	public void runNewQuarkusConfiguration(String projectName) {
 		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
 		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
 
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
 
 		new PushButton("Run").click();
-		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"),
-				TimePeriod.getCustom(600));
 
-		String urlContent = "";
+		ConsoleView consoleView = new ConsoleView();
+		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
 
-		try {
-			urlContent = getUrlContent("http://localhost:8080/hello");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		checkUrlContent("hello");
 
-		if (!(urlContent.equals("hello"))) {
-			throw new RedDeerException("Should be 'hello' !");
-		}
 		new DefaultToolItem("Terminate").click();
 	}
 
@@ -110,26 +94,7 @@ public abstract class AbstractLaunchConfigurationTest {
 
 		new DefaultToolItem("Delete selected launch configuration(s)").click();
 		new PushButton("Delete").click();
-		new PushButton("Close").click();
+		new PushButton(TextLabels.CLOSE).click();
 
 	}
-
-	@After
-	public void deleteAllProjects() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects(true);
-	}
-
-	public String getUrlContent(String readedURL) throws IOException {
-
-		URL localhost = new URL(readedURL);
-		String inputLine = "";
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(localhost.openStream()));) {
-			inputLine = in.readLine();
-			in.close();
-		}
-		return inputLine;
-	}
-
 }

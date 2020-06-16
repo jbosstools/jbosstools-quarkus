@@ -47,5 +47,12 @@ public class QuarkusLaunchConfigurationTabGroup extends LaunchConfiguration {
 				.select();
 		new WaitUntil(new ShellIsAvailable(Shell.RUN_CONFIGURATION));
 	}
-
+	/**
+	 * Opens Debug configuration dialog
+	 */
+	public void openDebugConfiguration() {
+		new ContextMenuItem(TextLabels.DEBUG_AS_CONTEXT_MENU_ITEM, TextLabels.DEBUG_CONFIGURATION_CONTEXT_MENU_ITEM)
+				.select();
+		new WaitUntil(new ShellIsAvailable(Shell.DEBUG_CONFIGURATION));
+	}
 }

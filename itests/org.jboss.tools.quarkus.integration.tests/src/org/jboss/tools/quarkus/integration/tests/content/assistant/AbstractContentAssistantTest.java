@@ -27,36 +27,34 @@ import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
-import org.junit.After;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
-import org.jboss.tools.quarkus.integration.tests.project.AbstractCreateNewProjectTest;
 import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
+import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 
 /**
  * 
  * @author olkornii@redhat.com
  *
  */
-public abstract class AbstractContentAssistantTest {
+public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 
 	private static String RESOURCE_PATH = "src/main/resources";
 	private static String APPLICATION_PROPERTIES = "application.properties";
-	
+
 	public static void createProjectAndCheckJDK(String projectName) {
-		AbstractCreateNewProjectTest.testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
-		AbstractCreateNewProjectTest.checkJdkVersion(projectName, TextLabels.MAVEN_TYPE);
-		AbstractCreateNewProjectTest.checkProblemsView();
+		testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
+		checkJdkVersion(projectName, TextLabels.MAVEN_TYPE);
+		checkProblemsView();
 	}
 
 	public ContentAssistant testContentAssistant(String projectName, String testForContentAssist) {
 		new WorkbenchShell().setFocus();
 		new ProjectExplorer().selectProjects(projectName);
 
-		new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH).getProjectItem(APPLICATION_PROPERTIES)
-				.select();
-		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.GENERIC_TEXT_EDITOR).select();
+		new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
+				.getProjectItem(APPLICATION_PROPERTIES).open();
 
 		TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
 		ed.insertLine(0, testForContentAssist);
@@ -74,8 +72,10 @@ public abstract class AbstractContentAssistantTest {
 
 		return ca;
 	}
+
 	/**
-	 * Selecting a non-exist proposal for check, that this proposal isn`t in proposals
+	 * Selecting a non-exist proposal for check, that this proposal isn`t in
+	 * proposals
 	 */
 	public boolean checkProposalError(ContentAssistant ca, String proposal) {
 		try {
@@ -85,6 +85,7 @@ public abstract class AbstractContentAssistantTest {
 		}
 		return false;
 	}
+
 	/**
 	 * Selecting an exist proposal for check, that this proposal is in proposals
 	 */
@@ -114,13 +115,6 @@ public abstract class AbstractContentAssistantTest {
 		}
 
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-
-	@After
-	public void deleteProject() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects(true);
-	}
-
 }

@@ -77,21 +77,6 @@
                             <artifactId>plexus-utils</artifactId>
                             <version>${plexus.version}</version>
                         </artifactItem>
-                        <artifactItem>
-                            <groupId>com.fasterxml.jackson.core</groupId>
-                            <artifactId>jackson-annotations</artifactId>
-                            <version>${jackson.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>com.fasterxml.jackson.core</groupId>
-                            <artifactId>jackson-core</artifactId>
-                            <version>${jackson.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>com.fasterxml.jackson.core</groupId>
-                            <artifactId>jackson-databind</artifactId>
-                            <version>${jackson.version}</version>
-                        </artifactItem>
                     </artifactItems>
                     <skip>false</skip>
                     <outputDirectory>${lib.dir}</outputDirectory>

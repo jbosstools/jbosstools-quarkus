@@ -33,7 +33,6 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jackson.version>2.9.8</jackson.version>
         <maven.version>3.6.0</maven.version>
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>

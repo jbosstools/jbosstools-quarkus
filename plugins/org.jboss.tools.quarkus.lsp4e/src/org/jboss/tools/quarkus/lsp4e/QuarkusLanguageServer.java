@@ -44,8 +44,7 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 		commands.add(computeJavaPath());
 		commands.add("-classpath");
 		try {
-			URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.microprofile.ls-uber.jar"));
-			commands.add(new java.io.File(url.getPath()).getAbsolutePath());
+			commands.add(computeClasspath());
 			commands.add("com.redhat.microprofile.ls.MicroProfileServerLauncher");
 			setCommands(commands);
 			setWorkingDirectory(System.getProperty("user.dir"));
@@ -54,7 +53,17 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 					QuarkusLSPPlugin.getDefault().getBundle().getSymbolicName(), e.getMessage(), e));
 		}
 	}
-
+	
+	private String computeClasspath() throws IOException {
+	  StringBuilder builder = new StringBuilder();
+    URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.microprofile.ls-uber.jar"));
+    builder.append(new java.io.File(url.getPath()).getAbsolutePath());
+    builder.append(File.pathSeparatorChar);
+    url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.quarkus.ls.jar"));
+    builder.append(new java.io.File(url.getPath()).getAbsolutePath());
+    return builder.toString();
+	}
+	
 	private String computeJavaPath() {
 		String javaPath = "java";
 		boolean existsInPath = Stream.of(System.getenv("PATH").split(Pattern.quote(File.pathSeparator))).map(Paths::get)

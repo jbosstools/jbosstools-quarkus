@@ -58,6 +58,11 @@
                                         <version>${quarkus-ls.version}</version>
                                         <classifier>uber</classifier>
                                     </artifactItem>
+                                    <artifactItem>
+                                        <groupId>com.redhat.microprofile</groupId>
+                                        <artifactId>com.redhat.quarkus.ls</artifactId>
+                                        <version>${quarkus-ls.version}</version>
+                                    </artifactItem>
                                 </artifactItems>
                             </configuration>
                         </execution>

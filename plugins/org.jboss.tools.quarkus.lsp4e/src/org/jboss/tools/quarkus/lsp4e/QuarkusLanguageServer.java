@@ -55,13 +55,13 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 	}
 	
 	private String computeClasspath() throws IOException {
-    StringBuilder builder = new StringBuilder();
-    URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.microprofile.ls-uber.jar"));
-    builder.append(new java.io.File(url.getPath()).getAbsolutePath());
-    builder.append(File.pathSeparatorChar);
-    url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.quarkus.ls.jar"));
-    builder.append(new java.io.File(url.getPath()).getAbsolutePath());
-    return builder.toString();
+		StringBuilder builder = new StringBuilder();
+		URL url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.microprofile.ls-uber.jar"));
+		builder.append(new java.io.File(url.getPath()).getAbsolutePath());
+		builder.append(File.pathSeparatorChar);
+		url = FileLocator.toFileURL(getClass().getResource("/server/com.redhat.quarkus.ls.jar"));
+		builder.append(new java.io.File(url.getPath()).getAbsolutePath());
+		return builder.toString();
 	}
 	
 	private String computeJavaPath() {

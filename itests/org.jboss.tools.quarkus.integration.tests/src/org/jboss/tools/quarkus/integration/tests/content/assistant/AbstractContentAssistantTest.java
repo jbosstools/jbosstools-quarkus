@@ -27,16 +27,17 @@ import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
+import org.junit.After;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
-import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
+import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 
 /**
  * 
  * @author olkornii@redhat.com
  *
  */
-public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
+public abstract class AbstractContentAssistantTest {
 
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 
@@ -44,57 +45,37 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 	private static String APPLICATION_PROPERTIES = "application.properties";
 
 	public static void createProjectAndCheckJDK(String projectName) {
-		testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
-		checkJdkVersion(projectName, TextLabels.MAVEN_TYPE);
-		checkProblemsView();
+		AbstractQuarkusTest.testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
+		AbstractQuarkusTest.checkJdkVersion(projectName, TextLabels.MAVEN_TYPE);
+		AbstractQuarkusTest.checkProblemsView();
 	}
 
-	public ContentAssistant testContentAssistant(String projectName, String testForContentAssist) {
+	public ContentAssistant testContentAssistant(String projectName, String textForContentAssist) {
 		new WorkbenchShell().setFocus();
 		new ProjectExplorer().selectProjects(projectName);
 
-		new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
-				.getProjectItem(APPLICATION_PROPERTIES).open();
+		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 
-		TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
-		ed.insertLine(0, testForContentAssist);
-		ed.selectText(testForContentAssist);
+		insertAndCheckProposal(editor, textForContentAssist);
 
-		ContentAssistant ca = ed.openContentAssistant();
-
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		try {
-			Thread.sleep(1000); // 1 second sleep for sure, that Content Assistant will open
-		} catch (InterruptedException e) {
-			QuarkusCorePlugin.logException("Interrupted!", e);
-			Thread.currentThread().interrupt();
-		}
+		ContentAssistant ca = openContentAssist(editor);
 
 		return ca;
 	}
 
 	/**
-	 * Selecting a non-exist proposal for check, that this proposal isn`t in
-	 * proposals
-	 */
-	public boolean checkProposalError(ContentAssistant ca, String proposal) {
-		try {
-			ca.chooseProposal(proposal);
-		} catch (CoreLayerException e) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Selecting an exist proposal for check, that this proposal is in proposals
+	 * 
+	 * @return true if proposal was selected, false if not
 	 */
-	public void checkProposal(ContentAssistant ca, String proposal) {
+	public static boolean checkProposal(ContentAssistant ca, String proposal) {
 		try {
 			ca.chooseProposal(proposal);
 		} catch (CoreLayerException e) {
 			QuarkusCorePlugin.logException("No proposal in list!", e);
+			return false;
 		}
+		return true;
 	}
 
 	public void addExtension(String projectName) {
@@ -114,7 +95,53 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 			QuarkusCorePlugin.logException("Attempt to read the 'pom.xml' failed!", e);
 		}
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
+
+	@After
+	public void deleteProject() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.deleteAllProjects(true);
+	}
+
+	public static TextEditor openFileWithTextEditor(String projectName, String textEditor) {
+
+		if (textEditor.equals(TextLabels.GENERIC_TEXT_EDITOR)) {
+			new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
+					.getProjectItem(APPLICATION_PROPERTIES).open();
+		} else {
+			new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
+					.getProjectItem(APPLICATION_PROPERTIES).select();
+			new ContextMenuItem(TextLabels.OPEN_WITH, textEditor).select();
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
+		TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
+
+		return ed;
+	}
+
+	public static ContentAssistant openContentAssist(TextEditor editor) {
+
+		ContentAssistant contentAssist = editor.openContentAssistant();
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		try {
+			Thread.sleep(1000); // 1 second sleep for sure, that Content Assistant will open
+		} catch (InterruptedException e) {
+			QuarkusCorePlugin.logException("Interrupted!", e);
+			Thread.currentThread().interrupt();
+		}
+
+		return contentAssist;
+	}
+
+	public static void insertAndCheckProposal(TextEditor editor, String textForContentAssist) {
+		editor.insertLine(0, textForContentAssist);
+		editor.selectText(textForContentAssist);
+	}
+
 }

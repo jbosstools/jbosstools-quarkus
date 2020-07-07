@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -41,15 +42,10 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 	@Test
 	public void testContentAssistOldNew() {
 		ContentAssistant ca = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertFalse(checkProposal(ca, PORPOSAL_FOR_SELECT));
 
-		boolean isOk = checkProposalError(ca, PORPOSAL_FOR_SELECT);
-		if (isOk) {
-			addExtension(NEW_EXTENSION_PROJECT_NAME);
-
-			ca = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
-			checkProposal(ca, PORPOSAL_FOR_SELECT);
-		} else {
-			fail("Extension already added!");
-		}
+		addExtension(NEW_EXTENSION_PROJECT_NAME);
+		ca = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertTrue(checkProposal(ca, PORPOSAL_FOR_SELECT));
 	}
 }

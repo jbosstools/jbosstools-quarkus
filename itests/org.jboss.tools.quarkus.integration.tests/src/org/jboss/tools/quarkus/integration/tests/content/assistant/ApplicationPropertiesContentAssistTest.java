@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -39,6 +41,6 @@ public class ApplicationPropertiesContentAssistTest extends AbstractContentAssis
 	@Test
 	public void testContentAssist() {
 		ContentAssistant ca = testContentAssistant(CONTENT_ASSIST_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
-		checkProposal(ca, PORPOSAL_FOR_SELECT);
+		assertTrue(checkProposal(ca, PORPOSAL_FOR_SELECT));
 	}
 }

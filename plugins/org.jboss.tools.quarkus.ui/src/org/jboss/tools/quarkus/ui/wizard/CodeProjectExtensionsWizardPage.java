@@ -55,7 +55,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
     @Override
     protected void doCreateControls(Composite parent, DataBindingContext dbc) {
-        GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(3).equalWidth(true).applyTo(parent);
+        GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(3).applyTo(parent);
 
     	//  explanation
     	Label explanation = new Label(parent, SWT.WRAP);

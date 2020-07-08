@@ -101,7 +101,6 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 
 	@Override
 	public CompletableFuture<Location> getPropertyDefinition(MicroProfilePropertyDefinitionParams params) {
-		// TODO : implements the Quarkus definition when LSP4E will support JDT LS
 		// syntax uri -> see // https://bugs.eclipse.org/bugs/show_bug.cgi?id=551625
 		return CompletableFuture.completedFuture(null);
 	}

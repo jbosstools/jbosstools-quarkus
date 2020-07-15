@@ -272,7 +272,7 @@ APPENDIX: How to apply the Apache License to your work.
          unpack="false"/>
 
    <plugin
-         id="com.redhat.microprofile.jdt.core"
+         id="org.eclipse.lsp4mp.jdt.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

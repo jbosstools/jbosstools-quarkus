@@ -76,7 +76,7 @@
                     <dependency-resolution>
                         <extraRequirements>
                             <requirement>
-                                <id>com.redhat.microprofile.jdt.test</id>
+                                <id>org.eclipse.lsp4mp.jdt.test</id>
                                 <versionRange>0.0.0</versionRange>
                                 <type>eclipse-plugin</type>
                             </requirement>

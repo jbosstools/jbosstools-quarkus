@@ -33,7 +33,6 @@
     <packaging>eclipse-plugin</packaging>
 
     <properties>
-        <quarkus-ls.version>0.8.0-SNAPSHOT</quarkus-ls.version>
         <enforcer.skip>true</enforcer.skip>
     </properties>
 
@@ -53,9 +52,9 @@
                                 <outputDirectory>${basedir}/server/</outputDirectory>
                                 <artifactItems>
                                     <artifactItem>
-                                        <groupId>com.redhat.microprofile</groupId>
-                                        <artifactId>com.redhat.microprofile.ls</artifactId>
-                                        <version>${quarkus-ls.version}</version>
+                                        <groupId>org.eclipse.lsp4mp</groupId>
+                                        <artifactId>org.eclipse.lsp4mp.ls</artifactId>
+                                        <version>${lsp4mp-ls.version}</version>
                                         <classifier>uber</classifier>
                                     </artifactItem>
                                     <artifactItem>

@@ -27,24 +27,23 @@ import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeActionParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeLensParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaDiagnosticsParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaHoverParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaProjectLabelsParams;
+import org.eclipse.lsp4mp.commons.MicroProfileProjectInfo;
+import org.eclipse.lsp4mp.commons.MicroProfileProjectInfoParams;
+import org.eclipse.lsp4mp.commons.MicroProfilePropertyDefinitionParams;
+import org.eclipse.lsp4mp.commons.ProjectLabelInfoEntry;
+import org.eclipse.lsp4mp.jdt.core.IMicroProfilePropertiesChangedListener;
+import org.eclipse.lsp4mp.jdt.core.MicroProfileCorePlugin;
+import org.eclipse.lsp4mp.jdt.core.ProjectLabelManager;
+import org.eclipse.lsp4mp.jdt.core.PropertiesManager;
+import org.eclipse.lsp4mp.jdt.core.PropertiesManagerForJava;
+import org.eclipse.lsp4mp.ls.api.MicroProfileLanguageClientAPI;
+import org.eclipse.lsp4mp.ls.api.MicroProfileLanguageServerAPI;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
-
-import com.redhat.microprofile.commons.MicroProfileJavaCodeActionParams;
-import com.redhat.microprofile.commons.MicroProfileJavaCodeLensParams;
-import com.redhat.microprofile.commons.MicroProfileJavaDiagnosticsParams;
-import com.redhat.microprofile.commons.MicroProfileJavaHoverParams;
-import com.redhat.microprofile.commons.MicroProfileJavaProjectLabelsParams;
-import com.redhat.microprofile.commons.MicroProfileProjectInfo;
-import com.redhat.microprofile.commons.MicroProfileProjectInfoParams;
-import com.redhat.microprofile.commons.MicroProfilePropertyDefinitionParams;
-import com.redhat.microprofile.commons.ProjectLabelInfoEntry;
-import com.redhat.microprofile.jdt.core.IMicroProfilePropertiesChangedListener;
-import com.redhat.microprofile.jdt.core.MicroProfileCorePlugin;
-import com.redhat.microprofile.jdt.core.ProjectLabelManager;
-import com.redhat.microprofile.jdt.core.PropertiesManager;
-import com.redhat.microprofile.jdt.core.PropertiesManagerForJava;
-import com.redhat.microprofile.ls.api.MicroProfileLanguageClientAPI;
-import com.redhat.microprofile.ls.api.MicroProfileLanguageServerAPI;
 
 /**
  * LSP4E Quarkus language client.

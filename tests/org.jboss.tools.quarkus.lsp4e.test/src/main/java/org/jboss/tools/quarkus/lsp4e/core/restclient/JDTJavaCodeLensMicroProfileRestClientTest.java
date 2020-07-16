@@ -10,10 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.restclient;
 
+import org.eclipse.lsp4mp.jdt.core.restclient.JavaCodeLensMicroProfileRestClientTest;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
-
-import com.redhat.microprofile.jdt.core.restclient.JavaCodeLensMicroProfileRestClientTest;
 
 /**
  * @author Red Hat Developers

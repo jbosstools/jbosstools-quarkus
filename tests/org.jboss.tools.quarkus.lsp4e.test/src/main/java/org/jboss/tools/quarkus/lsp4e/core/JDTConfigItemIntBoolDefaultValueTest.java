@@ -1,9 +1,8 @@
 package org.jboss.tools.quarkus.lsp4e.core;
 
+import org.eclipse.lsp4mp.jdt.core.ConfigItemIntBoolDefaultValueTest;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
-
-import com.redhat.microprofile.jdt.core.ConfigItemIntBoolDefaultValueTest;
 
 public class JDTConfigItemIntBoolDefaultValueTest extends ConfigItemIntBoolDefaultValueTest {
 	@BeforeClass

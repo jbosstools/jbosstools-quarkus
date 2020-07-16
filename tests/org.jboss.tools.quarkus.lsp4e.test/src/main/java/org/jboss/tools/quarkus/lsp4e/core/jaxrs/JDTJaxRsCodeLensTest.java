@@ -10,10 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.jaxrs;
 
+import org.eclipse.lsp4mp.jdt.core.jaxrs.JaxRsCodeLensTest;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
-
-import com.redhat.microprofile.jdt.core.jaxrs.JaxRsCodeLensTest;
 
 /**
  * @author Red Hat Developers

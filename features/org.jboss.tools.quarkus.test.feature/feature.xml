@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.quarkus.test.feature"
       label="Quarkus Eclipse Feature Test"
-      version="1.1.0.qualifier">
+      version="1.2.0.qualifier">
 
    <description>
       The Eclipse plugins in this feature provide tooling for the Quarkus

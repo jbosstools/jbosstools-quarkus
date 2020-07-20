@@ -24,12 +24,10 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ui.JavadocContentAccess;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
-
-import com.redhat.microprofile.commons.DocumentFormat;
-import com.redhat.microprofile.jdt.core.utils.IJDTUtils;
+import org.eclipse.lsp4mp.commons.DocumentFormat;
+import org.eclipse.lsp4mp.jdt.core.utils.IJDTUtils;
 
 public class JDTUtilsImpl implements IJDTUtils {
 	private static final IJDTUtils INSTANCE = new JDTUtilsImpl();

@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.quarkus.feature"
       label="Quarkus Eclipse Feature"
-      version="1.1.0.qualifier">
+      version="1.2.0.qualifier">
 
    <description>
       The Eclipse plugins in this feature provide tooling for the Quarkus
@@ -272,7 +272,7 @@ APPENDIX: How to apply the Apache License to your work.
          unpack="false"/>
 
    <plugin
-         id="com.redhat.microprofile.jdt.core"
+         id="org.eclipse.lsp4mp.jdt.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

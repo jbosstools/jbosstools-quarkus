@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -46,13 +45,6 @@ import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
 import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 
 public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPage {
-
-	private static final int CATEGORY_SIZE_WIDTH = 160;
-    private static final int CATEGORY_SIZE_HEIGHT = 400;
-	private static final int EXTENSION_SIZE_WIDTH = 340;
-    private static final int EXTENSION_SIZE_HEIGHT = 400;
-	private static final int SELECTED_EXTENSION_SIZE_WIDTH = 340;
-    private static final int SELECTED_EXTENSION_SIZE_HEIGHT = 400;
 
 	private final CodeProjectModel model;
 
@@ -85,7 +77,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.applyTo(sashForm);
     	
     	// categories
-    	List categoriesList = createColumn("Extension Categories:", CATEGORY_SIZE_WIDTH, CATEGORY_SIZE_HEIGHT, sashForm);
+    	List categoriesList = createColumn("Extension Categories:", sashForm);
         ListViewer listCategoriesViewer = new ListViewer(categoriesList);
         listCategoriesViewer.setContentProvider(new ObservableListContentProvider<QuarkusCategory>());
         listCategoriesViewer.setInput(BeanProperties.list(CATEGORIES_PROPERTY).observe(model));
@@ -104,7 +96,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
                 .in(dbc);
 
         // extensions
-    	List extensionsList = createColumn("Available Extensions:", EXTENSION_SIZE_WIDTH, EXTENSION_SIZE_HEIGHT, sashForm);
+    	List extensionsList = createColumn("Available Extensions:", sashForm);
         ListViewer listExtensionsViewer = new ListViewer(extensionsList);
         listExtensionsViewer.setContentProvider(new ObservableListContentProvider<QuarkusExtension>());
         listExtensionsViewer.setInput(BeanProperties.list(EXTENSIONS_PROPERTY).observe(model));
@@ -121,7 +113,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         });
 
         // selected extensions
-    	List selectedExtensionsList = createColumn("Selected Extensions:", SELECTED_EXTENSION_SIZE_WIDTH, SELECTED_EXTENSION_SIZE_HEIGHT, sashForm);
+    	List selectedExtensionsList = createColumn("Selected Extensions:", sashForm);
         ListViewer listSelectedExtensionsViewer = new ListViewer(selectedExtensionsList);
         listSelectedExtensionsViewer.setContentProvider(new ObservableSetContentProvider<>());
         listSelectedExtensionsViewer.setInput(BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model));
@@ -179,7 +171,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         detail.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> openBrowser((QuarkusExtension) detail.getData())));
     }
 
-	private List createColumn(String title, int listWidth, int listHeight, Composite parent) {
+	private List createColumn(String title, Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults()
 			.align(SWT.FILL, SWT.FILL)

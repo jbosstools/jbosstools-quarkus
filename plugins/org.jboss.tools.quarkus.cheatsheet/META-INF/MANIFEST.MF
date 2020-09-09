@@ -15,3 +15,4 @@ Require-Bundle: org.jboss.tools.quarkus.ui,
  org.jboss.tools.common.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.quarkus.cheatsheet.Activator
+Bundle-Vendor: Red Hat

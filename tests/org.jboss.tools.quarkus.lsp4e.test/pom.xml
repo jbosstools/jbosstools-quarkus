@@ -32,10 +32,6 @@
 
     <packaging>eclipse-test-plugin</packaging>
     
-    <properties>
-        <jdt.ls.version>0.60.0.202008311720</jdt.ls.version>
-    </properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -54,20 +50,8 @@
                 <artifactId>target-platform-configuration</artifactId>
                 <version>${tychoVersion}</version>
                 <configuration>
-                    <target combine.children="append">
-                      <artifact>
-                        <groupId>org.eclipse.jdt.ls</groupId>
-                        <artifactId>org.eclipse.jdt.ls.tp</artifactId>
-                        <version>${jdt.ls.version}</version>
-                      </artifact>
-                    </target>
                     <dependency-resolution>
                         <extraRequirements>
-                            <requirement>
-                                <id>org.eclipse.lsp4mp.jdt.test</id>
-                                <versionRange>0.0.0</versionRange>
-                                <type>eclipse-plugin</type>
-                            </requirement>
                             <requirement>
                                 <id>com.redhat.microprofile.jdt.quarkus</id>
                                 <versionRange>0.0.0</versionRange>

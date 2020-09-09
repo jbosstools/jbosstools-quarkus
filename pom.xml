@@ -36,8 +36,8 @@
         <maven.version>3.6.0</maven.version>
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
-		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-		<lsp4mp-jdt-site>https://download.eclipse.org/lsp4mp/snapshots/0.0.9/repository</lsp4mp-jdt-site>
+        <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
+        <lsp4mp-jdt-site>https://download.jboss.org/jbosstools/updates/requirements/lsp4mp/0.9.0.20200903-1505/</lsp4mp-jdt-site>
         <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
         <quarkus-ls.version>0.9.0-SNAPSHOT</quarkus-ls.version>
         <lsp4mp-ls.version>0.9.0-SNAPSHOT</lsp4mp-ls.version>
@@ -65,7 +65,6 @@
 		</repository>		
 	</repositories>
 
-    
     <modules>
         <module>features</module>
         <module>itests</module>

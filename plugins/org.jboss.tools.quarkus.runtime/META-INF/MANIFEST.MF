@@ -23,3 +23,4 @@ Export-Package: io.quarkus.cli.commands,
 Require-Bundle: com.fasterxml.jackson.core.jackson-annotations,
  com.fasterxml.jackson.core.jackson-core,
  com.fasterxml.jackson.core.jackson-databind
+Bundle-Vendor: Red Hat

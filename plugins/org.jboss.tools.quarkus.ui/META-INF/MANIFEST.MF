@@ -33,3 +33,4 @@ Export-Package: org.jboss.tools.quarkus.ui.action,
  org.jboss.tools.quarkus.ui.wizard
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.quarkus.ui.QuarkusUIPlugin
+Bundle-Vendor: Red Hat

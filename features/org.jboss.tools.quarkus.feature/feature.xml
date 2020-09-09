@@ -237,6 +237,11 @@ APPENDIX: How to apply the Apache License to your work.
    limitations under the License.
    </license>
 
+   <requires>
+      <import plugin="org.eclipse.lsp4mp.jdt.core"/>
+      <import plugin="com.redhat.microprofile.jdt.quarkus"/>
+   </requires>
+
    <plugin
          id="org.jboss.tools.quarkus.runtime"
          download-size="0"
@@ -271,17 +276,4 @@ APPENDIX: How to apply the Apache License to your work.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.lsp4mp.jdt.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.redhat.microprofile.jdt.quarkus"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 </feature>

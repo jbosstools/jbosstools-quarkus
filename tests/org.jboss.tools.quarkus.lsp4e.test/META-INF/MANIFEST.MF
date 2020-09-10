@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.lsp4mp.jdt.core,
  com.redhat.microprofile.jdt.quarkus,
  com.redhat.microprofile.jdt.quarkus.test,
  org.eclipse.lsp4mp.jdt.test
+Bundle-Vendor: Red Hat

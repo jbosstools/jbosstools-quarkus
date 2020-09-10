@@ -27,7 +27,9 @@ Require-Bundle: org.eclipse.lsp4e,
  org.jboss.tools.foundation.ui,
  org.apache.commons.lang3,
  org.eclipse.ui.ide,
- org.jboss.tools.quarkus.core
+ org.jboss.tools.quarkus.core,
+ org.apache.commons.io,
+ org.eclipse.wildwebdeveloper
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy

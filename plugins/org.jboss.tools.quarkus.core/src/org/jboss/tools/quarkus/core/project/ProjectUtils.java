@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -191,6 +192,11 @@ public class ProjectUtils {
 		} catch (JavaModelException e) {
 			return false;
 		}
+	}
+	
+	public static boolean isApplicationYAML(IFile file) {
+		return isQuarkusProject(file.getProject()) &&
+				("application.yaml".equals(file.getName()) || "application.yml".equals(file.getName()));
 	}
 	
 	public static ToolSupport getToolSupport(IProject project) {

@@ -32,10 +32,6 @@
     
     <packaging>eclipse-plugin</packaging>
 
-    <properties>
-        <enforcer.skip>true</enforcer.skip>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

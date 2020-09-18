@@ -41,6 +41,7 @@
         <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
         <quarkus-ls.version>0.9.0-SNAPSHOT</quarkus-ls.version>
         <lsp4mp-ls.version>0.9.0-SNAPSHOT</lsp4mp-ls.version>
+        <enforceExcludePatternExtras>|quarkus-ls.version|lsp4mp-ls.version</enforceExcludePatternExtras>
     </properties>
 
 	<repositories>

@@ -29,6 +29,11 @@ public class QuarkusLSPPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static QuarkusLSPPlugin plugin;
 
+  /**
+   * 
+   */
+  public static final String QUARKUS_APPLICATION_PROPERTIES_CONTENT_TYPE = "org.jboss.tools.quarkus.lsp4e.properties";
+
 	/**
 	 * The constructor
 	 */

@@ -8,8 +8,15 @@
       <content-type
             base-type="org.eclipse.core.runtime.text"
             file-names="application.properties"
-            id="org.jboss.tools.quarkus.lsp4e"
-            name="Application Properties"
+            id="org.jboss.tools.quarkus.lsp4e.properties"
+            name="Quarkus Application Properties"
+            priority="normal">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.wildwebdeveloper.yaml"
+            file-names="application.yaml,application.yml"
+            id="org.jboss.tools.quarkus.lsp4e.yaml"
+            name="Quarkus Application Properties (YAML)"
             priority="normal">
       </content-type>
    </extension>
@@ -33,7 +40,7 @@
             singleton="true" >
       </server>
       <contentTypeMapping
-            contentType="org.jboss.tools.quarkus.lsp4e"
+            contentType="org.jboss.tools.quarkus.lsp4e.properties"
             id="org.jboss.tools.quarkus.lsp4e">
       </contentTypeMapping>
       <contentTypeMapping
@@ -82,6 +89,13 @@
             contentTypeId="org.eclipse.core.runtime.text"
             fileNames="application.yml,application.yaml">
       </participant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.icons">
+      <icon
+            contentType="org.jboss.tools.quarkus.lsp4e.yaml"
+            icon="icons/quarkus_icon_rgb_16px_default.png">
+      </icon>
    </extension>
         
 </plugin>

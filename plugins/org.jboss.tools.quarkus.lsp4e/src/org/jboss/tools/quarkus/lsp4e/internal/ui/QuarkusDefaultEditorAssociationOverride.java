@@ -10,12 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.internal.ui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorMatchingStrategy;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IEditorAssociationOverride;
+import org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin;
 
 /**
  * @author Red Hat Developers
@@ -25,6 +31,59 @@ import org.eclipse.ui.ide.IEditorAssociationOverride;
  */
 public class QuarkusDefaultEditorAssociationOverride implements IEditorAssociationOverride {
 
+  private IEditorDescriptor genericEditorDescriptor;
+  
+  private IEditorDescriptor genericEditorDescriptor() {
+    if (genericEditorDescriptor == null) {
+      IEditorRegistry editorReg = PlatformUI.getWorkbench()
+          .getEditorRegistry();
+      IEditorDescriptor parent = editorReg.findEditor("org.eclipse.ui.genericeditor.GenericEditor");
+      genericEditorDescriptor = new IEditorDescriptor() {
+        
+        @Override
+        public boolean isOpenInPlace() {
+          return parent.isOpenInPlace();
+        }
+        
+        @Override
+        public boolean isOpenExternal() {
+          return parent.isOpenExternal();
+        }
+        
+        @Override
+        public boolean isInternal() {
+          return parent.isInternal();
+        }
+        
+        @Override
+        public String getLabel() {
+          return parent.getLabel();
+        }
+        
+        @Override
+        public ImageDescriptor getImageDescriptor() {
+          try {
+            return ImageDescriptor.createFromURL(new URL(QuarkusLSPPlugin.getDefault().getBundle().getEntry("/"), "icons/quarkus_icon_rgb_16px_default.png"));
+          } catch (MalformedURLException e) {
+            return parent.getImageDescriptor();
+          }
+        }
+        
+        @Override
+        public String getId() {
+          return parent.getId();
+        }
+        
+        @Override
+        public IEditorMatchingStrategy getEditorMatchingStrategy() {
+          return parent.getEditorMatchingStrategy();
+        }
+      };
+      
+    }
+    return genericEditorDescriptor;
+  }
+  
 	@Override
 	public IEditorDescriptor[] overrideEditors(IEditorInput editorInput, IContentType contentType,
 	        IEditorDescriptor[] editorDescriptors) {
@@ -52,13 +111,8 @@ public class QuarkusDefaultEditorAssociationOverride implements IEditorAssociati
 		return editorDescriptor;
 	}
 
-	private IEditorDescriptor genericEditorDescriptor() {
-		IEditorRegistry editorReg = PlatformUI.getWorkbench()
-				.getEditorRegistry();
-		return editorReg.findEditor("org.eclipse.ui.genericeditor.GenericEditor");
-	}
 
 	private boolean isOwnContenType(IContentType contentType) {
-		return contentType != null && "org.jboss.tools.quarkus.lsp4e".equals(contentType.getId());
+		return contentType != null && QuarkusLSPPlugin.QUARKUS_APPLICATION_PROPERTIES_CONTENT_TYPE.equals(contentType.getId());
 	}
 }

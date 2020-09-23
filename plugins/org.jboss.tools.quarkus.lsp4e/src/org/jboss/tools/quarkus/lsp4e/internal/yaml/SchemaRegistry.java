@@ -89,9 +89,9 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
           schemaEntry = new MutablePair<>(schemaFile, Boolean.TRUE);
           schemas.put(project, schemaEntry);
         }
-        if (sendToServer) {
-          sendInitialize();
-        }
+      }
+      if (sendToServer) {
+        sendInitialize();
       }
     } catch (CoreException | IOException e) {
       QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);

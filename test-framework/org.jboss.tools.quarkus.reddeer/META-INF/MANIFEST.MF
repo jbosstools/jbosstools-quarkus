@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for quarkus UI Tests
 Bundle-SymbolicName: org.jboss.tools.quarkus.reddeer
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 1.3.0.qualifier
 Require-Bundle: 
  org.jboss.tools.quarkus.ui,
  org.eclipse.reddeer.go

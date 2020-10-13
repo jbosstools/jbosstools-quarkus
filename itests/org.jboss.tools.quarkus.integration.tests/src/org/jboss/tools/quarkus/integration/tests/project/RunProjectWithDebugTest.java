@@ -10,14 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.project;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -43,8 +36,8 @@ import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -64,17 +57,16 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 	private static String PROJECT_NAME = "testRunWithDebug";
 	private static String RESOURCE_PATH = "src/main/java";
-	private static String ORG_ACME = "org.acme";
-	private static String EXAMPLE_RESOURCE = "ExampleResource.java";
+	private static String ORG_ACME = "org.acme.commandmode";
+	private static String EXAMPLE_RESOURCE = "HelloCommando.java";
 	private static String VARIABLE = "test_var";
 	private static String FIRST_LINE = "    	String " + VARIABLE + " = \"w/o changes\";";
-	private static String SECOND_LINE = "    	return " + VARIABLE + ";";
-	private static String READED_LINE = "example";
+	private static String SECOND_LINE = "    	System.out.println(\"Printed first \" + test_var);";
+	private static String THIRD_LINE = "    	System.out.println(\"Printed second \" + test_var);";
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
-		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
-
+		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);		
 		checkProblemsView();
 	}
 
@@ -84,8 +76,8 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
 				.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
 
-		insertLines(exampleResource, FIRST_LINE, SECOND_LINE);
-		addBreakpointToLine(exampleResource, FIRST_LINE);
+		insertLines(exampleResource, FIRST_LINE, SECOND_LINE, THIRD_LINE);
+		addBreakpointToLine(exampleResource, SECOND_LINE);
 
 		new QuarkusLaunchConfigurationTabGroup().selectProject(PROJECT_NAME);
 		new QuarkusLaunchConfigurationTabGroup().openDebugConfiguration();
@@ -94,20 +86,14 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		new ContextMenuItem("New Configuration").select();
 
 		new PushButton(TextLabels.DEBUG).click();
-
+		
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
-		URL localhost = null;
-		try {
-			localhost = new URL("http://localhost:8080/hello");
-		} catch (MalformedURLException e) {
-			QuarkusCorePlugin.logException("Wrong URL! ", e);
-		}
 
 		openDebugPerspective();
-		checkReturn(localhost, "w/o changes", false);
-		checkReturn(localhost, "with changes", true);
+		checkReturn("with changes");
 
 		ConsoleView cv = new ConsoleView();
 		cv.open();
@@ -117,16 +103,14 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 	}
 
-	private void insertLines(ProjectItem exampleResource, String firstValue, String secondValue) {
+	private void insertLines(ProjectItem exampleResource, String firstValue, String secondValue, String thirdValue) {
 		exampleResource.open();
 		TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
-		int old_return_index = ed.getLineOfText("return");
-		ed.selectLine(old_return_index);
-		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
 
-		int line = ed.getLineOfText("public String hello() {");
+		int line = ed.getLineOfText("final String name");
 		ed.insertLine(line + 1, firstValue);
 		ed.insertLine(line + 2, secondValue);
+		ed.insertLine(line + 3, thirdValue);
 		ed.save();
 	}
 
@@ -151,94 +135,49 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		assertTrue(qp.isOpened());
 	}
 
-	private void checkReturn(URL localhost, String should_be, boolean NeedToChange) {
-		Thread thread = startProject(localhost);
-		try {
-			Thread.sleep(1000); // w8 for read localhost from child thread
-		} catch (InterruptedException e) {
-			QuarkusCorePlugin.logException("Thread interupted!", e);
-			Thread.currentThread().interrupt();
-		}
+	private void checkReturn(String should_be) {
 
 		new ShellMenuItem("Run", "Step Over").select();
+		ConsoleView consoleView = new ConsoleView();
+		new WaitUntil(new ConsoleHasText(consoleView, "Printed first w/o changes"), TimePeriod.DEFAULT);
 
-		if (NeedToChange) {
-			VariablesView variablesView = new VariablesView();
-			variablesView.open();
-
-			new WaitUntil(new AbstractWaitCondition() {
-
-				@Override
-				public boolean test() {
-					try {
-						TreeItem variable = new DefaultTreeItem(VARIABLE);
-						variable.select();
-						return variable.isSelected();
-					} catch (Exception e) {
-						return false;
-					}
-				}
-
-				@Override
-				public String description() {
-					return "Variable is not selected";
-				}
-			}, TimePeriod.LONG);
-
-			try {
-				new ContextMenuItem("Change Value...").select();
-			} catch (CoreLayerException e) {
-				throw e;
-			}
-
-			new DefaultShell("Change Object Value");
-			new DefaultStyledText().setText(should_be);
-			new OkButton().click();
-
-			new WaitWhile(new JobIsRunning());
-		}
-
-		try {
-			Thread.sleep(1000); // w8 for doing step
-		} catch (InterruptedException e) {
-			QuarkusCorePlugin.logException("Thread interupted!", e);
-			Thread.currentThread().interrupt();
-		}
-
-		new ShellMenuItem("Run", "Resume").select();
+		VariablesView variablesView = new VariablesView();
+		variablesView.open();
 
 		new WaitUntil(new AbstractWaitCondition() {
+
 			@Override
 			public boolean test() {
-
-				if (!READED_LINE.equals("example")) {
-					return true;
-				} else {
+				try {
+					TreeItem variable = new DefaultTreeItem(VARIABLE);
+					variable.select();
+					return variable.isSelected();
+				} catch (Exception e) {
 					return false;
 				}
 			}
+
+			@Override
+			public String description() {
+				return "Variable is not selected";
+			}
 		}, TimePeriod.LONG);
 
-		assertEquals("Should be <" + should_be + "> , but is <" + READED_LINE + ">", should_be, READED_LINE);
-		READED_LINE = "example";
+		try {
+			new ContextMenuItem("Change Value...").select();
+		} catch (CoreLayerException e) {
+			throw e;
+		}
 
-		thread.interrupt();
+		new DefaultShell("Change Object Value");
+		new DefaultStyledText().setText(should_be);
+		new OkButton().click();
+
+		new WaitWhile(new JobIsRunning());
+
+		new ShellMenuItem("Run", "Step Over").select();
+		new WaitUntil(new ConsoleHasText(consoleView, "Printed second with changes"), TimePeriod.DEFAULT);
+		new ShellMenuItem("Run", "Resume").select();
+		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.LONG);
 	}
-
-	private Thread startProject(URL localhost) { // method for run project in background and w8ing for return from
-													// ExampleResource
-		Thread thread = new Thread(new Runnable() {
-			public void run() {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(localhost.openStream()))) {
-					READED_LINE = reader.readLine();
-					reader.close();
-				} catch (IOException e) {
-					QuarkusCorePlugin.logException("Can`t read from url!", e);
-				}
-			}
-		});
-		thread.start();
-		return thread;
-	}
-
 }

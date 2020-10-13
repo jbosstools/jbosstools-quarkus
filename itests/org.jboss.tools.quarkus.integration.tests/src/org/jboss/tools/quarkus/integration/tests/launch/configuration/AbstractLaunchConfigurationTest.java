@@ -78,9 +78,7 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		new PushButton("Run").click();
 
 		ConsoleView consoleView = new ConsoleView();
-		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
-
-		checkUrlContent("hello");
+		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.getCustom(600));
 
 		new DefaultToolItem("Terminate").click();
 	}

@@ -51,7 +51,6 @@ public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
 	@BeforeClass
 	public static void prepareWorkspace() {
 		testCreateNewProject("test", TextLabels.MAVEN_TYPE);
-		checkJdkVersion("test", TextLabels.MAVEN_TYPE);
 		checkProblemsView();
 	}
 

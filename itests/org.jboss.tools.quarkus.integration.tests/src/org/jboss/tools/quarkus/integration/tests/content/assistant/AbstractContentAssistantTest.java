@@ -45,7 +45,6 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 	public static void createProjectAndCheckJDK(String projectName) {
 		testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
-		checkJdkVersion(projectName, TextLabels.MAVEN_TYPE);
 		checkProblemsView();
 	}
 

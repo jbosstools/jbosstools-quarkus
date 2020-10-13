@@ -33,7 +33,6 @@ public class CreateNewProjectTest extends AbstractQuarkusTest {
 	@Test
 	public void testNewNewQuarkusMavenProject() {
 		testCreateNewProject(MAVEN_PROJECT_NAME, TextLabels.MAVEN_TYPE);
-		checkJdkVersion(MAVEN_PROJECT_NAME, TextLabels.MAVEN_TYPE);
 		checkProblemsView();
 	}
 
@@ -41,7 +40,6 @@ public class CreateNewProjectTest extends AbstractQuarkusTest {
 	public void testNewNewQuarkusGradleProject() {
 
 		testCreateNewProject(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
-		checkJdkVersion(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
 
 		checkProblemsView();
 

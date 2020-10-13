@@ -33,7 +33,6 @@ import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTest {
 	public static void createNewQuarkusProject(String projectName, String projectType) {
 		testCreateNewProject(projectName, projectType);
-		checkJdkVersion(projectName, projectType);
 		checkProblemsView();
 	}
 

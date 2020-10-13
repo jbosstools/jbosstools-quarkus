@@ -74,7 +74,6 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
 		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
-		checkJdkVersion(PROJECT_NAME, TextLabels.MAVEN_TYPE);
 
 		checkProblemsView();
 	}

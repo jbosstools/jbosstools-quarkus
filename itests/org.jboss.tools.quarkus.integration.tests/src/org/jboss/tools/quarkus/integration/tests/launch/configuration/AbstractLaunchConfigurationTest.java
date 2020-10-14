@@ -44,19 +44,20 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	}
 
 	public void createNewQuarkusConfiguration(String projectName) {
-		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
-		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
+		QuarkusLaunchConfigurationTabGroup lc = new QuarkusLaunchConfigurationTabGroup();
+		lc.selectProject(projectName);
+		lc.openRunConfiguration();
 
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM).select();
 		new ContextMenuItem("New Configuration").select();
 
-		new QuarkusLaunchConfigurationTabGroup().setName(projectName + TextLabels.CONFIGURATION);
+		lc.setName(projectName + TextLabels.CONFIGURATION);
 
 		new PushButton("Browse...").click();
 		new DefaultTableItem(projectName).select();
 		new OkButton().click();
 
-		new QuarkusLaunchConfigurationTabGroup().apply();
+		lc.apply();
 		new PushButton(TextLabels.CLOSE).click();
 	}
 

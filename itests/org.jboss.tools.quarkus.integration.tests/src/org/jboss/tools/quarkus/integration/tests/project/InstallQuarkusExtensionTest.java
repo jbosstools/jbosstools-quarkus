@@ -30,6 +30,7 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -69,7 +70,7 @@ public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
 			String pomContent = readFile(WORKSPACE + "/" + "test" + "/pom.xml");
 			assertTrue(pomContent.contains("quarkus-resteasy"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			QuarkusCorePlugin.logException("Interrupted!", e);
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);

@@ -26,6 +26,7 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -54,12 +55,13 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 
 	@Test
 	public void testContentAssistOldNew() {
-		ContentAssistant ca_old = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
-		assertFalse(checkProposal(ca_old, PORPOSAL_FOR_SELECT));
-		
+		ContentAssistant contentAssistOld = testContentAssistant(NEW_EXTENSION_PROJECT_NAME,
+				TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertFalse(checkProposal(contentAssistOld, PORPOSAL_FOR_SELECT));
+
 		TextEditor editor = openFileWithTextEditor(NEW_EXTENSION_PROJECT_NAME, TextLabels.GENERIC_TEXT_EDITOR);
 		editor.close(false);
-		
+
 		new ProjectExplorer().selectProjects(NEW_EXTENSION_PROJECT_NAME);
 		ExtensionsView ev = new ExtensionsView();
 		ev.open();
@@ -68,16 +70,18 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		try {
-			String pomContent = InstallQuarkusExtensionTest.readFile(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml");
+			String pomContent = InstallQuarkusExtensionTest
+					.readFile(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml");
 			assertTrue(pomContent.contains("quarkus-resteasy"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			QuarkusCorePlugin.logException("Interrupted!", e);
 			fail("Attempt to read the 'pom.xml' failed!");
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
-		ContentAssistant ca_new = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
-		assertTrue(checkProposal(ca_new, PORPOSAL_FOR_SELECT));
+		ContentAssistant contentAssistNew = testContentAssistant(NEW_EXTENSION_PROJECT_NAME,
+				TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertTrue(checkProposal(contentAssistNew, PORPOSAL_FOR_SELECT));
 	}
 }

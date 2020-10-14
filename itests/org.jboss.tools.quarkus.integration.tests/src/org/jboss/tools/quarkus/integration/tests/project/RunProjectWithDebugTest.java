@@ -13,10 +13,10 @@ package org.jboss.tools.quarkus.integration.tests.project;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.debug.ui.views.variables.VariablesView;
@@ -66,7 +66,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
-		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);		
+		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
 		checkProblemsView();
 	}
 
@@ -86,11 +86,10 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		new ContextMenuItem("New Configuration").select();
 
 		new PushButton(TextLabels.DEBUG).click();
-		
+
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-
 
 		openDebugPerspective();
 		checkReturn("with changes");
@@ -135,7 +134,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		assertTrue(qp.isOpened());
 	}
 
-	private void checkReturn(String should_be) {
+	private void checkReturn(String shouldBe) {
 
 		new ShellMenuItem("Run", "Step Over").select();
 		ConsoleView consoleView = new ConsoleView();
@@ -152,7 +151,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 					TreeItem variable = new DefaultTreeItem(VARIABLE);
 					variable.select();
 					return variable.isSelected();
-				} catch (Exception e) {
+				} catch (RedDeerException e) {
 					return false;
 				}
 			}
@@ -163,14 +162,9 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 			}
 		}, TimePeriod.LONG);
 
-		try {
-			new ContextMenuItem("Change Value...").select();
-		} catch (CoreLayerException e) {
-			throw e;
-		}
-
+		new ContextMenuItem("Change Value...").select();
 		new DefaultShell("Change Object Value");
-		new DefaultStyledText().setText(should_be);
+		new DefaultStyledText().setText(shouldBe);
 		new OkButton().click();
 
 		new WaitWhile(new JobIsRunning());

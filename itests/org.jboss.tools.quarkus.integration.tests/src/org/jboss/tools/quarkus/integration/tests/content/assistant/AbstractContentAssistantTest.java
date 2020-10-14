@@ -51,9 +51,7 @@ public abstract class AbstractContentAssistantTest {
 
 		insertAndCheckProposal(editor, textForContentAssist);
 
-		ContentAssistant ca = openContentAssist(editor);
-
-		return ca;
+		return openContentAssist(editor);
 	}
 
 	/**
@@ -77,7 +75,13 @@ public abstract class AbstractContentAssistantTest {
 			try {
 				new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
 						.getProjectItem(APPLICATION_PROPERTIES).open();
-			} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // comment
+			} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
+																							// download microprofile...
+																							// when
+																							// application_properties
+																							// opens, sometimes it need
+																							// more then default 10
+																							// seconds
 			}
 		} else {
 			new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
@@ -87,9 +91,7 @@ public abstract class AbstractContentAssistantTest {
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
-
-		return ed;
+		return new TextEditor(APPLICATION_PROPERTIES);
 	}
 
 	public static ContentAssistant openContentAssist(TextEditor editor) {
@@ -111,7 +113,7 @@ public abstract class AbstractContentAssistantTest {
 		editor.insertLine(0, textForContentAssist);
 		editor.selectText(textForContentAssist);
 	}
-	
+
 	@After
 	public void deleteProject() {
 		ProjectExplorer pe = new ProjectExplorer();

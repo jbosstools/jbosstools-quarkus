@@ -69,7 +69,7 @@ public abstract class AbstractQuarkusTest {
 		qw.finish(TimePeriod.VERY_LONG);
 
 		assertTrue(new ProjectExplorer().containsProject(projectName));
-		
+
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
 			changePom(projectName, projectType, pomFile);
 		}
@@ -99,7 +99,7 @@ public abstract class AbstractQuarkusTest {
 		int line_to_delete = ed.getLineOfText(strToDelete);
 		ed.selectLine(line_to_delete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
-		
+
 	}
 
 	public static void checkProblemsView() {

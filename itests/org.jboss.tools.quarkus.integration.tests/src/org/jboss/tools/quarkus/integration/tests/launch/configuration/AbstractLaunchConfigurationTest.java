@@ -33,7 +33,6 @@ import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTest {
 	public static void createNewQuarkusProject(String projectName, String projectType) {
 		testCreateNewProject(projectName, projectType);
-		checkJdkVersion(projectName, projectType);
 		checkProblemsView();
 	}
 
@@ -45,19 +44,20 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	}
 
 	public void createNewQuarkusConfiguration(String projectName) {
-		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
-		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
+		QuarkusLaunchConfigurationTabGroup lc = new QuarkusLaunchConfigurationTabGroup();
+		lc.selectProject(projectName);
+		lc.openRunConfiguration();
 
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM).select();
 		new ContextMenuItem("New Configuration").select();
 
-		new QuarkusLaunchConfigurationTabGroup().setName(projectName + TextLabels.CONFIGURATION);
+		lc.setName(projectName + TextLabels.CONFIGURATION);
 
 		new PushButton("Browse...").click();
 		new DefaultTableItem(projectName).select();
 		new OkButton().click();
 
-		new QuarkusLaunchConfigurationTabGroup().apply();
+		lc.apply();
 		new PushButton(TextLabels.CLOSE).click();
 	}
 
@@ -79,9 +79,7 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		new PushButton("Run").click();
 
 		ConsoleView consoleView = new ConsoleView();
-		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
-
-		checkUrlContent("hello");
+		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.getCustom(600));
 
 		new DefaultToolItem("Terminate").click();
 	}

@@ -45,19 +45,7 @@ import org.junit.After;
  */
 public abstract class AbstractQuarkusTest {
 
-	private static String jdkVersion11 = "11";
-	private static String propertyName = "java.specification.version";
-
 	private static String pomFile = "pom.xml";
-	private static String gradleBuildFile = "build.gradle";
-
-	private static String mavenCompilerSourceStart = "<maven.compiler.source>";
-	private static String mavenCompilerSourceEnd = "</maven.compiler.source>";
-	private static String mavenCompilerTargetStart = "<maven.compiler.target>";
-	private static String mavenCompilerTargetEnd = "</maven.compiler.target>";
-
-	private static String gradleCompilerSource = "sourceCompatibility = JavaVersion.VERSION_";
-	private static String gradleCompilerTarget = "targetCompatibility = JavaVersion.VERSION_";
 
 	public static void testCreateNewProject(String projectName, String projectType) {
 		new WorkbenchShell().setFocus();
@@ -81,67 +69,37 @@ public abstract class AbstractQuarkusTest {
 		qw.finish(TimePeriod.VERY_LONG);
 
 		assertTrue(new ProjectExplorer().containsProject(projectName));
-	}
 
-	public static void checkJdkVersion(String projectName, String projectType) {
-		String javaVersion = System.getProperty(propertyName);
-		boolean isFound = javaVersion.contains(jdkVersion11);
-
-		String newSource;
-		String newTarget;
-		String actualSource;
-		String actualTarget;
-		String openFile;
-
-		if (!isFound) {
-			if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-				javaVersion = javaVersion.replaceAll("\\.", "_");
-				newSource = gradleCompilerSource + javaVersion;
-				newTarget = gradleCompilerTarget + javaVersion;
-				actualSource = gradleCompilerSource + jdkVersion11;
-				actualTarget = gradleCompilerTarget + jdkVersion11;
-				openFile = gradleBuildFile;
-			} else {
-				newSource = mavenCompilerSourceStart + javaVersion + mavenCompilerSourceEnd;
-				newTarget = mavenCompilerTargetStart + javaVersion + mavenCompilerTargetEnd;
-				actualSource = mavenCompilerSourceStart + jdkVersion11 + mavenCompilerSourceEnd;
-				actualTarget = mavenCompilerTargetStart + jdkVersion11 + mavenCompilerTargetEnd;
-				openFile = pomFile;
-			}
-			changeVersion(projectName, projectType, openFile, actualSource, actualTarget, newSource, newTarget);
+		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
+			changePom(projectName, projectType, pomFile);
 		}
 	}
 
-	private static void changeVersion(String projectName, String projectType, String openFile, String actualSource,
-			String actualTarget, String newSource, String newTarget) {
+	private static void changePom(String projectName, String projectType, String openFile) {
 		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).select();
 		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
 
 		TextEditor ed = new TextEditor(openFile);
 
-		changeLine(ed, actualSource, newSource);
-		changeLine(ed, actualTarget, newTarget);
+		fixPom(ed, "<goal>generate-code</goal>");
+		fixPom(ed, "<goal>generate-code-tests</goal>");
 
 		ed.save();
 		ed.close();
 
 		new ProjectExplorer().selectProjects(projectName);
 
-		if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
-		} else {
-			new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
-			new OkButton().click();
-		}
+		new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
+		new OkButton().click();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	private static void changeLine(TextEditor ed, String myActual, String myNew) {
-		ed.selectText(myActual);
-		int textPos = ed.getPositionOfText(myActual);
+	private static void fixPom(TextEditor ed, String strToDelete) {
+		int line_to_delete = ed.getLineOfText(strToDelete);
+		ed.selectLine(line_to_delete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
-		ed.insertText(textPos, myNew);
+
 	}
 
 	public static void checkProblemsView() {

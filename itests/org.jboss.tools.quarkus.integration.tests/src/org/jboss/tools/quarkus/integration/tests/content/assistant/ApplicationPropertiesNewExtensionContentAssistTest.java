@@ -10,12 +10,27 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
+import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
+import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
+import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +43,10 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class ApplicationPropertiesNewExtensionContentAssistTest extends AbstractContentAssistantTest {
 
-	private static String NEW_EXTENSION_PROJECT_NAME = "testNewExtensionContentAssistProject";
+	private static String NEW_EXTENSION_PROJECT_NAME = "testNewExtensionCA";
 
-	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "mp";
-	private static String PORPOSAL_FOR_SELECT = "mp.openapi.filter";
+	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "resteasy";
+	private static String PORPOSAL_FOR_SELECT = "quarkus.resteasy.path";
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {
@@ -40,16 +55,33 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 
 	@Test
 	public void testContentAssistOldNew() {
-		ContentAssistant ca = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
+		ContentAssistant contentAssistOld = testContentAssistant(NEW_EXTENSION_PROJECT_NAME,
+				TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertFalse(checkProposal(contentAssistOld, PORPOSAL_FOR_SELECT));
 
-		boolean isOk = checkProposalError(ca, PORPOSAL_FOR_SELECT);
-		if (isOk) {
-			addExtension(NEW_EXTENSION_PROJECT_NAME);
+		TextEditor editor = openFileWithTextEditor(NEW_EXTENSION_PROJECT_NAME, TextLabels.GENERIC_TEXT_EDITOR);
+		editor.close(false);
 
-			ca = testContentAssistant(NEW_EXTENSION_PROJECT_NAME, TEXT_FOR_TEST_CONTENT_ASSIST);
-			checkProposal(ca, PORPOSAL_FOR_SELECT);
-		} else {
-			fail("Extension already added!");
+		new ProjectExplorer().selectProjects(NEW_EXTENSION_PROJECT_NAME);
+		ExtensionsView ev = new ExtensionsView();
+		ev.open();
+		ev.getExtension("RESTEasy").select();
+		new ContextMenuItem("Install extension").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+
+		try {
+			String pomContent = InstallQuarkusExtensionTest
+					.readFile(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml");
+			assertTrue(pomContent.contains("quarkus-resteasy"));
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Interrupted!", e);
+			fail("Attempt to read the 'pom.xml' failed!");
 		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+
+		ContentAssistant contentAssistNew = testContentAssistant(NEW_EXTENSION_PROJECT_NAME,
+				TEXT_FOR_TEST_CONTENT_ASSIST);
+		assertTrue(checkProposal(contentAssistNew, PORPOSAL_FOR_SELECT));
 	}
 }

@@ -14,6 +14,7 @@ import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_UR
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_URL_TEST;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.quarkus.integration.tests.application.yaml.ApplicationYaml;
 import org.jboss.tools.quarkus.integration.tests.common.PerspectiveTest;
 import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesContentAssistTest;
 import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesNewExtensionContentAssistTest;
@@ -42,6 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,
+	ApplicationYaml.class,
 	RunProjectWithDebugTest.class,
 	
 })

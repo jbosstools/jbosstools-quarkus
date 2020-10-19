@@ -13,18 +13,12 @@ package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.RunConfigurationsDialog;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
-import org.eclipse.reddeer.swt.impl.button.OkButton;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
-import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
-import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
-import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.Shell;
-import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
-import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**
  * 
@@ -39,64 +33,53 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	}
 
 	public void testNewQuarkusConfiguration(String projectName) {
-		createNewQuarkusConfiguration(projectName);
-		checkNewQuarkusConfiguration(projectName);
-		runNewQuarkusConfiguration(projectName);
-		deleteNewQuarkusConfiguration(projectName);
+		RunConfigurationsDialog runDialog = new RunConfigurationsDialog();
+		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, runDialog);
+		checkNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
+		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
+		deleteNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
 	}
 
-	public void createNewQuarkusConfiguration(String projectName) {
-		QuarkusLaunchConfigurationTabGroup lc = new QuarkusLaunchConfigurationTabGroup();
-		lc.selectProject(projectName);
-		lc.openRunConfiguration();
+	public QuarkusLaunchConfigurationTabGroup createNewQuarkusConfiguration(String projectName,
+			RunConfigurationsDialog runDialog) {
 
-		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM).select();
-		new ContextMenuItem("New Configuration").select();
-
-		lc.setName(projectName + TextLabels.CONFIGURATION);
-
-		new PushButton("Browse...").click();
-		new DefaultTableItem(projectName).select();
-		new OkButton().click();
-
+		runDialog.open();
+		QuarkusLaunchConfigurationTabGroup launchConfiguration = new QuarkusLaunchConfigurationTabGroup();
+		runDialog.create(launchConfiguration, projectName);
+		launchConfiguration.selectProject(new DefaultShell(Shell.RUN_CONFIGURATION), projectName);
 		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		lc.apply();
-		new PushButton(TextLabels.CLOSE).click();
+		runDialog.close(true);
+
+		return launchConfiguration;
 	}
 
-	public void checkNewQuarkusConfiguration(String projectName) {
-		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
-		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
-
-		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
-
-		new PushButton(TextLabels.CLOSE).click();
+	public void checkNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
+		runDialog.open();
+		runDialog.select(launchConfiguration, projectName);
+		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
+		runDialog.close();
 	}
 
-	public void runNewQuarkusConfiguration(String projectName) {
-		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
-		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
-
-		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
-
-		new PushButton("Run").click();
+	public void runNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
+		runDialog.open();
+		runDialog.select(launchConfiguration, projectName);
+		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
+		runDialog.run();
 
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.getCustom(600));
 
-		new DefaultToolItem("Terminate").click();
+		consoleView.terminateConsole();
 	}
 
-	public void deleteNewQuarkusConfiguration(String projectName) {
-		new QuarkusLaunchConfigurationTabGroup().selectProject(projectName);
-		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
-
-		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM, projectName + TextLabels.CONFIGURATION).select();
-
-		new DefaultToolItem("Delete selected launch configuration(s)").click();
-		new PushButton("Delete").click();
+	public void deleteNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
+		runDialog.open();
+		runDialog.select(launchConfiguration, projectName);
+		runDialog.delete(launchConfiguration, projectName);
 		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		new PushButton(TextLabels.CLOSE).click();
-
+		runDialog.close();
 	}
 }

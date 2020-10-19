@@ -19,6 +19,7 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.DebugConfigurationsDialog;
 import org.eclipse.reddeer.eclipse.debug.ui.views.variables.VariablesView;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -28,12 +29,10 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
@@ -79,13 +78,12 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		insertLines(exampleResource, FIRST_LINE, SECOND_LINE, THIRD_LINE);
 		addBreakpointToLine(exampleResource, SECOND_LINE);
 
-		new QuarkusLaunchConfigurationTabGroup().selectProject(PROJECT_NAME);
-		new QuarkusLaunchConfigurationTabGroup().openDebugConfiguration();
+		DebugConfigurationsDialog debugDialog = new DebugConfigurationsDialog();
+		debugDialog.open();
 
-		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM).select();
-		new ContextMenuItem("New Configuration").select();
-
-		new PushButton(TextLabels.DEBUG).click();
+		QuarkusLaunchConfigurationTabGroup launchConfiguration = new QuarkusLaunchConfigurationTabGroup();
+		debugDialog.create(launchConfiguration, PROJECT_NAME);
+		launchConfiguration.debug();
 
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus]"), TimePeriod.getCustom(600));
@@ -96,7 +94,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 		ConsoleView cv = new ConsoleView();
 		cv.open();
-		new DefaultToolItem("Terminate").click();
+		cv.terminateConsole();
 
 		checkProblemsView();
 

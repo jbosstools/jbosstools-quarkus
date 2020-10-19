@@ -10,14 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.reddeer.ui.launch;
 
-import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
 import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.LaunchConfiguration;
-import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
-import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.Shell;
-import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 
 /**
  * 
@@ -28,31 +30,32 @@ import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 public class QuarkusLaunchConfigurationTabGroup extends LaunchConfiguration {
 
 	public QuarkusLaunchConfigurationTabGroup() {
-		super(TextLabels.QUARKUS_LAUNCH_CONFIGURATION);
+		super("Quarkus Application");
 	}
+	
+	/**
+	 * Select project in Quarkus Launch Configuration Dialog -> Browse...
+	 * 
+	 * @param composite is a shell
+	 * @param projectName
+	 */
+	public void selectProject(ReferencedComposite composite, String projectName) {
+		new PushButton(composite, "Browse...").click();
+		new DefaultTableItem(projectName).select();
+		new PushButton("OK").click();
+	}
+	
+	/**
+	 * Click "Debuge" button in Quarkus Launch Configuration Dialog
+	 * 
+	 * @param composite is a shell
+	 */
+	public void debug() {
+		new DefaultShell(Shell.DEBUG_CONFIGURATION).setFocus();
+		String shellText = new DefaultShell().getText();
+		new PushButton("Debug").click();
 
-	/**
-	 * Select project in Project Explorer
-	 */
-	public void selectProject(String projectName) {
-		new WorkbenchShell().setFocus();
-		new ProjectExplorer().selectProjects(projectName);
-	}
-
-	/**
-	 * Opens Run configuration dialog
-	 */
-	public void openRunConfiguration() {
-		new ContextMenuItem(TextLabels.RUN_AS_CONTEXT_MENU_ITEM, TextLabels.RUN_CONFIGURATION_CONTEXT_MENU_ITEM)
-				.select();
-		new WaitUntil(new ShellIsAvailable(Shell.RUN_CONFIGURATION));
-	}
-	/**
-	 * Opens Debug configuration dialog
-	 */
-	public void openDebugConfiguration() {
-		new ContextMenuItem(TextLabels.DEBUG_AS_CONTEXT_MENU_ITEM, TextLabels.DEBUG_CONFIGURATION_CONTEXT_MENU_ITEM)
-				.select();
-		new WaitUntil(new ShellIsAvailable(Shell.DEBUG_CONFIGURATION));
+		new WaitWhile(new ShellIsAvailable(shellText), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

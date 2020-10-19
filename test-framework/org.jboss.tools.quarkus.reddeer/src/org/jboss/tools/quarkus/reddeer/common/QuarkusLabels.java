@@ -28,6 +28,7 @@ public class QuarkusLabels {
 		public static final String NEW_QUARKUS_PROJECT = "New Quarkus Project";
 		public static final String RUN_CONFIGURATION = "Run Configurations";
 		public static final String DEBUG_CONFIGURATION = "Debug Configurations";
+		public static final String CREATE_NEW_FILE = "Create New File";
 	}
 	
 	

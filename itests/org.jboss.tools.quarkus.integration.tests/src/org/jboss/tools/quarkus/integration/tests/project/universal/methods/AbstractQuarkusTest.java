@@ -17,12 +17,12 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
-import org.eclipse.reddeer.swt.impl.button.FinishButton;
-import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
@@ -68,11 +68,11 @@ public abstract class AbstractQuarkusTest {
 		assertTrue(new ProjectExplorer().containsProject(projectName));
 
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
-			changePom(projectName, projectType, pomFile);
+			changePom(projectName, pomFile);
 		}
 	}
 
-	private static void changePom(String projectName, String projectType, String openFile) {
+	private static void changePom(String projectName, String openFile) {
 		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).select();
 		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
 
@@ -93,8 +93,8 @@ public abstract class AbstractQuarkusTest {
 	}
 
 	private static void deleteLine(TextEditor ed, String strToDelete) {
-		int line_to_delete = ed.getLineOfText(strToDelete);
-		ed.selectLine(line_to_delete);
+		int lineToDelete = ed.getLineOfText(strToDelete);
+		ed.selectLine(lineToDelete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
 
 	}
@@ -108,15 +108,12 @@ public abstract class AbstractQuarkusTest {
 	}
 
 	public static void createNewFile(String projectName, String fileName, String filePath) {
-		new WorkbenchShell().setFocus();
-		new ProjectExplorer().selectProjects(projectName);
-
-		new ProjectExplorer().getProject(projectName).getProjectItem(filePath).select();
-		new ContextMenuItem(TextLabels.NEW_CONTEXT_ITEM, "Other...").select();
-		new LabeledText("Wizards:").setText("File");
-		new NextButton().click();
-		new LabeledText("File name:").setText(fileName);
-		new FinishButton().click();
+		BasicNewFileResourceWizard newFileDialog = new BasicNewFileResourceWizard();
+		newFileDialog.open();
+		WizardNewFileCreationPage page = new WizardNewFileCreationPage(newFileDialog);
+		page.setFileName(fileName);
+		page.setFolderPath(projectName + "/" + filePath);
+		newFileDialog.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 

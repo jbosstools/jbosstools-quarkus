@@ -33,21 +33,34 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.launch.LaunchUtils;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class QuarkusProjectTab extends AbstractJavaMainTab {
+  private Text profileText;
 
 	@Override
 	public void createControl(Composite parent) {
 		Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
 		((GridLayout)comp.getLayout()).verticalSpacing = 0;
 		createProjectEditor(comp);
+		createProfileEditor(comp);
 		setControl(comp);
 	}
 
-	/* (non-Javadoc)
+	/**
+   * @param comp
+   */
+  private void createProfileEditor(Composite comp) {
+    Group group = SWTFactory.createGroup(comp, "Profile", 1, 1, GridData.FILL_HORIZONTAL);
+    profileText = SWTFactory.createSingleText(group, 1);
+    profileText.addModifyListener(e -> updateLaunchConfigurationDialog());
+  }
+
+  /* (non-Javadoc)
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
 	@Override
@@ -101,12 +114,28 @@ public class QuarkusProjectTab extends AbstractJavaMainTab {
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
 		}
 		config.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, QuarkusCoreConstants.QUARKUS_PROCESS_FACTORY);
+		config.setAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, "");
 	}
 
 	@Override
+  public void initializeFrom(ILaunchConfiguration config) {
+    super.initializeFrom(config);
+    String profileName = "";
+    try {
+      profileName = config.getAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, "");
+    }
+    catch (CoreException ce) {
+      setErrorMessage(ce.getStatus().getMessage());
+    }
+    profileText.setText(profileName);
+  }
+
+  @Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String projectName = fProjText.getText().trim();
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+		String profileName = profileText.getText().trim();
+		configuration.setAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, profileName);
 		try {
 			if (!projectName.isEmpty()) {
 				LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);

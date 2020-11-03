@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class RunProjectWithProfile extends AbstractQuarkusTest {
+public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
 	private static String PROJECT_NAME = "testRunWithProfile";
 	private static String JAVA_SOURCE_PATH = "src/main/java";

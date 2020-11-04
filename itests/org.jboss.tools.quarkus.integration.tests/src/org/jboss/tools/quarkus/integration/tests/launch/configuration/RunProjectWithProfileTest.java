@@ -43,17 +43,17 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
-	private static String PROJECT_NAME = "testRunWithProfile";
-	private static String JAVA_SOURCE_PATH = "src/main/java";
-	private static String RESOURCES_SOURCE_PATH = "src/main/resources";
-	private static String ORG_ACME = "org.acme.commandmode";
-	private static String EXAMPLE_RESOURCE = "HelloCommando.java";
-  private static String APPLICATION_PROPERTIES = "application.properties";
-	private static String FIRST_LINE = "      @javax.inject.Inject";
-	private static String SECOND_LINE = "    	@org.eclipse.microprofile.config.inject.ConfigProperty(name=\"greeting\", defaultValue = \"commando\")";
-	private static String THIRD_LINE = "      String greeting;";
-	private static String GREETING_PROPERTY_NAME = "greeting";
-	private static String GREETING_PROPERTY_VALUE = "mygreeting";
+	private static final String PROJECT_NAME = "testRunWithProfile";
+	private static final String JAVA_SOURCE_PATH = "src/main/java";
+	private static final String RESOURCES_SOURCE_PATH = "src/main/resources";
+	private static final String ORG_ACME = "org.acme.commandmode";
+	private static final String EXAMPLE_RESOURCE = "HelloCommando.java";
+  private static final String APPLICATION_PROPERTIES = "application.properties";
+	private static final String FIRST_LINE = "      @javax.inject.Inject";
+	private static final String SECOND_LINE = "    	 @org.eclipse.microprofile.config.inject.ConfigProperty(name=\"greeting\", defaultValue = \"commando\")";
+	private static final String THIRD_LINE = "      String greeting;";
+	private static final String GREETING_PROPERTY_NAME = "greeting";
+	private static final String GREETING_PROPERTY_VALUE = "mygreeting";
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
@@ -72,7 +72,7 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 		ProjectItem applicationProperties = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCES_SOURCE_PATH)
         .getProjectItem(APPLICATION_PROPERTIES);
 
-    modifyApplicationProperties(applicationProperties, GREETING_PROPERTY_NAME + " " + GREETING_PROPERTY_VALUE);
+    modifyApplicationProperties(applicationProperties, GREETING_PROPERTY_NAME + "=" + GREETING_PROPERTY_VALUE);
 
 
 		new QuarkusLaunchConfigurationTabGroup().selectProject(PROJECT_NAME);
@@ -107,14 +107,15 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 		ed.insertLine(line + 3, thirdValue);
 		
 		line = ed.getLineOfText("final String name");
-		ed.insertLine(line + 1, "name = greeting;");
+		ed.insertLine(line + 1, "System.out.println(\"greeting \" + greeting);");
 
 		ed.save();
+		ed.close();
 	}
 	
 	 private void modifyApplicationProperties(ProjectItem exampleResource, String line) {
 	    exampleResource.open();
-	    TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
+	    TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
 	    ed.setText(line);
 
 	    ed.save();

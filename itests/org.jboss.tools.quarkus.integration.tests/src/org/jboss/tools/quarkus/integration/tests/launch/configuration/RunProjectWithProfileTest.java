@@ -13,9 +13,7 @@ package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
-import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
-import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -25,7 +23,6 @@ import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
-import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -44,8 +41,6 @@ import org.junit.runner.RunWith;
 public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
 	private static final String PROJECT_NAME = "testRunWithProfile";
-	private static final String EXAMPLE_RESOURCE = "HelloCommando.java";
-  private static final String APPLICATION_PROPERTIES = "application.properties";
   private static final String PROFILE_NAME ="myprofile";
 
 	@BeforeClass

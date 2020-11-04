@@ -19,6 +19,7 @@ import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPr
 import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesNewExtensionContentAssistTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationGradleTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMavenTest;
+import org.jboss.tools.quarkus.integration.tests.launch.configuration.RunProjectWithProfileTest;
 import org.jboss.tools.quarkus.integration.tests.project.CreateNewProjectTest;
 import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithDebugTest;
@@ -37,6 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateNewProjectTest.class,
 	CreateNewQuarkusConfigurationMavenTest.class,
 	CreateNewQuarkusConfigurationGradleTest.class,
+	RunProjectWithProfileTest.class,
 	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,

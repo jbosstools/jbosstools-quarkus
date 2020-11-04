@@ -61,4 +61,6 @@ public class QuarkusCoreConstants {
 	
 	public static final String QUARKUS_PROCESS_FACTORY = QuarkusCorePlugin.PLUGIN_ID + ".processFactory";
 
+  public static final String ATTR_PROFILE_NAME = QuarkusCorePlugin.PLUGIN_ID + ".profileName";
+
 }

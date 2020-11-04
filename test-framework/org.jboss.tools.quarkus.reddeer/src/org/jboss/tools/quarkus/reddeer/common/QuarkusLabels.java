@@ -80,5 +80,6 @@ public class QuarkusLabels {
 		//Button names
 		public static final String CLOSE = "Close";
 		public static final String DEBUG = "Debug";
+		public static final String RUN = "Run";
 	}
 }

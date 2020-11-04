@@ -25,8 +25,8 @@ import org.eclipse.core.externaltools.internal.IExternalToolConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.code.utils.ProjectHelpers;
-import org.jboss.tools.quarkus.core.launch.LaunchUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -43,22 +43,45 @@ public class LaunchUtilsTest {
 	@Test
 	public void testInitializeQuarkusLaunchConfigurationWithMaven() throws Exception {
 		IProject project = ProjectHelpers.loadProject(new File("projects/maven/code-with-quarkus-maven"));
-		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), isNull(String.class))).thenReturn(project.getName());
+		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), (String)isNull())).thenReturn(project.getName());
+		when(configuration.getAttribute(eq(QuarkusCoreConstants.ATTR_PROFILE_NAME), eq(""))).thenReturn("");
 		LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
 		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("mvnw"));
 		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
 		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("compile quarkus:dev"));
 	}
 
+  @Test
+  public void testInitializeQuarkusLaunchConfigurationWithMavenAndProfile() throws Exception {
+    IProject project = ProjectHelpers.loadProject(new File("projects/maven/code-with-quarkus-maven"));
+    when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), (String)isNull())).thenReturn(project.getName());
+    when(configuration.getAttribute(eq(QuarkusCoreConstants.ATTR_PROFILE_NAME), eq(""))).thenReturn("myprofile");
+    LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
+    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("mvnw"));
+    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
+    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("compile quarkus:dev -Dquarkus.profile=myprofile"));
+  }
 
 	@Test
 	public void testInitializeQuarkusLaunchConfigurationWithGradle() throws Exception {
 		IProject project = ProjectHelpers.loadProject(new File("projects/gradle/code-with-quarkus-gradle"));
-		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), isNull(String.class))).thenReturn(project.getName());
+		when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), (String)isNull())).thenReturn(project.getName());
+		when(configuration.getAttribute(eq(QuarkusCoreConstants.ATTR_PROFILE_NAME), eq(""))).thenReturn("myprofile");
 		LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
 		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("gradlew"));
 		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
-		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("quarkusDev"));
+		Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("quarkusDev -Dquarkus.profile=myprofile"));
 	}
+	
+	 @Test
+	  public void testInitializeQuarkusLaunchConfigurationWithGradleAndProfile() throws Exception {
+	    IProject project = ProjectHelpers.loadProject(new File("projects/gradle/code-with-quarkus-gradle"));
+	    when(configuration.getAttribute(eq(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME), (String)isNull())).thenReturn(project.getName());
+	    when(configuration.getAttribute(eq(QuarkusCoreConstants.ATTR_PROFILE_NAME), eq(""))).thenReturn("");
+	    LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
+	    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_LOCATION), contains("gradlew"));
+	    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_WORKING_DIRECTORY), eq(project.getLocation().toOSString()));
+	    Mockito.verify(configuration).setAttribute(eq(IExternalToolConstants.ATTR_TOOL_ARGUMENTS), eq("quarkusDev"));
+	  }
 }
 

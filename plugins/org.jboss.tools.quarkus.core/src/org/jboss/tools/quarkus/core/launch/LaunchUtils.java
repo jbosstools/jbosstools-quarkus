@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class LaunchUtils {
@@ -32,15 +33,17 @@ public class LaunchUtils {
 	public static void initializeQuarkusLaunchConfiguration(
 			ILaunchConfigurationWorkingCopy workingCopy) throws CoreException {
 		String projectName = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+		String profileName = workingCopy.getAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, "");
+		String suffix = profileName.length() > 0 ? " -Dquarkus.profile=" + profileName:"";
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getToolSupport(project).getScriptPath().toOSString());
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
 		workingCopy.setAttribute(IExternalToolConstants.ATTR_BUILD_SCOPE, "${projects:" + project.getName() + "}");
 		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
 		if (ProjectUtils.isMavenProject(project)) {
-			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev");
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev" + suffix);
 		} else {
-			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "quarkusDev");
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "quarkusDev" + suffix);
 		}
 	}
 

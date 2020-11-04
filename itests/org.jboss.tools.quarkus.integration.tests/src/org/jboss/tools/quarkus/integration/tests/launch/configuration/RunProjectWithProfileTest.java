@@ -49,9 +49,9 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 	private static String ORG_ACME = "org.acme.commandmode";
 	private static String EXAMPLE_RESOURCE = "HelloCommando.java";
   private static String APPLICATION_PROPERTIES = "application.properties";
-	private static String FIRST_LINE = "    	@javax.inject.Inject";
+	private static String FIRST_LINE = "      @javax.inject.Inject";
 	private static String SECOND_LINE = "    	@org.eclipse.microprofile.config.inject.ConfigProperty(name=\"greeting\", defaultValue = \"commando\")";
-	private static String THIRD_LINE = "    	String greeting;";
+	private static String THIRD_LINE = "      String greeting;";
 	private static String GREETING_PROPERTY_NAME = "greeting";
 	private static String GREETING_PROPERTY_VALUE = "mygreeting";
 

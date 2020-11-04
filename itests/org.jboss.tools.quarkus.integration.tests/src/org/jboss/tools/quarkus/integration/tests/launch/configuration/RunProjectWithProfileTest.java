@@ -44,16 +44,9 @@ import org.junit.runner.RunWith;
 public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
 	private static final String PROJECT_NAME = "testRunWithProfile";
-	private static final String JAVA_SOURCE_PATH = "src/main/java";
-	private static final String RESOURCES_SOURCE_PATH = "src/main/resources";
-	private static final String ORG_ACME = "org.acme.commandmode";
 	private static final String EXAMPLE_RESOURCE = "HelloCommando.java";
   private static final String APPLICATION_PROPERTIES = "application.properties";
-	private static final String FIRST_LINE = "@javax.inject.Inject";
-	private static final String SECOND_LINE = "@org.eclipse.microprofile.config.inject.ConfigProperty(name=\"greeting\", defaultValue = \"commando\")";
-	private static final String THIRD_LINE = "String greeting;";
-	private static final String GREETING_PROPERTY_NAME = "greeting";
-	private static final String GREETING_PROPERTY_VALUE = "mygreeting";
+  private static final String PROFILE_NAME ="myprofile";
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
@@ -64,17 +57,6 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 	@Test
 	public void testRunWithProfile() {
 
-		ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(JAVA_SOURCE_PATH)
-				.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
-
-		modifyJavaResource(exampleResource, FIRST_LINE, SECOND_LINE, THIRD_LINE);
-		
-		ProjectItem applicationProperties = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCES_SOURCE_PATH)
-        .getProjectItem(APPLICATION_PROPERTIES);
-
-    modifyApplicationProperties(applicationProperties, GREETING_PROPERTY_NAME + "=" + GREETING_PROPERTY_VALUE);
-
-
 		new QuarkusLaunchConfigurationTabGroup().selectProject(PROJECT_NAME);
 		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
 
@@ -82,12 +64,12 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 		new ContextMenuItem("New Configuration").select();
 		
 		DefaultGroup group = new DefaultGroup("Profile");
-		new DefaultText(group).setText("myprofile");
+		new DefaultText(group).setText(PROFILE_NAME);
 
 		new PushButton(TextLabels.RUN).click();
 
 		ConsoleView consoleView = new ConsoleView();
-		new WaitUntil(new ConsoleHasText(consoleView, GREETING_PROPERTY_VALUE), TimePeriod.getCustom(600));
+		new WaitUntil(new ConsoleHasText(consoleView, "Profile " + PROFILE_NAME + " activated"), TimePeriod.getCustom(600));
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		ConsoleView cv = new ConsoleView();
@@ -96,28 +78,4 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
 		checkProblemsView();
 	}
-
-	private void modifyJavaResource(ProjectItem exampleResource, String firstValue, String secondValue, String thirdValue) {
-		exampleResource.open();
-		TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
-
-		int line = ed.getLineOfText("public class HelloCommando");
-		ed.insertLine(line + 1, firstValue);
-		ed.insertLine(line + 2, secondValue);
-		ed.insertLine(line + 3, thirdValue);
-		
-		line = ed.getLineOfText("final String name");
-		ed.insertLine(line + 1, "System.out.println(\"greeting \" + greeting);");
-
-		ed.save();
-		ed.close();
-	}
-	
-	 private void modifyApplicationProperties(ProjectItem exampleResource, String line) {
-	    exampleResource.open();
-	    TextEditor ed = new TextEditor(APPLICATION_PROPERTIES);
-	    ed.setText(line);
-
-	    ed.save();
-	  }
 }

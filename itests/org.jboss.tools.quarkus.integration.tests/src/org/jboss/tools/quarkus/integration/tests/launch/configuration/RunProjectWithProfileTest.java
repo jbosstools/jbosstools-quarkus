@@ -76,7 +76,7 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
 
 		new QuarkusLaunchConfigurationTabGroup().selectProject(PROJECT_NAME);
-		new QuarkusLaunchConfigurationTabGroup().openDebugConfiguration();
+		new QuarkusLaunchConfigurationTabGroup().openRunConfiguration();
 
 		new DefaultTreeItem(TextLabels.QUARKUS_APPLICATION_TREE_ITEM).select();
 		new ContextMenuItem("New Configuration").select();

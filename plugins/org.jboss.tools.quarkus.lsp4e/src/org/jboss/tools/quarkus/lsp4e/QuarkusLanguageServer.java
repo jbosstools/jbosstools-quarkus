@@ -100,12 +100,12 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 		codeLens.put("urlCodeLensEnabled", "true");
 		tools.put("codeLens", codeLens);
 		quarkus.put("tools", tools);
-		settings.put("quarkus", quarkus);
+		settings.put("microprofile", quarkus);
 		root.put("settings", settings);
 		Map<String, Object> extendedClientCapabilities = new HashMap<>();
 		Map<String, Object> commands = new HashMap<>();
 		Map<String, Object> commandsKind = new HashMap<>();
-		commandsKind.put("valueSet", Arrays.asList("quarkus.command.configuration.update", "quarkus.command.open.uri"));
+		commandsKind.put("valueSet", Arrays.asList("microprofile.command.configuration.update", "microprofile.command.open.uri"));
 		commands.put("commandsKind", commandsKind);
 		extendedClientCapabilities.put("commands", commands);
 		root.put("extendedClientCapabilities", extendedClientCapabilities);

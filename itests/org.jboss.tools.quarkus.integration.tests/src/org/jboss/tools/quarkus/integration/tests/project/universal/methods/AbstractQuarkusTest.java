@@ -13,18 +13,16 @@ package org.jboss.tools.quarkus.integration.tests.project.universal.methods;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
@@ -32,7 +30,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
@@ -71,18 +68,18 @@ public abstract class AbstractQuarkusTest {
 		assertTrue(new ProjectExplorer().containsProject(projectName));
 
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
-			changePom(projectName, projectType, pomFile);
+			changePom(projectName, pomFile);
 		}
 	}
 
-	private static void changePom(String projectName, String projectType, String openFile) {
+	private static void changePom(String projectName, String openFile) {
 		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).select();
 		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
 
 		TextEditor ed = new TextEditor(openFile);
 
-		fixPom(ed, "<goal>generate-code</goal>");
-		fixPom(ed, "<goal>generate-code-tests</goal>");
+		deleteLine(ed, "<goal>generate-code</goal>");
+		deleteLine(ed, "<goal>generate-code-tests</goal>");
 
 		ed.save();
 		ed.close();
@@ -95,9 +92,9 @@ public abstract class AbstractQuarkusTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	private static void fixPom(TextEditor ed, String strToDelete) {
-		int line_to_delete = ed.getLineOfText(strToDelete);
-		ed.selectLine(line_to_delete);
+	private static void deleteLine(TextEditor ed, String strToDelete) {
+		int lineToDelete = ed.getLineOfText(strToDelete);
+		ed.selectLine(lineToDelete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
 
 	}
@@ -110,29 +107,14 @@ public abstract class AbstractQuarkusTest {
 
 	}
 
-	public static void checkUrlContent(String should_be) {
-		String urlContent = "";
-
-		try {
-			urlContent = getUrlContent("http://localhost:8080/hello");
-		} catch (IOException e) {
-			QuarkusCorePlugin.logException("Wrong URL!", e);
-		}
-
-		assertEquals("Should be <" + should_be + "> , but is <" + urlContent + ">", should_be, urlContent);
-	}
-
-	public static String getUrlContent(String readedURL) throws IOException {
-
-		URL localhost = new URL(readedURL);
-		String inputLine = "";
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(localhost.openStream()));) {
-			inputLine = in.readLine();
-			in.close();
-		} catch (IOException e) {
-			QuarkusCorePlugin.logException("Can`t read from url!", e);
-		}
-		return inputLine;
+	public static void createNewFile(String projectName, String fileName, String filePath) {
+		BasicNewFileResourceWizard newFileDialog = new BasicNewFileResourceWizard();
+		newFileDialog.open();
+		WizardNewFileCreationPage page = new WizardNewFileCreationPage(newFileDialog);
+		page.setFileName(fileName);
+		page.setFolderPath(projectName + "/" + filePath);
+		newFileDialog.finish();
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	@After

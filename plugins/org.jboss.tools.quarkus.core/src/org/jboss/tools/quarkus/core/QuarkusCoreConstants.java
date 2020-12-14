@@ -41,6 +41,8 @@ public class QuarkusCoreConstants {
     public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME = "cne";
 
     public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE = "tools%40jboss.org";
+    
+    public static final String CODE_NO_EXAMPLE_CODE_PARAMETER_NAME = "ne";
 
     public static final String CODE_ENDPOINT_URL_PROPERTY_NAME = "jbosstools.quarkus.code.url";
     

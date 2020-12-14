@@ -21,6 +21,7 @@ import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_CLIENT_NAME
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_ENDPOINT_URL;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_EXTENSIONS_SHORT_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_GROUP_ID_PARAMETER_NAME;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_NO_EXAMPLE_CODE_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_PATH_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_TOOL_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_VERSION_PARAMETER_NAME;
@@ -42,6 +43,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -97,7 +99,7 @@ public class QuarkusModelRegistry {
 	}
     
     public IStatus zip(String endpointURL, Tool tool, 
-            String groupId, String artifactId, String version, String className, String path, Set<QuarkusExtension> selected, OutputStream output, IProgressMonitor monitor) {
+            String groupId, String artifactId, String version, String className, String path, Set<QuarkusExtension> selected, boolean useCodeStarters, OutputStream output, IProgressMonitor monitor) {
         StringBuilder builder = new StringBuilder(endpointURL);
         if (!endpointURL.endsWith("/")) {
             builder.append('/');
@@ -112,7 +114,8 @@ public class QuarkusModelRegistry {
         builder.append(CODE_PATH_PARAMETER_NAME).append('=').append(path).append('&');
         builder.append(CODE_EXTENSIONS_SHORT_PARAMETER_NAME).append('=').append(selected.stream().map(e -> e.getShortId()).collect(Collectors.joining("."))).append('&');
         builder.append(CODE_CLIENT_NAME_PARAMETER_NAME).append('=').append(CODE_CLIENT_NAME_PARAMETER_VALUE).append('&');
-        builder.append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME).append('=').append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE);
+        builder.append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME).append('=').append(CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE).append('&');
+        builder.append(CODE_NO_EXAMPLE_CODE_PARAMETER_NAME).append('=').append(!useCodeStarters);
         try {
             String url = builder.toString();
             return TRANSPORT_UTILITY.download(url, url, output, monitor);

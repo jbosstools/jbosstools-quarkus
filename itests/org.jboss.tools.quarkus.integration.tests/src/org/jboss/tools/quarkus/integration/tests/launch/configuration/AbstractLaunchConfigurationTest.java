@@ -22,7 +22,7 @@ import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGr
 
 /**
  * 
- * @author olkornii@redhat.com
+ * @author olkornii@redhat.com Oleksii Korniienko
  *
  */
 
@@ -69,7 +69,10 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		runDialog.run();
 
 		ConsoleView consoleView = new ConsoleView();
-		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.getCustom(600));
+		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
+				TimePeriod.getCustom(600));
+
+		checkUrlContent("Hello RESTEasy");
 
 		consoleView.terminateConsole();
 	}

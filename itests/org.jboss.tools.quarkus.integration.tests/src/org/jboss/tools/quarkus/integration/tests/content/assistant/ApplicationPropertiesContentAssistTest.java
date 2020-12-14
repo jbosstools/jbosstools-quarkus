@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class ApplicationPropertiesContentAssistTest extends AbstractContentAssistantTest {
 
-	private static String CONTENT_ASSIST_PROJECT_NAME = "testContentAssistProject";
+	private static String CONTENT_ASSIST_PROJECT_NAME = "testcontentassistproject";
 
 	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "quarkus";
 	private static String PORPOSAL_FOR_SELECT = "quarkus.application.name";

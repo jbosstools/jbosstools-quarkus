@@ -11,6 +11,7 @@
 package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
@@ -30,7 +31,7 @@ import org.jboss.tools.quarkus.integration.tests.project.universal.methods.Abstr
  * @author olkornii@redhat.com
  *
  */
-public abstract class AbstractContentAssistantTest {
+public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 
@@ -38,8 +39,8 @@ public abstract class AbstractContentAssistantTest {
 	private static String APPLICATION_PROPERTIES = "application.properties";
 
 	public static void createProjectAndCheckJDK(String projectName) {
-		AbstractQuarkusTest.testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
-		AbstractQuarkusTest.checkProblemsView();
+		testCreateNewProject(projectName, TextLabels.MAVEN_TYPE);
+		checkProblemsView();
 	}
 
 	public ContentAssistant testContentAssistant(String projectName, String textForContentAssist) {
@@ -99,12 +100,8 @@ public abstract class AbstractContentAssistantTest {
 		ContentAssistant contentAssist = editor.openContentAssistant();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		try {
-			Thread.sleep(1000); // 1 second sleep for sure, that Content Assistant will open
-		} catch (InterruptedException e) {
-			QuarkusCorePlugin.logException("Interrupted!", e);
-			Thread.currentThread().interrupt();
-		}
+
+		AbstractWait.sleep(TimePeriod.getCustom(1)); // 1 second sleep for sure, that Content Assistant will open
 
 		return contentAssist;
 	}

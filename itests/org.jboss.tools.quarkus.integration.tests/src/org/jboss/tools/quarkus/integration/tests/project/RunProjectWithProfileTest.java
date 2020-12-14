@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 
-	private static final String PROJECT_NAME = "testRunWithProfile";
+	private static final String PROJECT_NAME = "testrunwithprofile";
 	private static final String PROFILE_NAME = "myprofile";
 
 	@BeforeClass
@@ -68,7 +68,10 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "Profile " + PROFILE_NAME + " activated"),
 				TimePeriod.getCustom(600));
+
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+
+		checkUrlContent("Hello RESTEasy");
 
 		consoleView.terminateConsole();
 

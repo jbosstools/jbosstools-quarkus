@@ -43,10 +43,10 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class ApplicationPropertiesNewExtensionContentAssistTest extends AbstractContentAssistantTest {
 
-	private static String NEW_EXTENSION_PROJECT_NAME = "testNewExtensionCA";
+	private static String NEW_EXTENSION_PROJECT_NAME = "testnewextensionca";
 
-	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "resteasy";
-	private static String PORPOSAL_FOR_SELECT = "quarkus.resteasy.path";
+	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "mp";
+	private static String PORPOSAL_FOR_SELECT = "mp.openapi.filter";
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {
@@ -65,14 +65,14 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		new ProjectExplorer().selectProjects(NEW_EXTENSION_PROJECT_NAME);
 		ExtensionsView ev = new ExtensionsView();
 		ev.open();
-		ev.getExtension("RESTEasy").select();
+		ev.getExtension("SmallRye OpenAPI").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		try {
 			String pomContent = InstallQuarkusExtensionTest
 					.readFile(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml");
-			assertTrue(pomContent.contains("quarkus-resteasy"));
+			assertTrue(pomContent.contains("quarkus-smallrye-openapi"));
 		} catch (IOException e) {
 			QuarkusCorePlugin.logException("Interrupted!", e);
 			fail("Attempt to read the 'pom.xml' failed!");

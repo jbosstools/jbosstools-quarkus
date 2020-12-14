@@ -12,6 +12,12 @@ package org.jboss.tools.quarkus.integration.tests.project;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -37,6 +43,7 @@ import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -54,10 +61,10 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
-	private static String PROJECT_NAME = "testRunWithDebug";
+	private static String PROJECT_NAME = "testrunwithdebug";
 	private static String RESOURCE_PATH = "src/main/java";
-	private static String ORG_ACME = "org.acme.commandmode";
-	private static String EXAMPLE_RESOURCE = "HelloCommando.java";
+	private static String ORG_ACME = "org.acme";
+	private static String EXAMPLE_RESOURCE = "ExampleResource.java";
 	private static String VARIABLE = "test_var";
 	private static String FIRST_LINE = "    	String " + VARIABLE + " = \"w/o changes\";";
 	private static String SECOND_LINE = "    	System.out.println(\"Printed first \" + test_var);";
@@ -66,6 +73,8 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
 		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
+		changeProject();
+		refreshProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
 		checkProblemsView();
 	}
 
@@ -171,5 +180,54 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		new WaitUntil(new ConsoleHasText(consoleView, "Printed second with changes"), TimePeriod.DEFAULT);
 		new ShellMenuItem("Run", "Resume").select();
 		new WaitUntil(new ConsoleHasText(consoleView, "hello commando"), TimePeriod.LONG);
+	}
+
+	private static void changeProject() {
+		File file = new File("resources/helloCommandoProject.txt").getAbsoluteFile();
+
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			QuarkusCorePlugin.logException("Can`t open stream for read from file!", e);
+		}
+
+		String st;
+		if (br != null) {
+			ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
+					.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
+
+			exampleResource.open();
+			TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
+
+			new WaitUntil(new AbstractWaitCondition() {
+
+				@Override
+				public boolean test() {
+					try {
+						return ed.isActive();
+					} catch (RedDeerException e) {
+						return false;
+					}
+				}
+
+				@Override
+				public String description() {
+					return "Opening TextEditor for ExampleResource";
+				}
+			}, TimePeriod.LONG);
+
+			String newProject = "";
+			try {
+				while ((st = br.readLine()) != null)
+					newProject = newProject + st + "\n";
+			} catch (IOException e) {
+				QuarkusCorePlugin.logException("Can`t read from file!", e);
+			}
+
+			ed.setText(newProject);
+			ed.save();
+			ed.close();
+		}
 	}
 }

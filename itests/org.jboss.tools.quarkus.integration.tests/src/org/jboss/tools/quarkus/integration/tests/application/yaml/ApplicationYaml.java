@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class ApplicationYaml extends AbstractQuarkusTest {
 
-	private static String projectName = "testApplicationYaml";
+	private static String projectName = "testapplicationyaml";
 	private static String applicationYamlFile = "application.yaml";
 	private static String applicationYamlPath = "src/main/resources";
 	private static String pomName = "pom.xml";
@@ -79,6 +79,8 @@ public class ApplicationYaml extends AbstractQuarkusTest {
 
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "new_test_quarkus_project_name"), TimePeriod.getCustom(600));
+
+		checkUrlContent("Hello RESTEasy");
 
 		consoleView.terminateConsole();
 	}

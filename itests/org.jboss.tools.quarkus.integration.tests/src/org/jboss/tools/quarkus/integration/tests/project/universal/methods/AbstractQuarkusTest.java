@@ -11,8 +11,14 @@
 package org.jboss.tools.quarkus.integration.tests.project.universal.methods;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -30,6 +36,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
@@ -52,6 +59,7 @@ public abstract class AbstractQuarkusTest {
 		assertTrue(qw.isOpen());
 
 		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
+
 		wp.setProjectName(projectName);
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
 			wp.setMavenProjectType();
@@ -60,10 +68,10 @@ public abstract class AbstractQuarkusTest {
 		}
 
 		qw.next();
-		if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-			new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
-		}
+		new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
 		qw.finish(TimePeriod.VERY_LONG);
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		assertTrue(new ProjectExplorer().containsProject(projectName));
 
@@ -84,10 +92,7 @@ public abstract class AbstractQuarkusTest {
 		ed.save();
 		ed.close();
 
-		new ProjectExplorer().selectProjects(projectName);
-
-		new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
-		new OkButton().click();
+		refreshProject(projectName, TextLabels.MAVEN_TYPE);
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
@@ -115,6 +120,40 @@ public abstract class AbstractQuarkusTest {
 		page.setFolderPath(projectName + "/" + filePath);
 		newFileDialog.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+
+	public void checkUrlContent(String should_be) {
+		URL localhost = null;
+
+		try {
+			localhost = new URL("http://localhost:8080/hello");
+		} catch (MalformedURLException e) {
+			QuarkusCorePlugin.logException("Wrong URL! ", e);
+		}
+
+		assertNotEquals("Should not be <NULL> , but is <" + localhost + ">", null, localhost);
+
+		String readedLine = "default";
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(localhost.openStream()))) {
+			readedLine = reader.readLine();
+			reader.close();
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Can`t read from url!", e);
+		}
+
+		assertEquals("Should be <" + should_be + "> , but is <" + readedLine + ">", should_be, readedLine);
+	}
+
+	public static void refreshProject(String projectName, String projectType) {
+		new ProjectExplorer().selectProjects(projectName);
+		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
+			new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
+			new OkButton().click();
+		} else {
+			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
+		}
+
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@After

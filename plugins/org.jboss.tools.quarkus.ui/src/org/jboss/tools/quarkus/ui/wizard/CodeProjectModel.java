@@ -52,6 +52,8 @@ public class CodeProjectModel extends ObservablePojo {
     
     public static final String SELECTED_EXTENSIONS_PROPERTY = "selectedExtensions";
     
+    public static final String USE_CODE_STARTERS_PROPERTY = "useCodeStarters";
+    
     private static final IPath ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation();
     
     private String projectName;
@@ -80,6 +82,8 @@ public class CodeProjectModel extends ObservablePojo {
     private List<QuarkusExtension> extensions = new ArrayList<>();
     
     private Set<QuarkusExtension> selectedExtensions = new HashSet<>();
+    
+    private boolean useCodeStarters = true;
 
     /**
      * @return the projectName
@@ -312,5 +316,19 @@ public class CodeProjectModel extends ObservablePojo {
             }
             setSelectedExtensions(newSelectedExtensions);
     	}
+    }
+
+    /**
+     * @return the useCodeStarters
+     */
+    public boolean isUseCodeStarters() {
+      return useCodeStarters;
+    }
+
+    /**
+     * @param useCodeStarters the useCodeStarters to set
+     */
+    public void setUseCodeStarters(boolean useCodeStarters) {
+      firePropertyChange(USE_CODE_STARTERS_PROPERTY, this.useCodeStarters, this.useCodeStarters = useCodeStarters);
     }
 }

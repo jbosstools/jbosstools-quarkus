@@ -22,7 +22,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
-import org.junit.After;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 
@@ -109,12 +108,5 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 	public static void insertAndCheckProposal(TextEditor editor, String textForContentAssist) {
 		editor.insertLine(0, textForContentAssist);
 		editor.selectText(textForContentAssist);
-	}
-
-	@After
-	public void deleteProject() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects(true);
 	}
 }

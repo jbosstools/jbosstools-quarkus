@@ -69,6 +69,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	private static String FIRST_LINE = "    	String " + VARIABLE + " = \"w/o changes\";";
 	private static String SECOND_LINE = "    	System.out.println(\"Printed first \" + test_var);";
 	private static String THIRD_LINE = "    	System.out.println(\"Printed second \" + test_var);";
+	private static String FILE_PATH = "resources/helloCommandoProject.txt";
 
 	@BeforeClass
 	public static void testNewNewQuarkusMavenProject() {
@@ -183,17 +184,22 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	}
 
 	private static void changeProject() {
-		File file = new File("resources/helloCommandoProject.txt").getAbsoluteFile();
+		File file = new File(FILE_PATH).getAbsoluteFile();
 
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(file));
+		String st = "";
+		StringBuilder bld = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			while ((st = reader.readLine()) != null)
+				bld.append(st + "\n");
 		} catch (FileNotFoundException e) {
 			QuarkusCorePlugin.logException("Can`t open stream for read from file!", e);
+		} catch (IOException e1) {
+			QuarkusCorePlugin.logException("IOException while onpening file <" + FILE_PATH + ">", e1);
 		}
 
-		String st;
-		if (br != null) {
+		String newProject = bld.toString();
+
+		if (!newProject.equals("")) {
 			ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
 					.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
 
@@ -216,14 +222,6 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 					return "Opening TextEditor for ExampleResource";
 				}
 			}, TimePeriod.LONG);
-
-			String newProject = "";
-			try {
-				while ((st = br.readLine()) != null)
-					newProject = newProject + st + "\n";
-			} catch (IOException e) {
-				QuarkusCorePlugin.logException("Can`t read from file!", e);
-			}
 
 			ed.setText(newProject);
 			ed.save();

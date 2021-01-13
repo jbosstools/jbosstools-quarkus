@@ -36,15 +36,16 @@ public class LaunchUtils {
 		String profileName = workingCopy.getAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, "");
 		String suffix = profileName.length() > 0 ? " -Dquarkus.profile=" + profileName:"";
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getToolSupport(project).getScriptPath().toOSString());
-		workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
-		workingCopy.setAttribute(IExternalToolConstants.ATTR_BUILD_SCOPE, "${projects:" + project.getName() + "}");
-		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
-		if (ProjectUtils.isMavenProject(project)) {
-			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev" + suffix);
-		} else {
-			workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "quarkusDev" + suffix);
+		if (project.exists() && project.isAccessible()) {
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getToolSupport(project).getScriptPath().toOSString());
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
+			workingCopy.setAttribute(IExternalToolConstants.ATTR_BUILD_SCOPE, "${projects:" + project.getName() + "}");
+			workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
+			if (ProjectUtils.isMavenProject(project)) {
+				workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev" + suffix);
+			} else {
+				workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "quarkusDev" + suffix);
+			}
 		}
 	}
-
 }

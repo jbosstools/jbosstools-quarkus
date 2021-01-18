@@ -118,7 +118,13 @@ public abstract class AbstractQuarkusTest {
 		WizardNewFileCreationPage page = new WizardNewFileCreationPage(newFileDialog);
 		page.setFileName(fileName);
 		page.setFolderPath(projectName + "/" + filePath);
-		newFileDialog.finish();
+		try {
+			newFileDialog.finish();
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // sometimes node.js warning
+																						// blocks test and need to close
+																						// warning shell
+			WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 

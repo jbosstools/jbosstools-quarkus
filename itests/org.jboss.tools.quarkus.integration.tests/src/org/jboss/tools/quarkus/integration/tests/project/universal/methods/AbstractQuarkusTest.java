@@ -13,12 +13,18 @@ package org.jboss.tools.quarkus.integration.tests.project.universal.methods;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -130,13 +136,11 @@ public abstract class AbstractQuarkusTest {
 
 	public void checkUrlContent(String should_be) {
 		URL localhost = null;
-
 		try {
 			localhost = new URL("http://localhost:8080/hello");
 		} catch (MalformedURLException e) {
 			QuarkusCorePlugin.logException("Wrong URL! ", e);
 		}
-
 		assertNotEquals("Should not be <NULL> , but is <" + localhost + ">", null, localhost);
 
 		String readedLine = "default";
@@ -146,7 +150,6 @@ public abstract class AbstractQuarkusTest {
 		} catch (IOException e) {
 			QuarkusCorePlugin.logException("Can`t read from url!", e);
 		}
-
 		assertEquals("Should be <" + should_be + "> , but is <" + readedLine + ">", should_be, readedLine);
 	}
 
@@ -160,6 +163,28 @@ public abstract class AbstractQuarkusTest {
 		}
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	public static void checkExtensionInPom(File file, String extension) {
+		try {
+			String pomContent = readFile(file);
+			assertTrue(pomContent.contains(extension));
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Interrupted!", e);
+			fail("Attempt to read the 'pom.xml' failed!");
+		}
+	}
+
+	public static String readFile(File file) throws IOException {
+		FileInputStream stream = new FileInputStream(file);
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			/* Instead of using default, pass in a decoder. */
+			return Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			stream.close();
+		}
 	}
 
 	@After

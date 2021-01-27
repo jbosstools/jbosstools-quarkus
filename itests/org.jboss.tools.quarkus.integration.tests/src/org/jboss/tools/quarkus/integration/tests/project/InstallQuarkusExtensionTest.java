@@ -10,15 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.project;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 
@@ -30,7 +22,6 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
@@ -66,25 +57,8 @@ public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		try {
-			String pomContent = readFile(WORKSPACE + "/" + "test" + "/pom.xml");
-			assertTrue(pomContent.contains("quarkus-resteasy"));
-		} catch (IOException e) {
-			QuarkusCorePlugin.logException("Interrupted!", e);
-			fail("Attempt to read the 'pom.xml' failed!");
-		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-	}
+		checkExtensionInPom(new File(WORKSPACE + "/" + "test" + "/pom.xml"), "quarkus-resteasy");
 
-	public static String readFile(String path) throws IOException {
-		FileInputStream stream = new FileInputStream(new File(path));
-		try {
-			FileChannel fc = stream.getChannel();
-			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-			/* Instead of using default, pass in a decoder. */
-			return Charset.defaultCharset().decode(bb).toString();
-		} finally {
-			stream.close();
-		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

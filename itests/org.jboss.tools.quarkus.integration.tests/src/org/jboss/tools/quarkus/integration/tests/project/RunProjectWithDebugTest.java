@@ -10,12 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.project;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
@@ -185,47 +184,39 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 	private static void changeProject() {
 		File file = new File(FILE_PATH).getAbsoluteFile();
-
-		String st = "";
-		StringBuilder bld = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			while ((st = reader.readLine()) != null)
-				bld.append(st + "\n");
-		} catch (FileNotFoundException e) {
-			QuarkusCorePlugin.logException("Can`t open stream for read from file!", e);
+		String newProject = "";
+		try {
+			newProject = readFile(file);
 		} catch (IOException e1) {
-			QuarkusCorePlugin.logException("IOException while onpening file <" + FILE_PATH + ">", e1);
+			QuarkusCorePlugin.logException("Interrupted!", e1);
+			fail("Attempt to read the 'helloCommandoProject.txt' failed!");
 		}
+		assertFalse(newProject.equals(""));
 
-		String newProject = bld.toString();
+		ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
+				.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
+		exampleResource.open();
 
-		if (!newProject.equals("")) {
-			ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
-					.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
-
-			exampleResource.open();
-			TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
-
-			new WaitUntil(new AbstractWaitCondition() {
-
-				@Override
-				public boolean test() {
-					try {
-						return ed.isActive();
-					} catch (RedDeerException e) {
-						return false;
-					}
+		TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
+		new WaitUntil(new AbstractWaitCondition() {
+			@Override
+			public boolean test() {
+				try {
+					return ed.isActive();
+				} catch (RedDeerException e) {
+					return false;
 				}
+			}
 
-				@Override
-				public String description() {
-					return "Opening TextEditor for ExampleResource";
-				}
-			}, TimePeriod.LONG);
+			@Override
+			public String description() {
+				return "Opening TextEditor for ExampleResource";
+			}
+		}, TimePeriod.LONG);
 
-			ed.setText(newProject);
-			ed.save();
-			ed.close();
-		}
+		ed.setText(newProject);
+		ed.save();
+		ed.close();
+
 	}
 }

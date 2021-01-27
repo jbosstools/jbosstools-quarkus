@@ -56,7 +56,7 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
         codeStartsLabel.setText("Example code:");
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).applyTo(codeStartsLabel);
         Button codeStartsButton = new Button(parent, SWT.CHECK | SWT.WRAP);
-        codeStartsButton.setText("If selected, project will contain sample code from extensions that suppport codestarts.");
+        codeStartsButton.setText("If selected, project will contain sample code from extensions that support codestarts.");
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(codeStartsButton);
         ValueBindingBuilder.bind(WidgetProperties.buttonSelection().observe(codeStartsButton))
         .to(BeanProperties.value(USE_CODE_STARTERS_PROPERTY).observe(model)).in(dbc);

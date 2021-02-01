@@ -80,7 +80,6 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 	@Test
 	public void testRunWithDebug() {
-
 		ProjectItem exampleResource = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(RESOURCE_PATH)
 				.getProjectItem(ORG_ACME).getProjectItem(EXAMPLE_RESOURCE);
 
@@ -106,13 +105,11 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		cv.terminateConsole();
 
 		checkProblemsView();
-
 	}
 
 	private void insertLines(ProjectItem exampleResource, String firstValue, String secondValue, String thirdValue) {
 		exampleResource.open();
 		TextEditor ed = new TextEditor(EXAMPLE_RESOURCE);
-
 		int line = ed.getLineOfText("final String name");
 		ed.insertLine(line + 1, firstValue);
 		ed.insertLine(line + 2, secondValue);
@@ -142,14 +139,12 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	}
 
 	private void checkReturn(String shouldBe) {
-
 		new ShellMenuItem("Run", "Step Over").select();
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "Printed first w/o changes"), TimePeriod.DEFAULT);
 
 		VariablesView variablesView = new VariablesView();
 		variablesView.open();
-
 		new WaitUntil(new AbstractWaitCondition() {
 
 			@Override
@@ -173,7 +168,6 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		new DefaultShell("Change Object Value");
 		new DefaultStyledText().setText(shouldBe);
 		new OkButton().click();
-
 		new WaitWhile(new JobIsRunning());
 
 		new ShellMenuItem("Run", "Step Over").select();
@@ -217,6 +211,5 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 		ed.setText(newProject);
 		ed.save();
 		ed.close();
-
 	}
 }

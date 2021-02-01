@@ -49,16 +49,15 @@ public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
 	@Test
 	public void testAddQuarkusExtensionInProject() {
 		new WorkbenchShell().setFocus();
-
 		new ProjectExplorer().selectProjects("test");
+
 		ExtensionsView ev = new ExtensionsView();
 		ev.open();
 		ev.getExtension("RESTEasy").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		checkExtensionInPom(new File(WORKSPACE + "/" + "test" + "/pom.xml"), "quarkus-resteasy");
-
+		checkExtensionInPom(new File(WORKSPACE + "/test/pom.xml"), "quarkus-resteasy");
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

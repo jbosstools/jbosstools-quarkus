@@ -38,6 +38,5 @@ public class CreateNewQuarkusConfigurationMavenTest extends AbstractLaunchConfig
 	@Test
 	public void testNewQuarkusMavenConfiguration() {
 		testNewQuarkusConfiguration(MAVEN_PROJECT_NAME);
-
 	}
 }

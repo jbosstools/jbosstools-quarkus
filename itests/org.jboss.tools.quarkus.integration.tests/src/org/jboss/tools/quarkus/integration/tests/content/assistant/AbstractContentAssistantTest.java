@@ -45,10 +45,9 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 	public ContentAssistant testContentAssistant(String projectName, String textForContentAssist) {
 		new WorkbenchShell().setFocus();
 		new ProjectExplorer().selectProjects(projectName);
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 
+		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 		insertAndCheckProposal(editor, textForContentAssist);
 
 		return openContentAssist(editor);
@@ -88,18 +87,14 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 					.getProjectItem(APPLICATION_PROPERTIES).select();
 			new ContextMenuItem(TextLabels.OPEN_WITH, textEditor).select();
 		}
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		return new TextEditor(APPLICATION_PROPERTIES);
 	}
 
 	public static ContentAssistant openContentAssist(TextEditor editor) {
-
 		ContentAssistant contentAssist = editor.openContentAssistant();
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
 		AbstractWait.sleep(TimePeriod.getCustom(1)); // 1 second sleep for sure, that Content Assistant will open
 
 		return contentAssist;

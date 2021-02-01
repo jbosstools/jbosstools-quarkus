@@ -41,9 +41,11 @@ import org.junit.runner.RunWith;
 public class ApplicationPropertiesNewExtensionContentAssistTest extends AbstractContentAssistantTest {
 
 	private static String NEW_EXTENSION_PROJECT_NAME = "testnewextensionca";
-
+	private static String POM_FILE_PATH = "/testnewextensionca/pom.xml";
+	
 	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "mp";
 	private static String PORPOSAL_FOR_SELECT = "mp.openapi.filter";
+	
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {
@@ -66,9 +68,8 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		checkExtensionInPom(new File(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml"),
+		checkExtensionInPom(new File(WORKSPACE + POM_FILE_PATH),
 				"quarkus-smallrye-openapi");
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 

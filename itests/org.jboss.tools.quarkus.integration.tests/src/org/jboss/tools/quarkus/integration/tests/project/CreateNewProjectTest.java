@@ -38,11 +38,8 @@ public class CreateNewProjectTest extends AbstractQuarkusTest {
 
 	@Test
 	public void testNewNewQuarkusGradleProject() {
-
 		testCreateNewProject(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
-
 		checkProblemsView();
-
 	}
 
 }

@@ -65,7 +65,6 @@ public abstract class AbstractQuarkusTest {
 		assertTrue(qw.isOpen());
 
 		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
-
 		wp.setProjectName(projectName);
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
 			wp.setMavenProjectType();
@@ -76,9 +75,7 @@ public abstract class AbstractQuarkusTest {
 		qw.next();
 		new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
 		qw.finish(TimePeriod.VERY_LONG);
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
 		assertTrue(new ProjectExplorer().containsProject(projectName));
 
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
@@ -91,15 +88,11 @@ public abstract class AbstractQuarkusTest {
 		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
 
 		TextEditor ed = new TextEditor(openFile);
-
 		deleteLine(ed, "<goal>generate-code</goal>");
 		deleteLine(ed, "<goal>generate-code-tests</goal>");
-
 		ed.save();
 		ed.close();
-
 		refreshProject(projectName, TextLabels.MAVEN_TYPE);
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
@@ -107,7 +100,6 @@ public abstract class AbstractQuarkusTest {
 		int lineToDelete = ed.getLineOfText(strToDelete);
 		ed.selectLine(lineToDelete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
-
 	}
 
 	public static void checkProblemsView() {
@@ -115,7 +107,6 @@ public abstract class AbstractQuarkusTest {
 		problemsView.open();
 		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
 		assertEquals("There should be no errors in imported project", 0, problems.size());
-
 	}
 
 	public static void createNewFile(String projectName, String fileName, String filePath) {
@@ -161,7 +152,6 @@ public abstract class AbstractQuarkusTest {
 		} else {
 			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
 		}
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 

@@ -42,7 +42,6 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 
 	public QuarkusLaunchConfigurationTabGroup createNewQuarkusConfiguration(String projectName,
 			RunConfigurationsDialog runDialog) {
-
 		runDialog.open();
 		QuarkusLaunchConfigurationTabGroup launchConfiguration = new QuarkusLaunchConfigurationTabGroup();
 		runDialog.create(launchConfiguration, projectName);
@@ -71,9 +70,7 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
 				TimePeriod.getCustom(600));
-
 		checkUrlContent("Hello RESTEasy");
-
 		consoleView.terminateConsole();
 	}
 

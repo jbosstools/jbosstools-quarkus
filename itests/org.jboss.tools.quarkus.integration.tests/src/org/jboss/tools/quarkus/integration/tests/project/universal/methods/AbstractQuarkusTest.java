@@ -84,8 +84,7 @@ public abstract class AbstractQuarkusTest {
 	}
 
 	private static void changePom(String projectName, String openFile) {
-		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).select();
-		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
+		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).openWith(TextLabels.TEXT_EDITOR);
 
 		TextEditor ed = new TextEditor(openFile);
 		deleteLine(ed, "<goal>generate-code</goal>");

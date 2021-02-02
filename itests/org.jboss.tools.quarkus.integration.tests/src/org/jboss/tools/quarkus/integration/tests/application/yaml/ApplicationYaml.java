@@ -63,7 +63,7 @@ public class ApplicationYaml extends AbstractQuarkusTest {
 
 	@Test
 	public void runWithApplicationYaml() {
-		new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(POM_FILE).open();
+		new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(POM_FILE).openWith(TextLabels.TEXT_EDITOR);
 		addPomExtensionInPomFile();
 		createNewFile(PROJECT_NAME, APPLICATION_YAML_FILE, APPLICATION_YAML_PATH);
 		addLinesInApplicationYaml();

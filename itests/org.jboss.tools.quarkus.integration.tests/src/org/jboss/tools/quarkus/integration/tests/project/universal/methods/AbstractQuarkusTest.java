@@ -11,8 +11,20 @@
 package org.jboss.tools.quarkus.integration.tests.project.universal.methods;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -30,6 +42,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.wizard.CodeProjectTypeWizardPage;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
@@ -60,11 +73,9 @@ public abstract class AbstractQuarkusTest {
 		}
 
 		qw.next();
-		if (projectType.equals(TextLabels.GRADLE_TYPE)) {
-			new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
-		}
+		new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
 		qw.finish(TimePeriod.VERY_LONG);
-
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue(new ProjectExplorer().containsProject(projectName));
 
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
@@ -73,22 +84,14 @@ public abstract class AbstractQuarkusTest {
 	}
 
 	private static void changePom(String projectName, String openFile) {
-		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).select();
-		new ContextMenuItem(TextLabels.OPEN_WITH, TextLabels.TEXT_EDITOR).select();
+		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).openWith(TextLabels.TEXT_EDITOR);
 
 		TextEditor ed = new TextEditor(openFile);
-
 		deleteLine(ed, "<goal>generate-code</goal>");
 		deleteLine(ed, "<goal>generate-code-tests</goal>");
-
 		ed.save();
 		ed.close();
-
-		new ProjectExplorer().selectProjects(projectName);
-
-		new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
-		new OkButton().click();
-
+		refreshProject(projectName, TextLabels.MAVEN_TYPE);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
@@ -96,7 +99,6 @@ public abstract class AbstractQuarkusTest {
 		int lineToDelete = ed.getLineOfText(strToDelete);
 		ed.selectLine(lineToDelete);
 		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
-
 	}
 
 	public static void checkProblemsView() {
@@ -104,7 +106,6 @@ public abstract class AbstractQuarkusTest {
 		problemsView.open();
 		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
 		assertEquals("There should be no errors in imported project", 0, problems.size());
-
 	}
 
 	public static void createNewFile(String projectName, String fileName, String filePath) {
@@ -113,8 +114,66 @@ public abstract class AbstractQuarkusTest {
 		WizardNewFileCreationPage page = new WizardNewFileCreationPage(newFileDialog);
 		page.setFileName(fileName);
 		page.setFolderPath(projectName + "/" + filePath);
-		newFileDialog.finish();
+		try {
+			newFileDialog.finish();
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // sometimes node.js warning
+																						// blocks test and need to close
+																						// warning shell
+			WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+
+	public void checkUrlContent(String should_be) {
+		URL localhost = null;
+		try {
+			localhost = new URL("http://localhost:8080/hello");
+		} catch (MalformedURLException e) {
+			QuarkusCorePlugin.logException("Wrong URL! ", e);
+		}
+		assertNotEquals("Should not be <NULL> , but is <" + localhost + ">", null, localhost);
+
+		String readedLine = "default";
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(localhost.openStream()))) {
+			readedLine = reader.readLine();
+			reader.close();
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Can`t read from url!", e);
+		}
+		assertEquals("Should be <" + should_be + "> , but is <" + readedLine + ">", should_be, readedLine);
+	}
+
+	public static void refreshProject(String projectName, String projectType) {
+		new ProjectExplorer().selectProjects(projectName);
+		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
+			new ContextMenuItem(TextLabels.MAVEN_CONTEXT_MENU_ITEM, TextLabels.UPDATE_MAVEN_PROJECT).select();
+			new OkButton().click();
+		} else {
+			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	public static void checkExtensionInPom(File file, String extension) {
+		try {
+			String pomContent = readFile(file);
+			assertTrue(pomContent.contains(extension));
+		} catch (IOException e) {
+			QuarkusCorePlugin.logException("Interrupted!", e);
+			fail("Attempt to read the 'pom.xml' failed!");
+		}
+	}
+
+	public static String readFile(File file) throws IOException {
+		FileInputStream stream = new FileInputStream(file);
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			/* Instead of using default, pass in a decoder. */
+			return Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			stream.close();
+		}
 	}
 
 	@After

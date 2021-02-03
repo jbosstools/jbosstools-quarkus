@@ -12,9 +12,8 @@ package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.io.IOException;
+import java.io.File;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -26,8 +25,6 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
-import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.jboss.tools.quarkus.reddeer.view.ExtensionsView;
@@ -43,10 +40,12 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class ApplicationPropertiesNewExtensionContentAssistTest extends AbstractContentAssistantTest {
 
-	private static String NEW_EXTENSION_PROJECT_NAME = "testNewExtensionCA";
-
-	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "resteasy";
-	private static String PORPOSAL_FOR_SELECT = "quarkus.resteasy.path";
+	private static String NEW_EXTENSION_PROJECT_NAME = "testnewextensionca";
+	private static String POM_FILE_PATH = "/testnewextensionca/pom.xml";
+	
+	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "mp";
+	private static String PORPOSAL_FOR_SELECT = "mp.openapi.filter";
+	
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {
@@ -65,18 +64,12 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		new ProjectExplorer().selectProjects(NEW_EXTENSION_PROJECT_NAME);
 		ExtensionsView ev = new ExtensionsView();
 		ev.open();
-		ev.getExtension("RESTEasy").select();
+		ev.getExtension("SmallRye OpenAPI").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-		try {
-			String pomContent = InstallQuarkusExtensionTest
-					.readFile(WORKSPACE + "/" + NEW_EXTENSION_PROJECT_NAME + "/pom.xml");
-			assertTrue(pomContent.contains("quarkus-resteasy"));
-		} catch (IOException e) {
-			QuarkusCorePlugin.logException("Interrupted!", e);
-			fail("Attempt to read the 'pom.xml' failed!");
-		}
+		checkExtensionInPom(new File(WORKSPACE + POM_FILE_PATH),
+				"quarkus-smallrye-openapi");
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 

@@ -39,12 +39,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateNewProjectTest.class,
 	CreateNewQuarkusConfigurationMavenTest.class,
 	CreateNewQuarkusConfigurationGradleTest.class,
-	RunProjectWithProfileTest.class,
 	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,
 	ApplicationYaml.class,
-	RunProjectWithDebugTest.class,
+	RunProjectWithProfileTest.class,
+	RunProjectWithDebugTest.class
 	
 })
 

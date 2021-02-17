@@ -10,17 +10,21 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.content.assistant;
 
+import static org.junit.Assert.assertFalse;
+
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
-import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.condition.ContentAssistantShellIsOpened;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
@@ -48,9 +52,8 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
-		insertAndCheckProposal(editor, textForContentAssist);
-
-		return openContentAssist(editor);
+		insertAndSave(editor, textForContentAssist);
+		return openContentAssist(editor, textForContentAssist, projectName);
 	}
 
 	/**
@@ -70,38 +73,48 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 	public static TextEditor openFileWithTextEditor(String projectName, String textEditor) {
 
-		if (textEditor.equals(TextLabels.GENERIC_TEXT_EDITOR)) {
-			try {
-				new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
-						.getProjectItem(APPLICATION_PROPERTIES).open();
-			} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
-																							// download microprofile...
-																							// when
-																							// application_properties
-																							// opens, sometimes it need
-																							// more then default 10
-																							// seconds
-			}
-		} else {
+		try {
 			new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
-					.getProjectItem(APPLICATION_PROPERTIES).select();
-			new ContextMenuItem(TextLabels.OPEN_WITH, textEditor).select();
+					.getProjectItem(APPLICATION_PROPERTIES).openWith(textEditor);
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
+																						// download microprofile...
+																						// when
+																						// application_properties
+																						// opens, sometimes it need
+																						// more then default 10
+																						// seconds
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-
 		return new TextEditor(APPLICATION_PROPERTIES);
 	}
 
-	public static ContentAssistant openContentAssist(TextEditor editor) {
-		ContentAssistant contentAssist = editor.openContentAssistant();
+	public static ContentAssistant openContentAssist(TextEditor editor, String textForContentAssist,
+			String projectName) {
+		ContentAssistant contentAssist = null;
+		Shell[] shells = ShellLookup.getInstance().getShells();
+		ContentAssistantShellIsOpened caw = new ContentAssistantShellIsOpened(shells);
+		try {
+			contentAssist = editor.openContentAssistant();
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
+																						// download microprofile...
+																						// when
+																						// content assistent
+																						// opens, sometimes it need
+																						// more then default 10
+																						// seconds
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			new WaitUntil(caw, TimePeriod.LONG);
+			contentAssist = new ContentAssistant(caw.getContentAssistTable());
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		AbstractWait.sleep(TimePeriod.getCustom(1)); // 1 second sleep for sure, that Content Assistant will open
 
+		assertFalse(contentAssist == null);
 		return contentAssist;
 	}
 
-	public static void insertAndCheckProposal(TextEditor editor, String textForContentAssist) {
-		editor.insertLine(0, textForContentAssist);
+	public static void insertAndSave(TextEditor editor, String textForContentAssist) {
+		editor.setText(textForContentAssist);
 		editor.selectText(textForContentAssist);
+		editor.save();
 	}
 }

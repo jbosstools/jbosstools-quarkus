@@ -50,9 +50,9 @@ public class CodestartTest extends AbstractQuarkusTest {
 	}
 
 	private boolean checkFileExist() {
-		ProjectItem java_dir = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(JAVA_FILES_PATH);
-		if (java_dir.containsResource("org.acme")) {
-			return java_dir.getProjectItem("org.acme").containsResource("ExampleResource.java");
+		ProjectItem javaDir = new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(JAVA_FILES_PATH);
+		if (javaDir.containsResource("org.acme")) {
+			return javaDir.getProjectItem("org.acme").containsResource("ExampleResource.java");
 		}
 		return false;
 	}

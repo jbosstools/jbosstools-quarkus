@@ -63,8 +63,8 @@ public class ApplicationYaml extends AbstractQuarkusTest {
 
 	@Test
 	public void runWithApplicationYaml() {
-		new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(POM_FILE).openWith(TextLabels.TEXT_EDITOR);;
-		addPOM_EXTENSIONInPomFile();
+		new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem(POM_FILE).openWith(TextLabels.TEXT_EDITOR);
+		addExtensionInPomFile();
 		createNewFile(PROJECT_NAME, APPLICATION_YAML_FILE, APPLICATION_YAML_PATH);
 		addLinesInApplicationYaml();
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
@@ -84,7 +84,7 @@ public class ApplicationYaml extends AbstractQuarkusTest {
 		consoleView.terminateConsole();
 	}
 
-	private void addPOM_EXTENSIONInPomFile() {
+	private void addExtensionInPomFile() {
 		TextEditor editor = new TextEditor(POM_FILE);
 		int endLineNumber = editor.getLineOfText("</dependencyManagement>");
 		String startDependenciesLine = editor.getTextAtLine(endLineNumber + 1);

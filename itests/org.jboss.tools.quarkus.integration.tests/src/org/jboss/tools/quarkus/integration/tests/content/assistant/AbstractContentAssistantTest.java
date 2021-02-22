@@ -53,7 +53,7 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 		insertAndSave(editor, textForContentAssist);
-		return openContentAssist(editor, textForContentAssist, projectName);
+		return openContentAssist(editor);
 	}
 
 	/**
@@ -88,8 +88,7 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 		return new TextEditor(APPLICATION_PROPERTIES);
 	}
 
-	public static ContentAssistant openContentAssist(TextEditor editor, String textForContentAssist,
-			String projectName) {
+	public static ContentAssistant openContentAssist(TextEditor editor) {
 		ContentAssistant contentAssist = null;
 		Shell[] shells = ShellLookup.getInstance().getShells();
 		ContentAssistantShellIsOpened caw = new ContentAssistantShellIsOpened(shells);

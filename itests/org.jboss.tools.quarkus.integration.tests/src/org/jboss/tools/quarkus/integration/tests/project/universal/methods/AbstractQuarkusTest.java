@@ -35,12 +35,12 @@ import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
-import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
@@ -55,15 +55,36 @@ import org.junit.After;
  */
 public abstract class AbstractQuarkusTest {
 
-	private static String pomFile = "pom.xml";
+	/**
+	 * Overriding method for create new quarkus project without/with codestart
+	 */
+	public static void testCreateNewProject(String projectName, String projectType, boolean withCodestart) {
+		QuarkusWizard qw = openQuarkusWizard();
+		insertProjectInfo(projectName, projectType, qw);
+		if (!withCodestart) {
+			new LabeledCheckBox("Example code:").click();
+		}
+		finishCreatingProject(projectName, projectType, qw);
+	}
 
+	/**
+	 * Default method for create new quarkus project
+	 */
 	public static void testCreateNewProject(String projectName, String projectType) {
-		new WorkbenchShell().setFocus();
+		QuarkusWizard qw = openQuarkusWizard();
+		insertProjectInfo(projectName, projectType, qw);
+		finishCreatingProject(projectName, projectType, qw);
+	}
 
+	private static QuarkusWizard openQuarkusWizard() {
+		new WorkbenchShell().setFocus();
 		QuarkusWizard qw = new QuarkusWizard();
 		qw.open();
 		assertTrue(qw.isOpen());
+		return qw;
+	}
 
+	private static void insertProjectInfo(String projectName, String projectType, QuarkusWizard qw) {
 		CodeProjectTypeWizardPage wp = new CodeProjectTypeWizardPage(qw);
 		wp.setProjectName(projectName);
 		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
@@ -71,34 +92,15 @@ public abstract class AbstractQuarkusTest {
 		} else if (projectType.equals(TextLabels.GRADLE_TYPE)) {
 			wp.setGradleProjectType();
 		}
-
 		qw.next();
 		new LabeledText(TextLabels.ARTIFACT_ID).setText(projectName);
-		qw.finish(TimePeriod.VERY_LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		assertTrue(new ProjectExplorer().containsProject(projectName));
-
-		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
-			changePom(projectName, pomFile);
-		}
 	}
 
-	private static void changePom(String projectName, String openFile) {
-		new ProjectExplorer().getProject(projectName).getProjectItem(openFile).openWith(TextLabels.TEXT_EDITOR);
-
-		TextEditor ed = new TextEditor(openFile);
-		deleteLine(ed, "<goal>generate-code</goal>");
-		deleteLine(ed, "<goal>generate-code-tests</goal>");
-		ed.save();
-		ed.close();
-		refreshProject(projectName, TextLabels.MAVEN_TYPE);
+	private static void finishCreatingProject(String projectName, String projectType, QuarkusWizard qw) {
+		qw.finish(TimePeriod.getCustom(900));
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-	}
-
-	private static void deleteLine(TextEditor ed, String strToDelete) {
-		int lineToDelete = ed.getLineOfText(strToDelete);
-		ed.selectLine(lineToDelete);
-		new ContextMenuItem(TextLabels.CUT_CONTEXT_MENU_ITEM).select();
+		assertTrue(new ProjectExplorer().containsProject(projectName));
+		refreshProject(projectName, projectType);
 	}
 
 	public static void checkProblemsView() {

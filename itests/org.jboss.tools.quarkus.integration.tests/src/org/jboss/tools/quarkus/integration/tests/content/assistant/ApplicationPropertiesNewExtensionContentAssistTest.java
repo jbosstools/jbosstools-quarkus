@@ -59,7 +59,8 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		assertFalse(checkProposal(contentAssistOld, PORPOSAL_FOR_SELECT));
 
 		TextEditor editor = openFileWithTextEditor(NEW_EXTENSION_PROJECT_NAME, TextLabels.GENERIC_TEXT_EDITOR);
-		editor.close(false);
+		editor.setText("");
+		editor.close(true);
 
 		new ProjectExplorer().selectProjects(NEW_EXTENSION_PROJECT_NAME);
 		ExtensionsView ev = new ExtensionsView();

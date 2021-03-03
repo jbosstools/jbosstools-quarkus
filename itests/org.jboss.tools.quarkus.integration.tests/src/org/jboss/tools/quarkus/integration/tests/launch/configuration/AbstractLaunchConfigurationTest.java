@@ -36,7 +36,8 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		RunConfigurationsDialog runDialog = new RunConfigurationsDialog();
 		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, runDialog);
 		checkNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
-		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
+		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080");
+		new ConsoleView().terminateConsole();
 		deleteNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
 	}
 
@@ -61,7 +62,7 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	}
 
 	public void runNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
-			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
+			QuarkusLaunchConfigurationTabGroup launchConfiguration, String localhostPort) {
 		runDialog.open();
 		runDialog.select(launchConfiguration, projectName);
 		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
@@ -70,8 +71,7 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
 				TimePeriod.getCustom(600));
-		checkUrlContent("Hello RESTEasy");
-		consoleView.terminateConsole();
+		checkUrlContent("Hello RESTEasy", localhostPort);
 	}
 
 	public void deleteNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,

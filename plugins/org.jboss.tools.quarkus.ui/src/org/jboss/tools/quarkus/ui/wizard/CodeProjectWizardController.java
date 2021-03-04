@@ -127,7 +127,8 @@ public class CodeProjectWizardController {
         } catch (IOException e) {
         	status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e);   
         } catch (InterruptedException e) {
-            status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e); 
+            status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e);
+            Thread.currentThread().interrupt();
         } catch (CoreException e) {
             status = e.getStatus();
         }

@@ -31,8 +31,6 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
     
     private ServiceTracker<IProxyService, IProxyService> proxyServiceTracker;
 
-    private BundleContext context;
-
     /**
      * The constructor
      */

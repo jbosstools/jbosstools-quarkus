@@ -19,19 +19,19 @@ public class QuarkusCoreConstants {
      * Parameter names for the download request. See
      * http://editor.swagger.io/?url=https://code.quarkus.io/openapi for reference.
      */
-    public static final String CODE_TOOL_PARAMETER_NAME = "b";
+    public static final String CODE_TOOL_PARAMETER_NAME = "buildTool";
 
-    public static final String CODE_GROUP_ID_PARAMETER_NAME = "g";
+    public static final String CODE_GROUP_ID_PARAMETER_NAME = "groupId";
 
-    public static final String CODE_ARTIFACT_ID_PARAMETER_NAME = "a";
+    public static final String CODE_ARTIFACT_ID_PARAMETER_NAME = "artifactId";
 
-    public static final String CODE_VERSION_PARAMETER_NAME = "v";
+    public static final String CODE_VERSION_PARAMETER_NAME = "version";
 
-    public static final String CODE_CLASSNAME_PARAMETER_NAME = "c";
+    public static final String CODE_CLASSNAME_PARAMETER_NAME = "className";
 
-    public static final String CODE_PATH_PARAMETER_NAME = "p";
+    public static final String CODE_PATH_PARAMETER_NAME = "path";
 
-    public static final String CODE_EXTENSIONS_PARAMETER_NAME = "e";
+    public static final String CODE_EXTENSIONS_PARAMETER_NAME = "extensions";
     public static final String CODE_EXTENSIONS_SHORT_PARAMETER_NAME = "s";
 
     public static final String CODE_CLIENT_NAME_PARAMETER_NAME = "cn";
@@ -42,7 +42,13 @@ public class QuarkusCoreConstants {
 
     public static final String CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE = "tools%40jboss.org";
     
-    public static final String CODE_NO_EXAMPLE_CODE_PARAMETER_NAME = "ne";
+    public static final String CODE_CLIENT_NAME_HEADER_NAME = "Client-Name";
+    public static final String CODE_CLIENT_NAME_HEADER_VALUE = "JBoss Tools Quarkus";
+    public static final String CODE_CLIENT_CONTACT_EMAIL_HEADER_NAME = "Client-Contact-Email";
+    public static final String CODE_CLIENT_CONTACT_EMAIL_HEADER_VALUE = "tools@jboss.org";
+
+    
+    public static final String CODE_NO_EXAMPLE_CODE_PARAMETER_NAME = "noExamples";
 
     public static final String CODE_ENDPOINT_URL_PROPERTY_NAME = "jbosstools.quarkus.code.url";
     
@@ -53,11 +59,11 @@ public class QuarkusCoreConstants {
     
     public static final String CODE_ENDPOINT_URL = System.getProperty(CODE_ENDPOINT_URL_PROPERTY_NAME, CODE_ENDPOINT_URL_PRODUCTION);
 
-    public static final String EXTENSIONS_SUFFIX = "api/extensions?" + CODE_CLIENT_NAME_PARAMETER_NAME + "="
+    public static final String EXTENSIONS_SUFFIX = "/api/extensions?" + CODE_CLIENT_NAME_PARAMETER_NAME + "="
             + CODE_CLIENT_NAME_PARAMETER_VALUE + "&" + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME + "="
             + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE;
 
-    public static final String DOWNLOAD_SUFFIX = "api/download";
+    public static final String DOWNLOAD_SUFFIX = "/api/download";
 
 	public static final String QUARKUS_RUNTIME_CLASS_NAME = "io.quarkus.runtime.LaunchMode";
 	

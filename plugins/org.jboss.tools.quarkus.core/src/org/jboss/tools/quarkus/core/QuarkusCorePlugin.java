@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.core;
 
+import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Quarkus plugin
@@ -26,6 +28,8 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
 
     // The shared instance
     private static QuarkusCorePlugin plugin;
+    
+    private ServiceTracker<IProxyService, IProxyService> proxyServiceTracker;
 
     /**
      * The constructor
@@ -42,8 +46,27 @@ public class QuarkusCorePlugin extends AbstractUIPlugin {
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
+        if (proxyServiceTracker != null) {
+          proxyServiceTracker.close();
+        }
         super.stop(context);
     }
+    
+    public IProxyService getProxyService() {
+      try {
+        if (proxyServiceTracker == null) {
+          proxyServiceTracker = new ServiceTracker<>(getBundle().getBundleContext(), IProxyService.class.getName(), null);
+          proxyServiceTracker.open();
+        }
+        return proxyServiceTracker.getService();
+      } catch (Exception e) {
+        logException(e.getLocalizedMessage(), e);
+      } catch (NoClassDefFoundError e) {
+        logException(e.getLocalizedMessage(), e);
+      }
+      return null;
+    }
+
 
     /**
      * Returns the shared instance

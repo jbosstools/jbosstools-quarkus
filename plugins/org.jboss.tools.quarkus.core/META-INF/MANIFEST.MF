@@ -25,7 +25,10 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.apache.commons.lang3,
  org.apache.commons.exec,
  org.apache.commons.io,
- org.jboss.tools.usage
+ org.jboss.tools.usage,
+ org.apache.httpcomponents.httpclient,
+ org.apache.httpcomponents.httpcore,
+ org.eclipse.core.net
 Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,
  org.jboss.tools.quarkus.core.launch,

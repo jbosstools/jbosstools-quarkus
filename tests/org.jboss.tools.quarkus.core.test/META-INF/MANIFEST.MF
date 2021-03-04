@@ -9,6 +9,7 @@ Fragment-Host: org.jboss.tools.quarkus.core
 Automatic-Module-Name: org.jboss.tools.quarkus.core.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.junit,
- org.junit.jupiter.api
+ org.junit.jupiter.api,
+ org.junit.rules
 Require-Bundle: org.apache.commons.io,
  org.mockito

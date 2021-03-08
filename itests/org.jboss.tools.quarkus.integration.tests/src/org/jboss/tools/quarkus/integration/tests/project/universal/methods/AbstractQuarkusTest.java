@@ -126,10 +126,10 @@ public abstract class AbstractQuarkusTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	public void checkUrlContent(String should_be) {
+	public void checkUrlContent(String should_be, String localhostPort) {
 		URL localhost = null;
 		try {
-			localhost = new URL("http://localhost:8080/hello");
+			localhost = new URL("http://localhost:" + localhostPort + "/hello");
 		} catch (MalformedURLException e) {
 			QuarkusCorePlugin.logException("Wrong URL! ", e);
 		}

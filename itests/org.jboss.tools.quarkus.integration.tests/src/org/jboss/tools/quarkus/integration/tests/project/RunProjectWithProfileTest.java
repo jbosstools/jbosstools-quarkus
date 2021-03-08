@@ -67,7 +67,7 @@ public class RunProjectWithProfileTest extends AbstractQuarkusTest {
 		new WaitUntil(new ConsoleHasText(consoleView, "Profile " + PROFILE_NAME + " activated"),
 				TimePeriod.getCustom(600));
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		checkUrlContent("Hello RESTEasy");
+		checkUrlContent("Hello RESTEasy", "8080");
 		consoleView.terminateConsole();
 
 		checkProblemsView();

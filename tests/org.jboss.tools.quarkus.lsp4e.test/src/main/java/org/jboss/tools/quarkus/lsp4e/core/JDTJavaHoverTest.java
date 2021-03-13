@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core;
 
-import org.eclipse.lsp4mp.jdt.core.JavaHoverTest;
+import org.eclipse.lsp4mp.jdt.core.config.MicroProfileConfigJavaHoverTest;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
 
@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
  * @author Red Hat Developers
  *
  */
-public class JDTJavaHoverTest extends JavaHoverTest {
+public class JDTJavaHoverTest extends MicroProfileConfigJavaHoverTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

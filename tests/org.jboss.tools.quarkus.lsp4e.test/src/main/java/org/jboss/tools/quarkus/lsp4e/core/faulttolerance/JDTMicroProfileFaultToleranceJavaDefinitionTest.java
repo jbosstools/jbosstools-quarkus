@@ -8,17 +8,19 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.quarkus.lsp4e.core;
+package org.jboss.tools.quarkus.lsp4e.core.faulttolerance;
 
-import org.eclipse.lsp4mp.jdt.core.config.MicroProfileConfigJavaHoverTest;
+import org.eclipse.lsp4mp.jdt.core.faulttolerance.MicroProfileFaultToleranceJavaDefinitionTest ;
 import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 /**
  * @author Red Hat Developers
  *
  */
-public class JDTJavaHoverTest extends MicroProfileConfigJavaHoverTest {
+@Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
+public class JDTMicroProfileFaultToleranceJavaDefinitionTest extends MicroProfileFaultToleranceJavaDefinitionTest  {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

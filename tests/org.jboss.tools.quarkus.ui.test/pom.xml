@@ -42,7 +42,7 @@
 					<includes>
 						<include>**/*Test.class</include>
 					</includes>
-					<skip>true</skip>
+					<skip>${skipTests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>

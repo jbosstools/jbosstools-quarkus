@@ -57,6 +57,9 @@ public class QuarkusExtension {
     
     @JsonProperty("shortId")
     private String shortId;
+    
+    @JsonProperty("providesExampleCode")
+    private boolean providesExampleCode;
 
     public String getCategory() {
         return category;
@@ -184,19 +187,36 @@ public class QuarkusExtension {
 		this.shortId = shortId;
 	}
 
-	public String asLabel() {
-		StringBuilder builder = new StringBuilder(getName());
-		List<String> tags = getTags();
-		if (!tags.isEmpty()) {
-			builder.append(" (").append(tags.stream().map(tag -> Character.toUpperCase(tag.charAt(0)) + tag.substring(1)).collect(Collectors.joining(","))).append(')');
-		} else {
-			String status = getStatus();
-			if (StringUtils.isNotBlank(status) && !"stable".equalsIgnoreCase(status)) {
-				builder.append(" (").append(Character.toUpperCase(status.charAt(0))).append(status.substring(1))
-				        .append(')');
-			}
-		}
-		return builder.toString();
+	/**
+   * @return the providesExampleCode
+   */
+  public boolean isProvidesExampleCode() {
+    return providesExampleCode;
+  }
+
+  /**
+   * @param providesExampleCode the providesExampleCode to set
+   */
+  public void setProvidesExampleCode(boolean providesExampleCode) {
+    this.providesExampleCode = providesExampleCode;
+  }
+
+  public String asLabel() {
+    StringBuilder builder = new StringBuilder(getName());
+    List<String> tags = getTags();
+    if (!tags.isEmpty()) {
+      String labels = tags.stream().filter(tag -> !"provides-example".equals(tag))
+          .map(tag -> Character.toUpperCase(tag.charAt(0)) + tag.substring(1)).collect(Collectors.joining(","));
+      if (StringUtils.isNotBlank(labels)) {
+        builder.append(" (").append(labels).append(')');
+      }
+    } else {
+      String status = getStatus();
+      if (StringUtils.isNotBlank(status) && !"stable".equalsIgnoreCase(status)) {
+        builder.append(" (").append(Character.toUpperCase(status.charAt(0))).append(status.substring(1)).append(')');
+      }
+    }
+    return builder.toString();
 	}
     
     @Override

@@ -45,7 +45,7 @@
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA
           in case of desynchronization between the projects
           -->
-        <!--<enforceExcludePatternExtras>|quarkus-ls.version|lsp4mp-ls.version</enforceExcludePatternExtras>-->
+        <enforceExcludePatternExtras>|quarkus-ls.version|lsp4mp-ls.version</enforceExcludePatternExtras>
     </properties>
 
 	<repositories>

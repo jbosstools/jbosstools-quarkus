@@ -39,6 +39,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
@@ -63,6 +64,9 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 		String arguments = configuration.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "");
 		ILaunchConfigurationWorkingCopy copy = configuration.getWorkingCopy();
 		copy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, arguments + " -Ddebug=" + debugPort);
+		Map<String, String> envVars = copy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>());
+		envVars.put("JAVA_HOME", ProjectUtils.getJavaHome(getProject(configuration)));
+		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVars);
 		super.launch(copy, mode, launch, monitor);
 		IProcess tool = launch.getProcesses()[0];
 		if ("debug".equals(mode)) {

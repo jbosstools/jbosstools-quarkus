@@ -16,15 +16,11 @@
 
 package org.jboss.tools.quarkus.core.launch;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.core.externaltools.internal.IExternalToolConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;

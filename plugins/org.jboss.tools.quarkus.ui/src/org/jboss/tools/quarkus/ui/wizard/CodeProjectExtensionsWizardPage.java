@@ -25,18 +25,26 @@ import org.eclipse.jface.databinding.viewers.ObservableSetContentProvider;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
 import org.jboss.tools.foundation.ui.util.BrowserUtility;
@@ -47,6 +55,19 @@ import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPage {
 
 	private final CodeProjectModel model;
+	
+	private static final class ExtensionStyledCellLabelProvider extends StyledCellLabelProvider {
+
+    @Override
+    public void update(ViewerCell cell) {
+      QuarkusExtension extension = (QuarkusExtension) cell.getElement();
+      cell.setText(extension.asLabel());
+      if (extension.isProvidesExampleCode()) {
+        cell.setImage(CodeProjectWizard.CODESTARTS_EXTENSION_ICON.createImage());
+      }
+      super.update(cell);
+    }
+	}
 
     protected CodeProjectExtensionsWizardPage(IWizard wizard, CodeProjectModel model) {
         super("Quarkus Extensions", "Select the Quarkus extensions for your project", "third", wizard, null);
@@ -77,7 +98,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.applyTo(sashForm);
     	
     	// categories
-    	List categoriesList = createColumn("Extension Categories:", sashForm);
+    	List categoriesList = (List) createColumn("Extension Categories:", sashForm, true);
         ListViewer listCategoriesViewer = new ListViewer(categoriesList);
         listCategoriesViewer.setContentProvider(new ObservableListContentProvider<QuarkusCategory>());
         listCategoriesViewer.setInput(BeanProperties.list(CATEGORIES_PROPERTY).observe(model));
@@ -96,41 +117,27 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
                 .in(dbc);
 
         // extensions
-    	List extensionsList = createColumn("Available Extensions:", sashForm);
-        ListViewer listExtensionsViewer = new ListViewer(extensionsList);
-        listExtensionsViewer.setContentProvider(new ObservableListContentProvider<QuarkusExtension>());
-        listExtensionsViewer.setInput(BeanProperties.list(EXTENSIONS_PROPERTY).observe(model));
-        listExtensionsViewer.setLabelProvider(new LabelProvider() {
-            @Override
-            public String getText(Object element) {
-                QuarkusExtension extension = (QuarkusExtension) element;
-                return extension.asLabel();
-            }
-        });
-        listExtensionsViewer.addDoubleClickListener(e -> {
-        	QuarkusExtension extension = model.getExtensions().get(((ListViewer)e.getSource()).getList().getSelectionIndex());
+    	Table extensionsTable = (Table) createColumn("Available Extensions:", sashForm, false);
+    	TableViewer tableExtensionsViewer = getExtensionViewer(extensionsTable);
+        tableExtensionsViewer.addDoubleClickListener(e -> {
+        	QuarkusExtension extension = model.getExtensions().get(((TableViewer)e.getSource()).getTable().getSelectionIndex());
 			model.toggleSelectedExtension(extension);
         });
+        tableExtensionsViewer.setContentProvider(new ObservableListContentProvider<QuarkusExtension>());
+        tableExtensionsViewer.setInput(BeanProperties.list(EXTENSIONS_PROPERTY).observe(model));
 
         // selected extensions
-    	List selectedExtensionsList = createColumn("Selected Extensions:", sashForm);
-        ListViewer listSelectedExtensionsViewer = new ListViewer(selectedExtensionsList);
-        listSelectedExtensionsViewer.setContentProvider(new ObservableSetContentProvider<>());
-        listSelectedExtensionsViewer.setInput(BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model));
-        listSelectedExtensionsViewer.setLabelProvider(new LabelProvider() {
-            @Override
-            public String getText(Object element) {
-            	QuarkusExtension extension = (QuarkusExtension) element;
-                return extension.asLabel();
-            }
-        });
-        listSelectedExtensionsViewer.addDoubleClickListener(e -> {
-        	ListViewer viewer = (ListViewer) e.getSource();
-        	QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getList().getSelectionIndex());
+    	Table selectedExtensionsTable = (Table) createColumn("Selected Extensions:", sashForm, false);
+        TableViewer tableSelectedExtensionsViewer = getExtensionViewer(selectedExtensionsTable);
+        tableSelectedExtensionsViewer.setContentProvider(new ObservableSetContentProvider<>());
+        tableSelectedExtensionsViewer.setInput(BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model));
+        tableSelectedExtensionsViewer.addDoubleClickListener(e -> {
+        	TableViewer viewer = (TableViewer) e.getSource();
+        	QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getTable().getSelectionIndex());
 			model.toggleSelectedExtension(extension);
         });
         
-    	sashForm.setWeights(new int[] { 20, 40, 40 });
+    	sashForm.setWeights(20, 40, 40);
 
         // selected extension detail
     	Label detailsSeparator = new Label(parent, SWT.HORIZONTAL | SWT.SEPARATOR);
@@ -159,19 +166,29 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
     	
         ISWTObservableValue<String> extensionDetailObservable = WidgetProperties.text().observe(detail);
         ValueBindingBuilder
-        	.bind(ViewerProperties.singleSelection().observe(listExtensionsViewer))
+        	.bind(ViewerProperties.singleSelection().observe(tableExtensionsViewer))
         	.converting(new QuarkusExtension2StringConverter())
             .to(extensionDetailObservable)
             .in(dbc);
         ValueBindingBuilder
-        	.bind(ViewerProperties.singleSelection().observe(listExtensionsViewer))
+        	.bind(ViewerProperties.singleSelection().observe(tableExtensionsViewer))
         	.to(BeanProperties.value("data").observe(detail))
         	.notUpdatingParticipant()
         	.in(dbc);
         detail.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> openBrowser((QuarkusExtension) detail.getData())));
     }
 
-	private List createColumn(String title, Composite parent) {
+    public TableViewer getExtensionViewer(Table table) {
+      TableColumnLayout layout = new TableColumnLayout();
+      table.getParent().setLayout(layout);
+      TableViewer viewer = new TableViewer(table);
+      TableViewerColumn col = new TableViewerColumn(viewer, SWT.NONE);
+      col.setLabelProvider(new ExtensionStyledCellLabelProvider());
+      layout.setColumnData(col.getColumn(), new ColumnWeightData(100));
+      return viewer;
+    }
+
+	private Control createColumn(String title, Composite parent, boolean list) {
 		Composite container = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults()
 			.align(SWT.FILL, SWT.FILL)
@@ -188,11 +205,25 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
         	.align(SWT.FILL, SWT.FILL)
         	.applyTo(label);
 
-        List categoriesList = new List(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+        // TableLayout requires a single parent
+        Control control;
+        if (list) {
+          control = new List(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+        } else {
+          Composite parentControl = new Composite(container, SWT.NONE);
+          GridDataFactory.fillDefaults()
+          .grab(true, true)
+          .align(SWT.FILL, SWT.FILL)
+          .applyTo(parentControl);
+          control = new Table(parentControl, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
+          ((Table)control).setHeaderVisible(false);
+          ((Table)control).setLinesVisible(false);
+        }
+
         GridDataFactory.fillDefaults()
 	    	.grab(true, true)
-	    	.applyTo(categoriesList);
-		return categoriesList;
+	    	.applyTo(control);
+		return control;
 	}
 
 	private void openBrowser(QuarkusExtension extension) {

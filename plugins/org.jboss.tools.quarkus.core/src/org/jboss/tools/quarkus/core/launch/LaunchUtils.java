@@ -16,7 +16,8 @@
 
 package org.jboss.tools.quarkus.core.launch;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.externaltools.internal.IExternalToolConstants;
 import org.eclipse.core.resources.IProject;
@@ -40,7 +41,9 @@ public class LaunchUtils {
 			workingCopy.setAttribute(IExternalToolConstants.ATTR_LOCATION, ProjectUtils.getToolSupport(project).getScriptPath().toOSString());
 			workingCopy.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
 			workingCopy.setAttribute(IExternalToolConstants.ATTR_BUILD_SCOPE, "${projects:" + project.getName() + "}");
-			workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.singletonMap("JAVA_HOME", ProjectUtils.getJavaHome(project)));
+			Map<String, String> envVars = workingCopy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>());
+			envVars.put("JAVA_HOME", ProjectUtils.getJavaHome(project));
+			workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVars);
 			if (ProjectUtils.isMavenProject(project)) {
 				workingCopy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "compile quarkus:dev" + suffix);
 			} else {

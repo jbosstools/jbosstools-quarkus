@@ -35,6 +35,7 @@ Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  server/org.eclipse.lsp4mp.ls-uber.jar,
+ server/com.redhat.quarkus.ls.jar,
  lib/remark.jar
 Bundle-Activator: org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin
 Export-Package: org.jboss.tools.quarkus.lsp4e

@@ -37,15 +37,15 @@
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
-		<lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/snapshots/0.2.0/repository/</lsp4mp-jdt-site>
-        <quarkus-ls.version>0.10.0-SNAPSHOT</quarkus-ls.version>
-        <lsp4mp-ls.version>0.2.0-SNAPSHOT</lsp4mp-ls.version>
+        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
+        <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.2.1/repository/</lsp4mp-jdt-site>
+        <quarkus-ls.version>0.10.0</quarkus-ls.version>
+        <lsp4mp-ls.version>0.2.1</lsp4mp-ls.version>
         <!--
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA
           in case of desynchronization between the projects
           -->
-        <enforceExcludePatternExtras>|quarkus-ls.version|lsp4mp-ls.version</enforceExcludePatternExtras>
+		<!--<enforceExcludePatternExtras>|quarkus-ls.version|lsp4mp-ls.version</enforceExcludePatternExtras>-->
     </properties>
 
 	<repositories>

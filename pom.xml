@@ -50,7 +50,7 @@
 
 	<repositories>
 	    <!-- The 2 following repositories must be removed for Final/GA -->
-		<repository>
+		<!--<repository>
 			<id>lsp4mp-jdt</id>
 			<layout>p2</layout>
 			<url>${lsp4mp-jdt-site}</url>
@@ -59,7 +59,7 @@
 			<id>quarkus-jdt</id>
 			<layout>p2</layout>
 			<url>${quarkus-jdt-site}</url>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>jbosstools-base</id>
 			<layout>p2</layout>

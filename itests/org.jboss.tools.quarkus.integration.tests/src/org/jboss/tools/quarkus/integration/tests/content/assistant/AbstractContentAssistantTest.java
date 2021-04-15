@@ -46,7 +46,7 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 		checkProblemsView();
 	}
 
-	public ContentAssistant testContentAssistant(String projectName, String textForContentAssist) {
+	public static ContentAssistant testContentAssistant(String projectName, String textForContentAssist) {
 		new WorkbenchShell().setFocus();
 		new ProjectExplorer().selectProjects(projectName);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -70,22 +70,9 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 		}
 		return true;
 	}
-
+	
 	public static TextEditor openFileWithTextEditor(String projectName, String textEditor) {
-
-		try {
-			new ProjectExplorer().getProject(projectName).getProjectItem(RESOURCE_PATH)
-					.getProjectItem(APPLICATION_PROPERTIES).openWith(textEditor);
-		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
-																						// download microprofile...
-																						// when
-																						// application_properties
-																						// opens, sometimes it need
-																						// more then default 10
-																						// seconds
-		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		return new TextEditor(APPLICATION_PROPERTIES);
+		return openFileWithTextEditor(projectName, textEditor, RESOURCE_PATH, APPLICATION_PROPERTIES);
 	}
 
 	public static ContentAssistant openContentAssist(TextEditor editor) {

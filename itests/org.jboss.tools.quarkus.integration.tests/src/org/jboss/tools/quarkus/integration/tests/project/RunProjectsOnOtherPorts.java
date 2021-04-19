@@ -14,11 +14,11 @@ package org.jboss.tools.quarkus.integration.tests.project;
 import static org.junit.Assert.fail;
 
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.RunConfigurationsDialog;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
-import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -93,12 +93,11 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 	}
 
 	private void changeDebugPort() {
-		new ProjectExplorer().getProject(PROJECT_NAME_2).getProjectItem(RESOURCE_PATH)
-				.getProjectItem(APPLICATION_PROPERTIES).openWith(TextLabels.TEXT_EDITOR);
-		TextEditor editor = new TextEditor(APPLICATION_PROPERTIES);
+		TextEditor editor = openFileWithTextEditor(PROJECT_NAME_2, TextLabels.GENERIC_TEXT_EDITOR, RESOURCE_PATH,
+				APPLICATION_PROPERTIES);
 		editor.setText(DEBUG_PORT);
 		editor.save();
 		editor.close();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 }

@@ -27,6 +27,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
@@ -41,6 +42,7 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
@@ -126,7 +128,7 @@ public abstract class AbstractQuarkusTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	public void checkUrlContent(String should_be, String localhostPort) {
+	public static void checkUrlContent(String should_be, String localhostPort) {
 		URL localhost = null;
 		try {
 			localhost = new URL("http://localhost:" + localhostPort + "/hello");
@@ -176,6 +178,24 @@ public abstract class AbstractQuarkusTest {
 		} finally {
 			stream.close();
 		}
+	}
+
+	public static TextEditor openFileWithTextEditor(String projectName, String textEditorType, String resourcePath,
+			String fileName) {
+
+		try {
+			new ProjectExplorer().getProject(projectName).getProjectItem(resourcePath).getProjectItem(fileName)
+					.openWith(textEditorType);
+		} catch (WaitTimeoutExpiredException e) { // CRS need some time for
+													// download microprofile...
+													// when
+													// application_properties
+													// opens, sometimes it need
+													// more then default 10
+													// seconds
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		return new TextEditor(fileName);
 	}
 
 	@After

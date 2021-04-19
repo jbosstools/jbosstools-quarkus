@@ -27,6 +27,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
@@ -185,13 +186,13 @@ public abstract class AbstractQuarkusTest {
 		try {
 			new ProjectExplorer().getProject(projectName).getProjectItem(resourcePath).getProjectItem(fileName)
 					.openWith(textEditorType);
-		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
-																						// download microprofile...
-																						// when
-																						// application_properties
-																						// opens, sometimes it need
-																						// more then default 10
-																						// seconds
+		} catch (WaitTimeoutExpiredException e) { // CRS need some time for
+													// download microprofile...
+													// when
+													// application_properties
+													// opens, sometimes it need
+													// more then default 10
+													// seconds
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		return new TextEditor(fileName);

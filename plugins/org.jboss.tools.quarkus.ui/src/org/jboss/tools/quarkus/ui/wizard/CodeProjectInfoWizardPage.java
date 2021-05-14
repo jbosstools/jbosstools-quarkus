@@ -25,11 +25,9 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.ui.databinding.MandatoryStringValidator;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
@@ -80,18 +78,4 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
         createTextWidget(parent, model, dbc, "Path:", PATH_PROPERTY,
             new MandatoryStringValidator("Please specify a path"));
     }
-
-    
-    @Override
-    protected void onPageActivated(DataBindingContext dbc) {
-        setToPreferredVerticalSize(getShell());
-    }
-
-    private void setToPreferredVerticalSize(Shell shell) {
-        Point size = shell.computeSize(600, SWT.DEFAULT);
-        // windows doesn't take progress bar area into account, maven section gets cut off.
-        //size.y += 20;
-        shell.setSize(size );
-    }
-    
 }

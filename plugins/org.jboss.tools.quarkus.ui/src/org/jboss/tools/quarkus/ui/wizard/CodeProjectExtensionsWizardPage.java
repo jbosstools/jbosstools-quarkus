@@ -37,13 +37,11 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
@@ -231,17 +229,4 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			new BrowserUtility().checkedCreateExternalBrowser(extension.getGuide(), QuarkusUIPlugin.PLUGIN_ID, QuarkusUIPlugin.getDefault().getLog());
 		}
 	}
-
-	@Override
-    protected void onPageActivated(DataBindingContext dbc) {
-        setToPreferredVerticalSize(getShell());
-    }
-
-    private void setToPreferredVerticalSize(Shell shell) {
-		Point size = shell.computeSize(900, SWT.DEFAULT);
-		// windows doesn't take progress bar area into account, maven section gets cut off.
-		//size.y += 20;
-		shell.setSize(size );
-   }
-
 }

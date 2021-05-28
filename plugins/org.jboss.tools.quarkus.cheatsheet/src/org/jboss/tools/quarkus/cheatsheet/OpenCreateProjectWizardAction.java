@@ -36,6 +36,14 @@ public class OpenCreateProjectWizardAction extends Action implements ICheatSheet
 		createProjectWizard.init(workbench, null);
 		WizardDialog dialog = new WizardDialog(window.getShell(), createProjectWizard);
 		dialog.create();
+//		dialog.setPageSize(200, 200);
+//		dialog.getShell().computeSize(200, 200);
+//		dialog.getShell().layout(true);
+//		dialog.getShell().setSize(200,  200);
+//		dialog.getShell().pack();
+		dialog.getShell().pack();
+		dialog.getShell().setBounds(0, 0, 200, 200);
+		dialog.getShell().setSize(200,  200);
 		int result = dialog.open();
 		if (result == Window.CANCEL) {
 			notifyResult(false);

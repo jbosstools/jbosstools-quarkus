@@ -222,7 +222,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 	private Table createTable(Composite parent) {
 		Composite tableContainer = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults()
-			.grab(false, true)
+			.grab(true, true)
 			.align(SWT.FILL, SWT.FILL)
 			.applyTo(tableContainer);
 		// TableColumnLayout requires a parent composite for the table

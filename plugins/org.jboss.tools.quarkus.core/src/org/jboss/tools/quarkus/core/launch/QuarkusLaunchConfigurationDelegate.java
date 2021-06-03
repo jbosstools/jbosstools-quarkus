@@ -65,13 +65,19 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 		ILaunchConfigurationWorkingCopy copy = configuration.getWorkingCopy();
 		copy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, arguments + " -Ddebug=" + debugPort);
 		Map<String, String> envVars = copy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>());
-		envVars.put("JAVA_HOME", ProjectUtils.getJavaHome(getProject(configuration)));
-		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVars);
+		Map<String, String> nenvVars = new HashMap<>(envVars);
+		nenvVars.put("JAVA_HOME", ProjectUtils.getJavaHome(getProject(configuration)));
+		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, nenvVars);
 		super.launch(copy, mode, launch, monitor);
 		IProcess tool = launch.getProcesses()[0];
 		if ("debug".equals(mode)) {
 			((RuntimeProcessWithJVMAttach)tool).setJvmLaunch(createRemoteJavaDebugConfiguration(configuration, debugPort, monitor));
 		}
+		/*
+		 * as LaunchManagers caches last launch config / config working copy, restore original env
+		 * so that the added JAVA_HOME is not displayed
+		 */
+		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVars);
 		QuarkusCoreUsageStats.getInstance().startApplication(mode, ProjectUtils.getToolSupport(getProject(configuration)));
 	}
 

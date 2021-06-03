@@ -15,6 +15,7 @@ import java.util.Objects;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -41,10 +42,10 @@ public class CodeProjectWizard extends AbstractModelWizard<CodeProjectModel> imp
     }
 
     @Override
-    public void init(IWorkbench workbench, IStructuredSelection selection) {
+    public void init(IWorkbench workbench, IStructuredSelection selection) {    
     }
 
-    @Override
+	@Override
     public boolean performFinish() {
     	boolean valid = isValid();
         if (valid) {

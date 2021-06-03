@@ -25,16 +25,16 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.ui.databinding.MandatoryStringValidator;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
 
 public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
+
+    private static final int PREFERRED_WIDTH = 400;
 
     private final CodeProjectModel model;
 
@@ -47,24 +47,40 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
 
     @Override
     protected void doCreateControls(Composite parent, DataBindingContext dbc) {
-        GridLayoutFactory.fillDefaults()
-        .margins(6, 6).numColumns(2)
-        .applyTo(parent);
+    	GridDataFactory.fillDefaults()
+			.align(SWT.FILL, SWT.FILL)
+			.grab(true, true)
+			.hint(PREFERRED_WIDTH, SWT.DEFAULT)
+			.applyTo(parent);
+    	GridLayoutFactory.fillDefaults()
+	        .margins(6, 6)
+	        .numColumns(2)
+	        .applyTo(parent);
 
         // Codestarts
         Label codeStartsLabel = new Label(parent, SWT.NONE);
         codeStartsLabel.setText("Example code:");
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).applyTo(codeStartsLabel);
+        GridDataFactory.fillDefaults()
+        	.align(SWT.FILL, SWT.FILL)
+        	.applyTo(codeStartsLabel);
         Button codeStartsButton = new Button(parent, SWT.CHECK | SWT.WRAP);
         codeStartsButton.setText("If selected, project will contain sample code from extensions that support codestarts.");
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(codeStartsButton);
-        ValueBindingBuilder.bind(WidgetProperties.buttonSelection().observe(codeStartsButton))
-        .to(BeanProperties.value(USE_CODE_STARTERS_PROPERTY).observe(model)).in(dbc);
+        GridDataFactory.fillDefaults()
+        	.align(SWT.FILL, SWT.FILL)
+        	.grab(true, false)
+        	.applyTo(codeStartsButton);
+        ValueBindingBuilder
+        	.bind(WidgetProperties.buttonSelection().observe(codeStartsButton))
+        	.to(BeanProperties.value(USE_CODE_STARTERS_PROPERTY).observe(model))
+        	.in(dbc);
         
         // maven artifact
         Label mavenArtifactExplanation = new Label(parent, SWT.NONE);
         mavenArtifactExplanation.setText("Maven Artifact:");
-        GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).applyTo(mavenArtifactExplanation);
+        GridDataFactory.fillDefaults()
+        	.span(2, 1)
+        	.align(SWT.FILL, SWT.FILL)
+        	.applyTo(mavenArtifactExplanation);
         createTextWidget(parent, model, dbc, "Artifact id:", ARTIFACTID_PROPERTY,
             new MandatoryStringValidator("Please specify an artifact id"));
         createTextWidget(parent, model, dbc, "Group id:", GROUPID_PROPERTY,
@@ -74,24 +90,13 @@ public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
     
         Label restExplanation = new Label(parent, SWT.NONE);
         restExplanation.setText("REST:");
-        GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).applyTo(restExplanation);
+        GridDataFactory.fillDefaults()
+        	.span(2, 1)
+        	.align(SWT.FILL, SWT.CENTER)
+        	.applyTo(restExplanation);
         createTextWidget(parent, model, dbc, "Class name:", CLASSNAME_PROPERTY,
             new MandatoryStringValidator("Please specify a Java class name"));
         createTextWidget(parent, model, dbc, "Path:", PATH_PROPERTY,
             new MandatoryStringValidator("Please specify a path"));
     }
-
-    
-    @Override
-    protected void onPageActivated(DataBindingContext dbc) {
-        setToPreferredVerticalSize(getShell());
-    }
-
-    private void setToPreferredVerticalSize(Shell shell) {
-        Point size = shell.computeSize(600, SWT.DEFAULT);
-        // windows doesn't take progress bar area into account, maven section gets cut off.
-        //size.y += 20;
-        shell.setSize(size );
-    }
-    
 }

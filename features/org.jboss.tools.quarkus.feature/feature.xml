@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.quarkus.feature"
       label="Quarkus Tools"
-      version="1.3.100.qualifier">
+      version="1.4.0.qualifier">
 
    <description>
       The Eclipse plugins in this feature provide tooling for the Quarkus

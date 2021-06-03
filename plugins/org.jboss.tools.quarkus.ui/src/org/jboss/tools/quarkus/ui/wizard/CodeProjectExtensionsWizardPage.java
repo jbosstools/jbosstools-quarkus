@@ -224,6 +224,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		GridDataFactory.fillDefaults()
 			.grab(true, true)
 			.align(SWT.FILL, SWT.FILL)
+			.hint(SWT.DEFAULT, 150)
 			.applyTo(tableContainer);
 		// TableColumnLayout requires a parent composite for the table
 		Table table = new Table(tableContainer, SWT.SINGLE | SWT.NONE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);

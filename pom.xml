@@ -37,9 +37,9 @@
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/snapshots/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
+        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
         <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.2.1/repository/</lsp4mp-jdt-site>
-        <quarkus-ls.version>0.11.0-SNAPSHOT</quarkus-ls.version>
+        <quarkus-ls.version>0.10.0</quarkus-ls.version>
         <lsp4mp-ls.version>0.2.1</lsp4mp-ls.version>
         <!--
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA
@@ -51,7 +51,7 @@
 	<repositories>
 	    <!-- The 2 following repositories must be removed for Final/GA -->
 	    <!-- the quarkus.jdt feature must also be removed from the org.jboss.tools.quarkus feature as well -->
-		<repository>
+		<!--<repository>
 			<id>lsp4mp-jdt</id>
 			<layout>p2</layout>
 			<url>${lsp4mp-jdt-site}</url>
@@ -60,7 +60,7 @@
 			<id>quarkus-jdt</id>
 			<layout>p2</layout>
 			<url>${quarkus-jdt-site}</url>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>jbosstools-base</id>
 			<layout>p2</layout>

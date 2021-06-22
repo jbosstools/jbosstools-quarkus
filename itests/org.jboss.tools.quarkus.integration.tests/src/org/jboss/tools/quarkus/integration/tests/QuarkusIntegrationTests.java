@@ -18,7 +18,7 @@ import org.jboss.tools.quarkus.integration.tests.application.yaml.ApplicationYam
 import org.jboss.tools.quarkus.integration.tests.common.PerspectiveTest;
 import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesContentAssistTest;
 import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPropertiesNewExtensionContentAssistTest;
-import org.jboss.tools.quarkus.integration.tests.environment.EnvironmentTest;
+import org.jboss.tools.quarkus.integration.tests.environment.EnvironmentVariablesTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationGradleTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMavenTest;
 import org.jboss.tools.quarkus.integration.tests.project.CreateNewProjectTest;
@@ -42,7 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateNewProjectTest.class,
 	CreateNewQuarkusConfigurationMavenTest.class,
 	CreateNewQuarkusConfigurationGradleTest.class,
-	EnvironmentTest.class,
+	EnvironmentVariablesTest.class,
 	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,

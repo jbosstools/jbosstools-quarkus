@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class EnvironmentTest extends AbstractEnvironmentTest {
+public class EnvironmentVariablesTest extends AbstractEnvironmentVariablesTest {
 
 	private static String PROJECT_NAME = "environment_test";
 

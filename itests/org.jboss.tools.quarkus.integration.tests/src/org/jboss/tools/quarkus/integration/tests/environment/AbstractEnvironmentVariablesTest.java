@@ -26,7 +26,7 @@ import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGr
  * @author olkornii@redhat.com Oleksii Korniienko
  *
  */
-public abstract class AbstractEnvironmentTest extends AbstractLaunchConfigurationTest {
+public abstract class AbstractEnvironmentVariablesTest extends AbstractLaunchConfigurationTest {
 
 	private static String ENVIRONMENT_NAME = "MVNW_VERBOSE";
 

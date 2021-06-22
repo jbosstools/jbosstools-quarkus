@@ -47,6 +47,7 @@ public class QuarkusLabels {
 		//Project type labels
 		public static final String PROJECT_NAME = "Project name:";
 		public static final String NAME = "Name:";
+		public static final String VALUE = "Value:";
 		public static final String PROJECT_TYPE = "Project type:";
 		public static final String MAVEN_TYPE = "Maven";
 		public static final String GRADLE_TYPE = "Gradle";

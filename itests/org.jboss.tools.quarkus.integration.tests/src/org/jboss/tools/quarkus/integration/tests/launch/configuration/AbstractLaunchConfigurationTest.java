@@ -18,6 +18,7 @@ import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.Shell;
+import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
 
 /**
@@ -32,11 +33,11 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		checkProblemsView();
 	}
 
-	public void testNewQuarkusConfiguration(String projectName) {
+	public void testNewQuarkusConfiguration(String projectName, String projectType) {
 		RunConfigurationsDialog runDialog = new RunConfigurationsDialog();
 		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, runDialog);
 		checkNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
-		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080");
+		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080", projectType);
 		new ConsoleView().terminateConsole();
 		deleteNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
 	}
@@ -62,15 +63,23 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	}
 
 	public void runNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
-			QuarkusLaunchConfigurationTabGroup launchConfiguration, String localhostPort) {
+			QuarkusLaunchConfigurationTabGroup launchConfiguration, String localhostPort, String projectType) {
 		runDialog.open();
 		runDialog.select(launchConfiguration, projectName);
 		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
 		runDialog.run();
 
 		ConsoleView consoleView = new ConsoleView();
-		new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
-				TimePeriod.getCustom(600));
+		if (TextLabels.GRADLE_TYPE == projectType) {
+			new WaitUntil(new ConsoleHasText(consoleView,
+					"[[39m[38;5;69mio.quarkus[39m[38;5;188m] ([39m[38;5;71mQuarkus Main Thread[39m[38;5;188m) [39m[38;5;151m[39m[38;5;188m"
+							+ projectName),
+					TimePeriod.getCustom(600));
+
+		} else {
+			new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
+					TimePeriod.getCustom(600));
+		}
 		checkUrlContent("Hello RESTEasy", localhostPort);
 	}
 

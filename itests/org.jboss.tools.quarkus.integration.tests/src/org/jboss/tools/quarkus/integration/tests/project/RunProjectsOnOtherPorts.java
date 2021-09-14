@@ -62,7 +62,7 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 		QuarkusLaunchConfigurationTabGroup firstLaunchConfiguration = createNewQuarkusConfiguration(PROJECT_NAME_1,
 				firstRunDialog);
 		ConsoleView consoleView = new ConsoleView();
-		runNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration, "8080");
+		runNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration, "8080", TextLabels.MAVEN_TYPE);
 		if (!consoleView.getConsoleText().contains("Listening for transport dt_socket at address:")) {
 			consoleView.terminateConsole();
 			deleteNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration);
@@ -72,7 +72,7 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 		RunConfigurationsDialog secondRunDialog = new RunConfigurationsDialog();
 		QuarkusLaunchConfigurationTabGroup secondLaunchConfiguration = createNewQuarkusConfiguration(PROJECT_NAME_2,
 				secondRunDialog);
-		runNewQuarkusConfiguration(PROJECT_NAME_2, secondRunDialog, secondLaunchConfiguration, "8085");
+		runNewQuarkusConfiguration(PROJECT_NAME_2, secondRunDialog, secondLaunchConfiguration, "8085", TextLabels.MAVEN_TYPE);
 
 		terminateBothApplications(consoleView);
 		deleteNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration);

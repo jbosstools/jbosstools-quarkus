@@ -19,6 +19,7 @@ import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.AbstractLaunchConfigurationTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.Shell;
+import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
 
 /**
@@ -35,7 +36,7 @@ public abstract class AbstractEnvironmentVariablesTest extends AbstractLaunchCon
 		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, runDialog);
 		checkNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
 		addEnvironment(projectName, runDialog, launchConfiguration);
-		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080");
+		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080", TextLabels.MAVEN_TYPE);
 		checkEnvironmentWorks(projectName, runDialog, launchConfiguration);
 		new ConsoleView().terminateConsole();
 		deleteNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);

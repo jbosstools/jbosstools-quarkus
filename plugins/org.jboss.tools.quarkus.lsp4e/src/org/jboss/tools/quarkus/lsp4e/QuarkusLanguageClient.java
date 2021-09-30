@@ -22,14 +22,20 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.lsp4e.LanguageClientImpl;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeLens;
+import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
+import org.eclipse.lsp4mp.commons.JavaFileInfo;
+import org.eclipse.lsp4mp.commons.MicroProfileDefinition;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeActionParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeLensParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaCompletionParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaDefinitionParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaDiagnosticsParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaFileInfoParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaHoverParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaProjectLabelsParams;
 import org.eclipse.lsp4mp.commons.MicroProfileProjectInfo;
@@ -166,6 +172,41 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			return ProjectLabelManager.getInstance().getProjectLabelInfo(javaParams, JDTUtilsImpl.getInstance(),
 			        monitor);
+		});
+	}
+
+	@Override
+	public CompletableFuture<JavaFileInfo> getJavaFileInfo(MicroProfileJavaFileInfoParams javaParams) {
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return PropertiesManagerForJava.getInstance().fileInfo(javaParams, JDTUtilsImpl.getInstance(), monitor);
+		});
+	}
+
+	@Override
+	public CompletableFuture<List<MicroProfileDefinition>> getJavaDefinition(
+			MicroProfileJavaDefinitionParams javaParams) {
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManagerForJava.getInstance().definition(javaParams, JDTUtilsImpl.getInstance(), monitor);
+			} catch (JavaModelException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public CompletableFuture<CompletionList> getJavaCompletion(MicroProfileJavaCompletionParams javaParams) {
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManagerForJava.getInstance().completion(javaParams, JDTUtilsImpl.getInstance(), monitor);
+			} catch (JavaModelException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}
 		});
 	}
 }

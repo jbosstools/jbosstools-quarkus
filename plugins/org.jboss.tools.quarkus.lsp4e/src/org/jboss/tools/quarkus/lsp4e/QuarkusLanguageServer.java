@@ -108,6 +108,8 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 		commandsKind.put("valueSet", Arrays.asList("microprofile.command.configuration.update", "microprofile.command.open.uri"));
 		commands.put("commandsKind", commandsKind);
 		extendedClientCapabilities.put("commands", commands);
+        extendedClientCapabilities.put("completion", new HashMap<>());
+        extendedClientCapabilities.put("shouldLanguageServerExitOnShutdown", Boolean.TRUE);
 		root.put("extendedClientCapabilities", extendedClientCapabilities);
 		return root;
 	}

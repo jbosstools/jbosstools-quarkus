@@ -16,7 +16,6 @@
 package org.jboss.tools.quarkus.core.launch;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Platform;
@@ -25,10 +24,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDisconnect;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
-
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinNT;
 
 public class RuntimeProcessWithJVMAttach extends RuntimeProcess {
 	private ILaunch jvmLaunch;
@@ -69,16 +64,10 @@ public class RuntimeProcessWithJVMAttach extends RuntimeProcess {
 
 			try {
 				Process p = (Process) getSystemProcess();
-				Field field = p.getClass().getDeclaredField("handle");
-				field.setAccessible(true);
-				long handl = field.getLong(p);
-				Kernel32 kernel = Kernel32.INSTANCE;
-				WinNT.HANDLE handle = new WinNT.HANDLE();
-				handle.setPointer(Pointer.createConstant(handl));
-				int pid = kernel.GetProcessId(handle);
+				long pid = p.pid();
 				Runtime.getRuntime().exec(new String[] { "taskkill", "/T", "/F", "/PID", String.valueOf(pid) }).waitFor();
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-			        | IOException | NoSuchFieldException | InterruptedException e) {
+			} catch (SecurityException | IllegalArgumentException
+			        | IOException | InterruptedException e) {
 				QuarkusCorePlugin.logException(e.getLocalizedMessage(), e);
 			}
 		}

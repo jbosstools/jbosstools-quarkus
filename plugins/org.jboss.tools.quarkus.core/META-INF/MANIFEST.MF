@@ -6,7 +6,7 @@ Bundle-Name: Quarkus Eclipse Core Plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.core;singleton:=true
 Bundle-Version: 1.5.0.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,

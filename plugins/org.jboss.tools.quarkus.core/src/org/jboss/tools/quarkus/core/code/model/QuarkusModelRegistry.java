@@ -19,10 +19,13 @@ import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_EXTENSIONS_
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_GROUP_ID_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_NO_EXAMPLE_CODE_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_PATH_PARAMETER_NAME;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_STREAM_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_TOOL_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CODE_VERSION_PARAMETER_NAME;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.DOWNLOAD_SUFFIX;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.EXTENSIONS_SUFFIX;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.STREAMS_SUFFIX;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CLIENT_ID_PARAMETERS;
 import static org.jboss.tools.quarkus.core.QuarkusCorePlugin.PLUGIN_ID;
 
 import java.io.ByteArrayInputStream;
@@ -112,25 +115,25 @@ public class QuarkusModelRegistry {
 
     private QuarkusModel loadModel(String endpointURL, IProgressMonitor monitor) throws CoreException {
         try {
-            endpointURL += EXTENSIONS_SUFFIX;
-            File file = TRANSPORT_UTILITY.getCachedFileForURL(endpointURL, endpointURL, CACHE_FOREVER, monitor);
+            String streamsURL = endpointURL + STREAMS_SUFFIX;
+            File file = TRANSPORT_UTILITY.getCachedFileForURL(streamsURL, streamsURL, CACHE_FOREVER, monitor);
             if (file == null) {
               throw new CoreException(new Status(ERROR, PLUGIN_ID, "Invalid URL"));
             }
-            return readModel(file);
+            return readModel(endpointURL, file);
         } catch (IOException ioe) {
             throw new CoreException(new Status(ERROR, PLUGIN_ID, ioe.getLocalizedMessage(), ioe));
         }
     }
 
-	public static QuarkusModel readModel(File file) throws IOException, JsonParseException, JsonMappingException {
-		List<QuarkusExtension> extensions = mapper.readValue(file, new TypeReference<List<QuarkusExtension>>() {
+	public static QuarkusModel readModel(String baseURL, File file) throws IOException, JsonParseException, JsonMappingException {
+		List<QuarkusStream> streams = mapper.readValue(file, new TypeReference<List<QuarkusStream>>() {
 		});
-		return new QuarkusModel(extensions);
+		return new QuarkusModel(baseURL, streams);
 	}
 	
   private static String buildParameters(String tool, String groupId, String artifactId, String version,
-      String className, String path, Set<QuarkusExtension> selected, boolean codeStarts) {
+      String className, String path, QuarkusExtensionsModel model, Set<QuarkusExtension> selected, boolean codeStarts) {
     ObjectNode json = JsonNodeFactory.instance.objectNode();
 
     json.put(CODE_TOOL_PARAMETER_NAME, tool);
@@ -143,11 +146,12 @@ public class QuarkusModelRegistry {
     ArrayNode extensions = JsonNodeFactory.instance.arrayNode();
     selected.forEach(extension -> extensions.add(extension.getId()));
     json.set(CODE_EXTENSIONS_PARAMETER_NAME, extensions);
+    json.put(CODE_STREAM_PARAMETER_NAME, model.getKey());
     return json.toString();
   }
     
   public IStatus zip(String endpointURL, Tool tool, String groupId, String artifactId, String version, String className,
-      String path, Set<QuarkusExtension> selected, boolean useCodeStarters, OutputStream output,
+      String path, QuarkusExtensionsModel model, Set<QuarkusExtension> selected, boolean useCodeStarters, OutputStream output,
       IProgressMonitor monitor) {
     StringBuilder builder = new StringBuilder(normalizeURL(endpointURL));
     builder.append(DOWNLOAD_SUFFIX);
@@ -155,7 +159,7 @@ public class QuarkusModelRegistry {
 
       HttpPost request = new HttpPost(builder.toString());
       request.setEntity(new StringEntity(
-          buildParameters(tool.name(), groupId, artifactId, version, className, path, selected, useCodeStarters), ContentType.APPLICATION_JSON));
+          buildParameters(tool.name(), groupId, artifactId, version, className, path, model, selected, useCodeStarters), ContentType.APPLICATION_JSON));
       request.addHeader(QuarkusCoreConstants.CODE_CLIENT_NAME_HEADER_NAME,
           QuarkusCoreConstants.CODE_CLIENT_NAME_HEADER_VALUE);
       request.addHeader(QuarkusCoreConstants.CODE_CLIENT_CONTACT_EMAIL_HEADER_NAME,
@@ -182,10 +186,10 @@ public class QuarkusModelRegistry {
   }
 
   public IStatus zip(String endpointURL, Tool tool, String groupId, String artifactId, String version, String className,
-      String path, Set<QuarkusExtension> selected, boolean useCodeStarters, IPath output,
+      String path, QuarkusExtensionsModel model, Set<QuarkusExtension> selected, boolean useCodeStarters, IPath output,
       IProgressMonitor monitor) {
     ByteArrayOutputStream content = new ByteArrayOutputStream();
-    IStatus status = zip(endpointURL, tool, groupId, artifactId, version, className, path, selected, useCodeStarters, content, monitor);
+    IStatus status = zip(endpointURL, tool, groupId, artifactId, version, className, path, model, selected, useCodeStarters, content, monitor);
     if (status.isOK()) {
       status = unzip(content.toByteArray(), output);
     }
@@ -238,5 +242,25 @@ public class QuarkusModelRegistry {
       } catch (InvalidPathException e) {
           QuarkusCorePlugin.getDefault().getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, e.getLocalizedMessage(), e));
       }
+  }
+  
+  public static QuarkusExtensionsModel loadExtensionsModel(String endpointURL, String key, IProgressMonitor monitor) throws CoreException {
+      try {
+		String streamsURL = endpointURL + EXTENSIONS_SUFFIX + key + "?" + CLIENT_ID_PARAMETERS;
+		  File file = TRANSPORT_UTILITY.getCachedFileForURL(streamsURL, streamsURL, CACHE_FOREVER, monitor);
+		  if (file == null) {
+		    throw new CoreException(new Status(ERROR, PLUGIN_ID, "Invalid URL"));
+		  }
+		  return readExtensionsModel(key, file);
+	} catch (IOException e) {
+        throw new CoreException(new Status(ERROR, PLUGIN_ID, e.getLocalizedMessage(), e));
+	}
+  }
+
+  public static QuarkusExtensionsModel readExtensionsModel(String key, File file)
+		throws IOException, JsonParseException, JsonMappingException {
+	List<QuarkusExtension> extensions = mapper.readValue(file, new TypeReference<List<QuarkusExtension>>() {
+	  });
+	return new QuarkusExtensionsModel(key, extensions);
   }
 }

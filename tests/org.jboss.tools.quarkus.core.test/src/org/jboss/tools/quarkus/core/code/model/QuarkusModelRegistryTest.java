@@ -72,19 +72,25 @@ public class QuarkusModelRegistryTest {
       registry.getModel("https://invalid.org", new NullProgressMonitor());
   }
 
-  private Set<QuarkusExtension> enableExtension(QuarkusModel model, String name) {
+  private Set<QuarkusExtension> enableExtension(QuarkusExtensionsModel model, String name) {
     Set<QuarkusExtension> extensions = new HashSet<>();
     model.getCategories().stream().forEach(category -> category.getExtensions().stream()
         .filter(extension -> extension.getName().equals(name)).forEach(extension -> extensions.add(extension)));
     return extensions;
   }
+  
+  private QuarkusExtensionsModel getRecommendedModel(QuarkusModel model) throws CoreException  {
+      String key = model.getStreams().stream().filter(s -> s.isRecommended()).findFirst().orElse(model.getStreams().get(0)).getKey();
+      return model.getExtensionsModel(key, new NullProgressMonitor());
+  }
 
   private File checkBaseMavenProject(boolean examples) throws CoreException, IOException {
       File folder = temporaryFolder.newFolder();
       QuarkusModel model = registry.getModel(CODE_ENDPOINT_URL, new NullProgressMonitor());
+      QuarkusExtensionsModel extensionsModel = getRecommendedModel(model);
       registry.zip(CODE_ENDPOINT_URL, Tool.MAVEN, "org.acme", "code-with-quarkus",
               "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example",
-              enableExtension(model, "RESTEasy JAX-RS"), examples, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
+              extensionsModel, enableExtension(extensionsModel, "RESTEasy JAX-RS"), examples, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
       assertTrue(new File(folder, "pom.xml").exists());
       return folder;
   }
@@ -101,7 +107,7 @@ public class QuarkusModelRegistryTest {
       assertFalse(new File(folder, "src/main/java/org/acme/ExampleResource.java").exists());
   }
 
-  private Set<QuarkusExtension> enableAllExtensions(QuarkusModel model) {
+  private Set<QuarkusExtension> enableAllExtensions(QuarkusExtensionsModel model) {
     Set<QuarkusExtension> extensions = new HashSet<>();
     model.getCategories().stream().filter(category -> !category.getName().equals("Alternative languages"))
         .forEach(category -> extensions.addAll(category.getExtensions()));
@@ -112,18 +118,22 @@ public class QuarkusModelRegistryTest {
   public void checkAllExtensionsMavenProject() throws CoreException, IOException {
       File folder = temporaryFolder.newFolder();
       QuarkusModel model = registry.getModel(CODE_ENDPOINT_URL, new NullProgressMonitor());
+      QuarkusExtensionsModel extensionsModel = getRecommendedModel(model);
       registry.zip(CODE_ENDPOINT_URL, Tool.MAVEN, "org.acme", "code-with-quarkus",
-              "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example", enableAllExtensions(model),
-              false, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
+              "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example", extensionsModel,
+              enableAllExtensions(extensionsModel), false, new Path(folder.getAbsolutePath()),
+              new NullProgressMonitor());
       assertTrue(new File(folder, "pom.xml").exists());
   }
 
   private File checkBaseGradleProject(boolean examples) throws CoreException, IOException {
       File folder = temporaryFolder.newFolder();
       QuarkusModel model = registry.getModel(CODE_ENDPOINT_URL, new NullProgressMonitor());
+      QuarkusExtensionsModel extensionsModel = getRecommendedModel(model);
       registry.zip(CODE_ENDPOINT_URL, Tool.GRADLE, "org.acme", "code-with-quarkus",
               "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example",
-              enableExtension(model, "RESTEasy JAX-RS"), examples, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
+              extensionsModel, enableExtension(extensionsModel, "RESTEasy JAX-RS"),
+              examples, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
       assertTrue(new File(folder, "build.gradle").exists());
       return folder;
   }
@@ -144,10 +154,11 @@ public class QuarkusModelRegistryTest {
   public void checkAllExtensionsGradleProject() throws CoreException, IOException {
       File folder = temporaryFolder.newFolder();
       QuarkusModel model = registry.getModel(CODE_ENDPOINT_URL, new NullProgressMonitor());
-      ;
+      QuarkusExtensionsModel extensionsModel = getRecommendedModel(model);
       registry.zip(CODE_ENDPOINT_URL, Tool.GRADLE, "org.acme", "code-with-quarkus",
-              "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example", enableAllExtensions(model),
-              false, new Path(folder.getAbsolutePath()), new NullProgressMonitor());
+              "0.0.1-SNAPSHOT", "org.acme.ExampleResource", "/example", extensionsModel,
+              enableAllExtensions(extensionsModel), false, new Path(folder.getAbsolutePath()),
+              new NullProgressMonitor());
       assertTrue(new File(folder, "build.gradle").exists());
   }
 }

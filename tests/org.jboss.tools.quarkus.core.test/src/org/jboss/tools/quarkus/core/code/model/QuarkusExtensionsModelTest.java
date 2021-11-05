@@ -17,23 +17,15 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-public class QuarkusModelTest {
-	private static QuarkusModelRegistry registry;
-	
-	@BeforeClass
-	public static void setup() {
-		registry = QuarkusModelRegistry.getDefault();
-	}
-	
+public class QuarkusExtensionsModelTest {
 	@Test
 	public void testCategories() throws CoreException, JsonParseException, JsonMappingException, IOException  {
-		QuarkusModel model = registry.readModel(new File("resources/extensions.json"));
+		QuarkusExtensionsModel model = QuarkusModelRegistry.readExtensionsModel("", new File("resources/extensions.json"));
 		assertNotNull(model);
 		assertNotNull(model.getCategories());
 		assertEquals(13, model.getCategories().size());
@@ -41,5 +33,4 @@ public class QuarkusModelTest {
 		assertNotNull(category);
 		assertEquals("Web", category.getName());
 	}
-	
 }

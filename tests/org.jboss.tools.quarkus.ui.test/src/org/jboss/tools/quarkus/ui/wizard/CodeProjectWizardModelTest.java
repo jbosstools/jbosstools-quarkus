@@ -13,15 +13,7 @@ package org.jboss.tools.quarkus.ui.wizard;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.jboss.tools.quarkus.core.code.model.QuarkusModel;
-import org.jboss.tools.quarkus.core.code.model.QuarkusModelRegistry;
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 public class CodeProjectWizardModelTest {
@@ -33,13 +25,5 @@ public class CodeProjectWizardModelTest {
 		assertNotNull(model.getVersion());
 		assertNotNull(model.getLocation());
 		assertTrue(model.isUseDefaultLocation());
-	}
-	
-	@Test
-	public void testModelWithCatalog() throws JsonParseException, JsonMappingException, IOException   {
-		CodeProjectModel model = new CodeProjectModel();
-		QuarkusModel model1 = QuarkusModelRegistry.readModel(new File("resources/extensions.json"));
-		model.setModel(model1);
-		assertNotNull(model.getSelectedCategory());
 	}
 }

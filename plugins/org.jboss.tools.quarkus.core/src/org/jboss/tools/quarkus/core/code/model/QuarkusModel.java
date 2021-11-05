@@ -10,29 +10,35 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.core.code.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 public class QuarkusModel {
-    private List<QuarkusCategory> categories = new ArrayList<>();
+    private String baseURL;
+    
+    private List<QuarkusStream> streams;
+    
+    private Map<String, QuarkusExtensionsModel> extensionsModelMap = new HashMap<>();
 
-    public QuarkusModel(List<QuarkusExtension> extensions) {
-        Collections.sort(extensions, (e1, e2) -> e1.getOrder() - e2.getOrder());
-        final QuarkusCategory[] currentCategory = {null};
-        extensions.forEach(e -> {
-            if (currentCategory[0] == null || !e.getCategory().equals(currentCategory[0].getName())) {
-                currentCategory[0] = new QuarkusCategory(e.getCategory());
-                categories.add(currentCategory[0]);
-            }
-            currentCategory[0].getExtensions().add(e);
-        });
+    public QuarkusModel(String baseURL, List<QuarkusStream> streams) {
+    	this.baseURL = baseURL;
+    	this.streams = streams;
     }
-    public List<QuarkusCategory> getCategories() {
-        return categories;
+    
+    public List<QuarkusStream> getStreams() {
+        return streams;
     }
-
-    public void setCategories(List<QuarkusCategory> categories) {
-        this.categories = categories;
+    
+    public QuarkusExtensionsModel getExtensionsModel(String key, IProgressMonitor monitor) throws CoreException {
+    	QuarkusExtensionsModel extensionsModel = extensionsModelMap.get(key);
+    	if (extensionsModel == null) {
+    		extensionsModel = QuarkusModelRegistry.loadExtensionsModel(baseURL, key, monitor);
+    		extensionsModelMap.put(key, extensionsModel);
+    	}
+    	return extensionsModel;
     }
 }

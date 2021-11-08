@@ -64,8 +64,8 @@ public class CodeProjectWizardController {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		IStatus status = null;
 		status = manager.zip(model.getEndpoint(), model.getTool(), model.getGroupId(), model.getArtifactId(),
-		        model.getVersion(), model.getClassName(), model.getPath(), model.getSelectedExtensions(), 
-		        model.isUseCodeStarters(), output, monitor);
+		        model.getVersion(), model.getClassName(), model.getPath(), model.getExtensionsModel(),
+		        model.getSelectedExtensions(), model.isUseCodeStarters(), output, monitor);
 		if (!monitor.isCanceled() && status.isOK()) {
 			status = QuarkusModelRegistry.unzip(output.toByteArray(), model.getLocation());
 		}

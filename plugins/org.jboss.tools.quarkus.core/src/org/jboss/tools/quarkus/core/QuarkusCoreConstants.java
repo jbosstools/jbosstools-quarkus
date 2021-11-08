@@ -33,6 +33,8 @@ public class QuarkusCoreConstants {
 
     public static final String CODE_EXTENSIONS_PARAMETER_NAME = "extensions";
     public static final String CODE_EXTENSIONS_SHORT_PARAMETER_NAME = "s";
+    
+    public static final String CODE_STREAM_PARAMETER_NAME = "streamKey";
 
     public static final String CODE_CLIENT_NAME_PARAMETER_NAME = "cn";
 
@@ -58,10 +60,14 @@ public class QuarkusCoreConstants {
     		
     
     public static final String CODE_ENDPOINT_URL = System.getProperty(CODE_ENDPOINT_URL_PROPERTY_NAME, CODE_ENDPOINT_URL_PRODUCTION);
-
-    public static final String EXTENSIONS_SUFFIX = "/api/extensions?" + CODE_CLIENT_NAME_PARAMETER_NAME + "="
+    
+    public static final String CLIENT_ID_PARAMETERS = CODE_CLIENT_NAME_PARAMETER_NAME + "="
             + CODE_CLIENT_NAME_PARAMETER_VALUE + "&" + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME + "="
-            + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE;
+            + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE; 
+
+    public static final String EXTENSIONS_SUFFIX = "/api/extensions/stream/";
+
+    public static final String STREAMS_SUFFIX = "/api/streams?" + CLIENT_ID_PARAMETERS;
 
     public static final String DOWNLOAD_SUFFIX = "/api/download";
 

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.jboss.tools.common.databinding.ObservablePojo;
 import org.jboss.tools.quarkus.core.code.model.QuarkusCategory;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
+import org.jboss.tools.quarkus.core.code.model.QuarkusExtensionsModel;
 import org.jboss.tools.quarkus.core.code.model.QuarkusModel;
 import org.jboss.tools.quarkus.core.code.model.Tool;
 
@@ -44,7 +45,9 @@ public class CodeProjectModel extends ObservablePojo {
 
     public static final String TOOL_PROPERTY = "tool";
     public static final String ENDPOINT_PROPERTY = "endpoint";
+    public static final String MODEL_PROPERTY = "model";
     public static final String CATEGORIES_PROPERTY = "categories";
+    public static final String EXTENSIONS_MODEL_PROPERTY = "extensionsModel";
     
     public static final String SELECTED_CATEGORY_PROPERTY = "selectedCategory";
     
@@ -75,6 +78,11 @@ public class CodeProjectModel extends ObservablePojo {
     private Tool tool = Tool.MAVEN;
     
     private String endpoint = CODE_ENDPOINT_URL;
+    
+    private QuarkusModel model;
+    
+    private QuarkusExtensionsModel extensionsModel;
+    
     private List<QuarkusCategory> categories = new ArrayList<>();
     
     private QuarkusCategory selectedCategory;
@@ -240,12 +248,24 @@ public class CodeProjectModel extends ObservablePojo {
     }
 
     public void setModel(QuarkusModel model) {
-        setCategories(model.getCategories());
-        model.getCategories().forEach(category -> category.getExtensions().forEach(extension -> {
+        firePropertyChange(MODEL_PROPERTY, this.model, this.model = model);
+    }
+    
+    public QuarkusModel getModel() {
+    	return model;
+    }
+    
+    public QuarkusExtensionsModel getExtensionsModel() {
+    	return extensionsModel;
+    }
+    
+    public void setExtensionsModel(QuarkusExtensionsModel extensionsModel) {
+        firePropertyChange(EXTENSIONS_MODEL_PROPERTY, this.extensionsModel, this.extensionsModel = extensionsModel);
+        setCategories(extensionsModel.getCategories());
+        extensionsModel.getCategories().forEach(category -> category.getExtensions().forEach(extension -> {
         	if (extension.isDefaultExtension()) {
         		selectedExtensions.add(extension);
         	}
-        	
         }));
     }
     

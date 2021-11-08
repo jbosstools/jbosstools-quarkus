@@ -11,6 +11,7 @@
 package org.jboss.tools.quarkus.ui.wizard;
 
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.LOCATION_PROPERTY;
+import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.MODEL_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.PROJECT_NAME_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.TOOL_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.USE_DEFAULT_LOCATION_PROPERTY;
@@ -36,12 +37,14 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -57,6 +60,7 @@ import org.jboss.tools.common.ui.databinding.RequiredControlDecorationUpdater;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
 import org.jboss.tools.quarkus.core.code.model.QuarkusModelRegistry;
+import org.jboss.tools.quarkus.core.code.model.QuarkusStream;
 import org.jboss.tools.quarkus.core.code.model.Tool;
 
 public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
@@ -93,8 +97,37 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
 	        .grab(true, false)
 	        .applyTo(explanation);
 
+	    //streams
+	    Label lblStreams = new Label(parent, SWT.NONE);
+	    lblStreams.setText("Quarkus stream:");
+	    lblStreams.setToolTipText("The Quarkus stream the generated project will be based on.");
+	    GridDataFactory.fillDefaults()
+	        .align(SWT.LEFT, SWT.CENTER)
+	        .applyTo(lblStreams);
+	    Combo comboStreams = new Combo(parent, SWT.SINGLE | SWT.DROP_DOWN | SWT.READ_ONLY);
+	    GridDataFactory.fillDefaults()
+	        .align(SWT.LEFT, SWT.CENTER)
+	        .hint(300, SWT.DEFAULT)
+	    	.align(SWT.LEFT, SWT.CENTER)
+	        .applyTo(comboStreams);
+	    ComboViewer comboStreamsViewer = new ComboViewer(comboStreams);
+	    comboStreamsViewer.setContentProvider(new ObservableListContentProvider<>());
+	    comboStreamsViewer.setInput(BeanProperties.value(MODEL_PROPERTY).list("streams").observe(model));
+	    comboStreamsViewer.setLabelProvider(new LabelProvider() {
+	        @Override
+	        public String getText(Object element) {
+	            QuarkusStream stream = (QuarkusStream) element;
+	            return stream.getPlatformVersion() + " " + stream.getStatus();
+	        }
+	    });
+	    model.addPropertyChangeListener(MODEL_PROPERTY, e -> {
+	    	comboStreamsViewer.getControl().getDisplay().asyncExec(() -> comboStreamsViewer.setSelection(new StructuredSelection(model.getModel().getStreams().stream().filter(QuarkusStream::isRecommended).findFirst().orElse(model.getModel().getStreams().get(0)))));
+	    });
+	    comboStreamsViewer.addSelectionChangedListener(e -> {
+	    	loadExtensionsModel((QuarkusStream)e.getStructuredSelection().getFirstElement());
+	    });
+
 	    //project type
-	    // boosters
 	    Label lblProjectType = new Label(parent, SWT.NONE);
 	    lblProjectType.setText("Project type:");
 	    lblProjectType.setToolTipText("The build tool used for the generated project.");
@@ -204,6 +237,14 @@ public class CodeProjectTypeWizardPage extends AbstractDataBindingWizardPage {
         } catch (InvocationTargetException | InterruptedException e) {
             // ignore
         }
+    }
+    
+    private void loadExtensionsModel(QuarkusStream stream) {
+    	try {
+			WizardUtils.runInWizard(Job.create("Loading extensions for stream " + stream.getPlatformVersion(),
+					(ICoreRunnable) monitor -> model.setExtensionsModel(model.getModel().getExtensionsModel(stream.getKey(), monitor))), getContainer());
+		} catch (InvocationTargetException | InterruptedException e) {
+		}
     }
 
     

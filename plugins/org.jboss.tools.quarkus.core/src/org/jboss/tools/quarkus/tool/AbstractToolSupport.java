@@ -23,6 +23,8 @@ public abstract class AbstractToolSupport implements ToolSupport {
 	protected AbstractToolSupport(IProject project) {
 		this.project = project;
 	}
+	
+	abstract String getScript();
 
 	@Override
 	public IPath getScriptPath() {

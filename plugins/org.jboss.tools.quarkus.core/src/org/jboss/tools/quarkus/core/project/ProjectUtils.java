@@ -23,11 +23,9 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -35,24 +33,25 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.core.project.LocalProjectScanner;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
+import org.jboss.tools.common.jdt.core.buildpath.ClasspathContainersHelper;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
+import org.jboss.tools.quarkus.tool.DefaultToolContext;
 import org.jboss.tools.quarkus.tool.GradleToolSupport;
 import org.jboss.tools.quarkus.tool.MavenToolSupport;
+import org.jboss.tools.quarkus.tool.ToolContext;
 import org.jboss.tools.quarkus.tool.ToolSupport;
 
-import io.quarkus.cli.commands.AddExtensions;
 import io.quarkus.cli.commands.CreateProject;
 import io.quarkus.cli.commands.ListExtensions;
 import io.quarkus.cli.commands.file.BuildFile;
@@ -60,7 +59,6 @@ import io.quarkus.cli.commands.file.MavenBuildFile;
 import io.quarkus.cli.commands.writer.FileProjectWriter;
 import io.quarkus.cli.commands.writer.ProjectWriter;
 import io.quarkus.dependencies.Extension;
-import io.quarkus.generators.BuildTool;
 
 public class ProjectUtils {
 	
@@ -139,11 +137,11 @@ public class ProjectUtils {
 			if (currentProject instanceof IProject) {
 				IProject project = (IProject) currentProject;
 				ToolSupport support = getToolSupport(project);
-				List<String> commands = support.getAddExtensionParameters(extension.getArtifactId());
-				support.execute(project.getLocation().toFile(), commands);
+				ToolContext context = new DefaultToolContext(project.getName() + "__installExtension", project, Collections.emptyMap(), Collections.singletonList(extension.getArtifactId()));
+				support.addExtension(context);
 				project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}		
-		} catch (IOException | CoreException e) {
+		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -211,9 +209,17 @@ public class ProjectUtils {
 	 * @return the path to the JRE/JDK attached to the project
 	 * @throws CoreException 
 	 */
-	public static String getJavaHome(IProject project) throws CoreException {
+	public static String getJREEntry(IProject project) throws CoreException {
 		IJavaProject javaProject = JavaCore.create(project);
-		IVMInstall install = JavaRuntime.getVMInstall(javaProject);
-		return install.getInstallLocation().getAbsolutePath();
+		for(IClasspathEntry cpe : javaProject.getRawClasspath()) {
+			if (cpe.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+				IClasspathContainer container = JavaCore.getClasspathContainer(cpe.getPath(), javaProject);
+				if (ClasspathContainersHelper.applies(container, ClasspathContainersHelper.JRE_CONTAINER_ID)) {
+					return cpe.getPath().toPortableString();
+					
+				}
+			}
+		}
+		return null;
 	}
 }

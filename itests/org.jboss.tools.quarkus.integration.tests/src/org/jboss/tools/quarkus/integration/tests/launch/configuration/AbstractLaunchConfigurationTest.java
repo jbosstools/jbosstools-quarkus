@@ -10,6 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.integration.tests.launch.configuration;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
@@ -31,6 +44,29 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	public static void createNewQuarkusProject(String projectName, String projectType) {
 		testCreateNewProject(projectName, projectType);
 		checkProblemsView();
+	}
+	
+	public static void importProject(String projectName, String location) throws IOException, CoreException, InterruptedException {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		File dir = new File(workspace.getRoot().getLocation().toFile(), projectName);
+	    if(dir.isFile()) {
+	      dir = dir.getParentFile();
+	    }
+	    FileUtils.copyDirectory(new File(location), dir);
+
+	    final IProject project = workspace.getRoot().getProject(projectName);
+
+	      if(!project.exists()) {
+	        IProjectDescription projectDescription = workspace.loadProjectDescription(workspace.getRoot().getLocation().append(projectName).append(".project"));
+	        project.create(projectDescription, null);
+	        project.open(IResource.NONE, null);
+	        JavaCore.run(m -> m.done(), null, new NullProgressMonitor());
+	      } else {
+	        project.refreshLocal(IResource.DEPTH_INFINITE, null);
+	      }
+	    try {
+	    	JobHelpers.waitForJobsToComplete();
+	    } catch (AssertionError e) {}
 	}
 
 	public void testNewQuarkusConfiguration(String projectName, String projectType) {

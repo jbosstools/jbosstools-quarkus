@@ -18,8 +18,15 @@ public class ProductResource {
 	ProductService productService;
 
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
+        return "Hello RESTEasy";
+    }
+    
+    @GET
+    @Path("/products")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> hello() {
+    public List<Product> products() {
         return productService.getProducts();
     }
 }

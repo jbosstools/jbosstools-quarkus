@@ -18,7 +18,6 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,7 +29,6 @@ import org.junit.runner.RunWith;
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Ignore("JDT issues with multi-jar causes build to fail")
 public class CreateNewQuarkusConfigurationMultiMavenTest extends AbstractLaunchConfigurationTest {
 
 	private static String DAO_PROJECT_NAME = "maven-dao";

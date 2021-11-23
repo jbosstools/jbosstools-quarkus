@@ -25,12 +25,5 @@
             modes="run, debug"
             name="Quarkus Application">
       </launchConfigurationType>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.processFactories">
-      <processFactory
-            class="org.jboss.tools.quarkus.core.launch.ProcessFactory"
-            id="org.jboss.tools.quarkus.core.processFactory">
-      </processFactory>
-   </extension>
+   </extension>>
 </plugin>

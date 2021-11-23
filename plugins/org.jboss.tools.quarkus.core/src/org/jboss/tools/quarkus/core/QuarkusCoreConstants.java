@@ -73,8 +73,6 @@ public class QuarkusCoreConstants {
 
 	public static final String QUARKUS_RUNTIME_CLASS_NAME = "io.quarkus.runtime.LaunchMode";
 	
-	public static final String QUARKUS_PROCESS_FACTORY = QuarkusCorePlugin.PLUGIN_ID + ".processFactory";
-
-  public static final String ATTR_PROFILE_NAME = QuarkusCorePlugin.PLUGIN_ID + ".profileName";
+	public static final String ATTR_PROFILE_NAME = QuarkusCorePlugin.PLUGIN_ID + ".profileName";
 
 }

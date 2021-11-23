@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
@@ -36,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
-import org.jboss.tools.quarkus.core.launch.LaunchUtils;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class QuarkusProjectTab extends AbstractJavaMainTab {
@@ -113,7 +111,6 @@ public class QuarkusProjectTab extends AbstractJavaMainTab {
 		else {
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
 		}
-		config.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, QuarkusCoreConstants.QUARKUS_PROCESS_FACTORY);
 		config.setAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, "");
 	}
 
@@ -136,18 +133,10 @@ public class QuarkusProjectTab extends AbstractJavaMainTab {
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
 		String profileName = profileText.getText().trim();
 		configuration.setAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, profileName);
-		try {
-			if (!projectName.isEmpty()) {
-				LaunchUtils.initializeQuarkusLaunchConfiguration(configuration);
-			}
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
 	public String getName() {
 		return "Project";
 	}
-
 }

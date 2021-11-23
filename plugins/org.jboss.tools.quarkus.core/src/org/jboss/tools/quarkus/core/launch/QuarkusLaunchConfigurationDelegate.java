@@ -26,8 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.externaltools.internal.IExternalToolConstants;
-import org.eclipse.core.externaltools.internal.launchConfigurations.ProgramLaunchDelegate;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -40,13 +38,18 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.core.QuarkusCorePlugin;
 import org.jboss.tools.quarkus.core.QuarkusCoreUsageStats;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
+import org.jboss.tools.quarkus.tool.DefaultToolExecutionContext;
+import org.jboss.tools.quarkus.tool.ToolSupport;
 
-public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
+public class QuarkusLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 	private static final String JWDP_HANDSHAKE = "JDWP-Handshake";
 	
 	 private int allocateLocalPort() throws CoreException {
@@ -56,29 +59,34 @@ public class QuarkusLaunchConfigurationDelegate extends ProgramLaunchDelegate {
 	      throw new CoreException(new Status(IStatus.ERROR, QuarkusCorePlugin.PLUGIN_ID, e.getLocalizedMessage()));
 	    }
 	  }
-
+	 
+	 protected void copy(ILaunch source, ILaunch target) {
+		 for(IDebugTarget t : source.getDebugTargets()) {
+			 target.addDebugTarget(t);
+		 }
+		 for(IProcess p : source.getProcesses()) {
+			 target.addProcess(p);
+		 }
+	 }
+	 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException {
+		IProject project = getProject(configuration);
+		String profile = configuration.getAttribute(QuarkusCoreConstants.ATTR_PROFILE_NAME, (String) null);
 		int debugPort = allocateLocalPort();
-		String arguments = configuration.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, "");
-		ILaunchConfigurationWorkingCopy copy = configuration.getWorkingCopy();
-		copy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, arguments + " -Ddebug=" + debugPort);
-		Map<String, String> envVars = copy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>());
-		Map<String, String> nenvVars = new HashMap<>(envVars);
-		nenvVars.put("JAVA_HOME", ProjectUtils.getJavaHome(getProject(configuration)));
-		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, nenvVars);
-		super.launch(copy, mode, launch, monitor);
-		IProcess tool = launch.getProcesses()[0];
+		DefaultToolExecutionContext context = new DefaultToolExecutionContext(configuration.getName(),
+				project,
+				configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>()),
+				profile,
+				"debug".equals(mode),
+				debugPort);
+		ToolSupport toolSupport = ProjectUtils.getToolSupport(project);
+		copy(toolSupport.run(context, monitor), launch);
 		if ("debug".equals(mode)) {
-			((RuntimeProcessWithJVMAttach)tool).setJvmLaunch(createRemoteJavaDebugConfiguration(configuration, debugPort, monitor));
+			createRemoteJavaDebugConfiguration(configuration, debugPort, monitor);
 		}
-		/*
-		 * as LaunchManagers caches last launch config / config working copy, restore original env
-		 * so that the added JAVA_HOME is not displayed
-		 */
-		copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVars);
-		QuarkusCoreUsageStats.getInstance().startApplication(mode, ProjectUtils.getToolSupport(getProject(configuration)));
+		QuarkusCoreUsageStats.getInstance().startApplication(mode, toolSupport);
 	}
 
 	private ILaunch createRemoteJavaDebugConfiguration(ILaunchConfiguration configuration, int port, IProgressMonitor monitor) throws CoreException {

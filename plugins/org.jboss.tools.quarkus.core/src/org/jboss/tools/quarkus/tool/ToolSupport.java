@@ -10,46 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.tool;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.io.output.NullOutputStream;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
 
 /**
  * @author Red Hat Developers
  *
  */
 public interface ToolSupport {
-	
-	/**
-	 * Return the tool wrapper script name.
-	 * 
-	 * @return the wrapper script name
-	 */
-	String getScript();
-	
 	IPath getScriptPath();
 	
-	/**
-	 * Return the list of arguments for adding a new extension.
-	 * 
-	 * @return
-	 */
-	List<String> getAddExtensionParameters(String extension);
+	void addExtension(ToolContext context) throws CoreException;
 	
-	default void execute(File baseDir, List<String> args) throws IOException {
-		CommandLine command = new CommandLine(getScriptPath().toOSString());
-		command.addArguments(args.toArray(new String[args.size()]));
-		PumpStreamHandler handler = new PumpStreamHandler(new NullOutputStream());
-		Executor executor = new DefaultExecutor();
-		executor.setWorkingDirectory(baseDir);
-		executor.setStreamHandler(handler);
-		executor.execute(command);
-	}
+	ILaunch run(ToolExecutionContext context, IProgressMonitor monitor) throws CoreException;
 }

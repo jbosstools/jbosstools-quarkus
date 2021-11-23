@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
@@ -121,8 +122,8 @@ public abstract class AbstractQuarkusTest {
 		try {
 			newFileDialog.finish();
 		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // sometimes node.js warning
-																						// blocks test and need to close
-																						// warning shell
+			// blocks test and need to close
+			// warning shell
 			WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -160,33 +161,30 @@ public abstract class AbstractQuarkusTest {
 			refreshProjectWorkaround(projectName);
 		}
 	}
-	
+
 	private static void refreshProjectWorkaround(String projectName) {
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-							// CRS need some time for
-							// check errors again
-			e.printStackTrace();
-		}
-		
+
+		AbstractWait.sleep(TimePeriod.DEFAULT);
+
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
-		assertEquals("There should be 1 error in imported project", 1, problems.size());
-		
-		
+		Problem problem = null;
+		if (problems.size() > 0) {
+			problem = problems.get(0);
+			String description = problem.getDescription();
+			assertTrue("There should be Quarkus code generation error. But instead of it: " + description, 
+					description.contains("Quarkus code generation phase has failed"));
+		} else {
+			fail("No code generation error anymore.");
+		}
+
 		TextEditor ed = openFileWithTextEditor(projectName, "Text Editor", "", "pom.xml");
 		ed.insertLine(3,"");
 		ed.save();
 		ed.close();
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-							// CRS need some time for
-							// check errors again
-			e.printStackTrace();
-		}
+
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 	}
 
 	public static void checkExtensionInPom(File file, String extension) {
@@ -219,15 +217,15 @@ public abstract class AbstractQuarkusTest {
 				new ProjectExplorer().getProject(projectName).getProjectItem(fileName).openWith(textEditorType);
 			} else {
 				new ProjectExplorer().getProject(projectName).getProjectItem(resourcePath).getProjectItem(fileName)
-					.openWith(textEditorType);	
+				.openWith(textEditorType);	
 			}
 		} catch (WaitTimeoutExpiredException e) { // CRS need some time for
-													// download microprofile...
-													// when
-													// application_properties
-													// opens, sometimes it need
-													// more then default 10
-													// seconds
+			// download microprofile...
+			// when
+			// application_properties
+			// opens, sometimes it need
+			// more then default 10
+			// seconds
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		return new TextEditor(fileName);

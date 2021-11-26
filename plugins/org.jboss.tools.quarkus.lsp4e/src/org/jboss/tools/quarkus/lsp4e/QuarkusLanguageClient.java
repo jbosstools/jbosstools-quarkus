@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -108,7 +109,17 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	public CompletableFuture<Location> getPropertyDefinition(MicroProfilePropertyDefinitionParams params) {
 		// TODO : implements the Quarkus definition when LSP4E will support JDT LS
 		// syntax uri -> see // https://bugs.eclipse.org/bugs/show_bug.cgi?id=551625
-		return CompletableFuture.completedFuture(null);
+		//return CompletableFuture.completedFuture(null);
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManager.getInstance().findPropertyLocation(params, JDTUtilsImpl.getInstance(), monitor);
+			} catch (CoreException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}	
+			
+		});
 	}
 
 	@Override

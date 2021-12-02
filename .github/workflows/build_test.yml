@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        java: ["11"]
+        java: ["11", "17"]
       fail-fast: false
 
     steps:
@@ -51,13 +51,13 @@ jobs:
       with:
         run: >
           mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true
-          -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true --no-transfer-progress
+          -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
 
     # Archive artifacts to be applied in Publish Reports workflow
     - name: Archiving test artifacts
       uses: actions/upload-artifact@v2
       with: 
-        name: ${{ matrix.os }}-test-reports
+        name: ${{ matrix.os }}-${{ matrix.java }}-test-reports
         path: |
           *tests/*/target/surefire-reports/
           */*tests/*/target/surefire-reports/

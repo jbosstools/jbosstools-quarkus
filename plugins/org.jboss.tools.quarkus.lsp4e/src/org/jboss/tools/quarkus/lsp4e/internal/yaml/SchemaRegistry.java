@@ -148,8 +148,9 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
         "org.eclipse.wildwebdeveloper");
     String schemaStr = preferenceStore.getString("wildwebdeveloper.yaml.schema");
     if (schemaStr != null) {
-      return new Gson().fromJson(schemaStr, new TypeToken<HashMap<String, Object>>() {
+    	Map<String, Object> result = new Gson().fromJson(schemaStr, new TypeToken<HashMap<String, Object>>() {
       }.getType());
+    	return result == null ? Collections.emptyMap():result;
     } else {
       return Collections.emptyMap();
     }

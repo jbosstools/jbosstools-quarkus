@@ -175,8 +175,6 @@ public abstract class AbstractQuarkusTest {
 			String description = problem.getDescription();
 			assertTrue("There should be Quarkus code generation error. But instead of it: " + description, 
 					description.contains("Quarkus code generation phase has failed"));
-		} else {
-			fail("No code generation error anymore.");
 		}
 
 		TextEditor ed = openFileWithTextEditor(projectName, "Text Editor", "", "pom.xml");
@@ -211,9 +209,14 @@ public abstract class AbstractQuarkusTest {
 
 	public static TextEditor openFileWithTextEditor(String projectName, String textEditorType, String resourcePath,
 			String fileName) {
+		return openFileWithTextEditor(projectName, textEditorType, new String[] { resourcePath }, fileName);
+	}
+
+	public static TextEditor openFileWithTextEditor(String projectName, String textEditorType, String resourcePath[],
+			String fileName) {
 
 		try {
-			if ("".equals(resourcePath)) {
+			if (resourcePath.length == 0 || "".equals(resourcePath[0])) {
 				new ProjectExplorer().getProject(projectName).getProjectItem(fileName).openWith(textEditorType);
 			} else {
 				new ProjectExplorer().getProject(projectName).getProjectItem(resourcePath).getProjectItem(fileName)

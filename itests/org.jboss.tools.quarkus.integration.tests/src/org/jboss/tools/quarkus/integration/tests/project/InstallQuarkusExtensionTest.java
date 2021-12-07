@@ -15,7 +15,10 @@ import java.io.File;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -56,6 +59,7 @@ public class InstallQuarkusExtensionTest extends AbstractQuarkusTest {
 		ev.getExtension("RESTEasy").select();
 		new ContextMenuItem("Install extension").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitUntil(new ConsoleHasText(new ConsoleView(),"Extension io.quarkus:quarkus-resteasy has been installed"), TimePeriod.LONG);
 
 		checkExtensionInPom(new File(WORKSPACE + "/test/pom.xml"), "quarkus-resteasy");
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);

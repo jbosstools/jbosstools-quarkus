@@ -21,6 +21,7 @@ import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPr
 import org.jboss.tools.quarkus.integration.tests.environment.EnvironmentVariablesTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationGradleTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMavenTest;
+import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMultiMavenTest;
 import org.jboss.tools.quarkus.integration.tests.project.CreateNewProjectTest;
 import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithDebugTest;
@@ -38,19 +39,20 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	PerspectiveTest.class,
-	CreateNewProjectTest.class,
-	CreateNewQuarkusConfigurationMavenTest.class,
-	CreateNewQuarkusConfigurationGradleTest.class,
-	EnvironmentVariablesTest.class,
-	ApplicationPropertiesContentAssistTest.class,
-	InstallQuarkusExtensionTest.class,
-	ApplicationPropertiesNewExtensionContentAssistTest.class,
-	ApplicationYaml.class,
-	CodestartTest.class,
-	RunProjectsOnOtherPorts.class,
-	RunProjectWithProfileTest.class,
-	RunProjectWithDebugTest.class
+//	PerspectiveTest.class,
+//	CreateNewProjectTest.class,
+//	CreateNewQuarkusConfigurationMavenTest.class,
+//	CreateNewQuarkusConfigurationGradleTest.class,
+	CreateNewQuarkusConfigurationMultiMavenTest.class,
+//	EnvironmentVariablesTest.class,
+//	ApplicationPropertiesContentAssistTest.class,
+//	InstallQuarkusExtensionTest.class,
+//	ApplicationPropertiesNewExtensionContentAssistTest.class,
+//	ApplicationYaml.class,
+//	CodestartTest.class,
+//	RunProjectsOnOtherPorts.class,
+//	RunProjectWithProfileTest.class,
+//	RunProjectWithDebugTest.class // https://issues.redhat.com/browse/JBIDE-28840
 	
 })
 

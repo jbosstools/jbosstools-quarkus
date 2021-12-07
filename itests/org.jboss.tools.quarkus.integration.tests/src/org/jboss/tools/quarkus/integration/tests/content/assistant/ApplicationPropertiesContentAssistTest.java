@@ -30,8 +30,8 @@ public class ApplicationPropertiesContentAssistTest extends AbstractContentAssis
 
 	private static String CONTENT_ASSIST_PROJECT_NAME = "testcontentassistproject";
 
-	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "quarkus";
-	private static String PORPOSAL_FOR_SELECT = "quarkus.application.name";
+	private static String TEXT_FOR_TEST_CONTENT_ASSIST = "mp";
+	private static String PORPOSAL_FOR_SELECT = "mp.context.ManagedExecutor.maxAsync";
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {

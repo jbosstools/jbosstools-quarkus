@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.buildship.core.internal.CorePlugin;
 import org.eclipse.buildship.core.internal.configuration.ProjectConfiguration;
 import org.eclipse.buildship.core.internal.launch.GradleRunConfigurationAttributes;
@@ -102,7 +103,11 @@ public class GradleToolSupport extends AbstractToolSupport {
 		Job job = Job.create("Starting " + context.getName(), monitor2 -> {
 			ILaunchConfigurationWorkingCopy launchConfiguration = getConfiguration(context);
 			launchConfiguration.setAttribute("tasks", Collections.singletonList("quarkusDev"));
-			launchConfiguration.setAttribute("arguments", add(launchConfiguration.getAttribute("arguments", Collections.emptyList()), "-Ddebug=" + context.getDebugPort()));
+			List<String> arguments = add(launchConfiguration.getAttribute("arguments", Collections.emptyList()), "-Ddebug=" + context.getDebugPort());
+			if (StringUtils.isNotBlank(context.getProfile())) {
+				arguments = add(arguments, "-Dquarkus.profile=" + context.getProfile());
+			}
+			launchConfiguration.setAttribute("arguments", arguments);
 			launchConfiguration.launch(ILaunchManager.RUN_MODE, monitor);
 		});
 		job.addJobChangeListener(new JobChangeAdapter() {

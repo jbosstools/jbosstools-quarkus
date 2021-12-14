@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.tool;
 
+import java.util.Arrays;
 import java.util.Collections;
+
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -66,7 +69,11 @@ public class MavenToolSupport extends AbstractToolSupport {
 	public ILaunch run(ToolExecutionContext context, IProgressMonitor monitor) throws CoreException {
 		ILaunchConfigurationWorkingCopy launchConfiguration = getConfiguration(context);
 		launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_GOALS, "compile quarkus:dev");
-		launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Collections.singletonList("debug=" + context.getDebugPort()));
+		if (StringUtils.isBlank(context.getProfile())) {
+			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Collections.singletonList("debug=" + context.getDebugPort()));
+		} else {
+			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Arrays.asList("debug=" + context.getDebugPort(), "quarkus.profile=" + context.getProfile()));
+		}
 		return launchConfiguration.launch(ILaunchManager.RUN_MODE, monitor);
 	}
 }

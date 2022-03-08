@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>test-framework</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.5.100-SNAPSHOT</version>
     </parent>
     
     <groupId>org.jboss.tools.quarkus.test-framework</groupId>

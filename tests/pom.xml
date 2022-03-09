@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jboss.tools</groupId>
         <artifactId>quarkus</artifactId>
-        <version>1.5.100-SNAPSHOT</version>
+        <version>1.6.0-SNAPSHOT</version>
     </parent>
     
     <groupId>org.jboss.tools.quarkus</groupId>
@@ -39,6 +39,7 @@
         <module>org.jboss.tools.quarkus.runtime.test</module>
         <module>org.jboss.tools.quarkus.ui.test</module>
         <module>org.jboss.tools.quarkus.lsp4e.test</module>
+        <module>org.jboss.tools.quarkus.lsp4e.qute.test</module>
     </modules>
     
 </project>

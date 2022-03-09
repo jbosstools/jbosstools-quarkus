@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core;
 
-import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
+import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 
 import com.redhat.microprofile.jdt.quarkus.MicroProfileConfigPropertyTest;

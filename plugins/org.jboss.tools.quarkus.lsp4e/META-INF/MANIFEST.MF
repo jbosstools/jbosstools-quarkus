@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e;singleton:=true
-Bundle-Version: 1.5.100.qualifier
+Bundle-Version: 1.6.0.qualifier
 Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench,
@@ -29,14 +29,18 @@ Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.ui.ide,
  org.jboss.tools.quarkus.core,
  org.apache.commons.io,
- org.eclipse.wildwebdeveloper
+ org.eclipse.wildwebdeveloper,
+ com.redhat.qute.jdt,
+ org.eclipse.jdt.ls.core,
+ org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  server/org.eclipse.lsp4mp.ls-uber.jar,
  server/com.redhat.quarkus.ls.jar,
- lib/remark.jar
+ lib/remark.jar,
+ server/com.redhat.qute.ls-uber.jar
 Bundle-Activator: org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin
 Export-Package: org.jboss.tools.quarkus.lsp4e
 Eclipse-BundleShape: dir

@@ -19,12 +19,62 @@
             name="Quarkus Application Properties (YAML)"
             priority="normal">
       </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            id="org.jboss.tools.quarkus.lsp4e.qute.html"
+            name="Qute HTML"
+            priority="high">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            id="org.jboss.tools.quarkus.lsp4e.qute.yaml"
+            name="Qute YAML"
+            priority="high">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            id="org.jboss.tools.quarkus.lsp4e.qute.json"
+            name="Qute JSON"
+            priority="high">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            id="org.jboss.tools.quarkus.lsp4e.qute.txt"
+            name="Qute Text"
+            priority="high">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            id="org.jboss.tools.quarkus.lsp4e.qute"
+            name="Qute templates"
+            priority="high">
+      </content-type>
    </extension>
       
    <extension
          point="org.eclipse.ui.editors">
       <editorContentTypeBinding
             contentTypeId="org.jboss.tools.quarkus.lsp4e.properties"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.html"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.yaml"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.json"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.txt"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+      <editorContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute"
             editorId="org.eclipse.ui.genericeditor.GenericEditor">
       </editorContentTypeBinding>
    </extension>
@@ -47,6 +97,38 @@
             contentType="org.eclipse.jdt.core.javaSource"
             id="org.jboss.tools.quarkus.lsp4e">
       </contentTypeMapping>
+      <server
+            class="org.jboss.tools.quarkus.lsp4e.internal.ls.qute.QuteLanguageServer"
+            id="org.jboss.tools.quarkus.lsp4e.qute"
+            label="Qute Language Server"
+            clientImpl="org.jboss.tools.quarkus.lsp4e.internal.ls.qute.QuteLanguageClient"
+            serverInterface="com.redhat.qute.ls.api.QuteLanguageServerAPI"
+            singleton="true" >
+      </server>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e.qute.html"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e.qute.yaml"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e.qute.json"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e.qute.txt"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.jboss.tools.quarkus.lsp4e.qute"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
+      <contentTypeMapping
+            contentType="org.eclipse.jdt.core.javaSource"
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </contentTypeMapping>
    </extension>
    
    <extension
@@ -59,6 +141,46 @@
             contentTypeId="org.jboss.tools.quarkus.lsp4e.properties"
             scopeName="properties">
       </scopeNameContentTypeBinding>
+      <grammar
+            path="./language-support/qute-html.tmLanguage.json"
+            scopeName="text.html.qute">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.html"
+            scopeName="text.html.qute">
+      </scopeNameContentTypeBinding>
+      <grammar
+            path="./language-support/qute-yaml.tmLanguage.json"
+            scopeName="source.yaml.qute">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.yaml"
+            scopeName="source.yaml.qute">
+      </scopeNameContentTypeBinding>
+      <grammar
+            path="./language-support/qute-json.tmLanguage.json"
+            scopeName="source.json.qute">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.json"
+            scopeName="source.json.qute">
+      </scopeNameContentTypeBinding>
+      <grammar
+            path="./language-support/qute-txt.tmLanguage.json"
+            scopeName="text.qute">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.txt"
+            scopeName="text.qute">
+      </scopeNameContentTypeBinding>
+      <grammar
+            path="./language-support/qute.tmLanguage.json"
+            scopeName="grammar.qute">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute"
+            scopeName="grammar.qute">
+      </scopeNameContentTypeBinding>
    </extension>
 
    <extension
@@ -67,12 +189,44 @@
             contentTypeId="org.jboss.tools.quarkus.lsp4e.properties"
             path="language-configurations/language-configuration.json">
       </languageConfiguration>
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.html"
+            path="language-support/qute/language-configuration.json">
+      </languageConfiguration>
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.yaml"
+            path="language-support/qute/language-configuration.json">
+      </languageConfiguration>
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.json"
+            path="language-support/qute/language-configuration.json">
+      </languageConfiguration>
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute.txt"
+            path="language-support/qute/language-configuration.json">
+      </languageConfiguration>
+      <languageConfiguration
+            contentTypeId="org.jboss.tools.quarkus.lsp4e.qute"
+            path="language-support/qute/language-configuration.json">
+      </languageConfiguration>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.jboss.tools.quarkus.lsp4e.internal.OpenBrowserHandler"
+            class="org.jboss.tools.quarkus.lsp4e.internal.handlers.OpenBrowserHandler"
             commandId="microprofile.command.open.uri">
+      </handler>
+      <handler
+            class="org.jboss.tools.quarkus.lsp4e.internal.handlers.qute.OpenJavaDefinitionHandler"
+            commandId="qute.command.java.definition">
+      </handler>
+      <handler
+            class="org.jboss.tools.quarkus.lsp4e.internal.handlers.qute.OpenUriHandler"
+            commandId="qute.command.open.uri">
+      </handler>
+      <handler
+            class="org.jboss.tools.quarkus.lsp4e.internal.handlers.qute.UpdateConfigurationHandler"
+            commandId="qute.command.configuration.update">
       </handler>
    </extension>
    <extension
@@ -80,6 +234,10 @@
       <editorAssociationOverride
             class="org.jboss.tools.quarkus.lsp4e.internal.ui.QuarkusDefaultEditorAssociationOverride"
             id="org.jboss.tools.quarkus.lsp4e.editorAssociationOverride">
+      </editorAssociationOverride>
+      <editorAssociationOverride
+            class="org.jboss.tools.quarkus.lsp4e.internal.ui.QuteDefaultEditorAssociationOverride"
+            id="org.jboss.tools.quarkus.lsp4e.qute.editorAssociationOverride">
       </editorAssociationOverride>
    </extension>
    <extension
@@ -96,6 +254,104 @@
             contentType="org.jboss.tools.quarkus.lsp4e.yaml"
             icon="icons/quarkus_icon_rgb_16px_default.png">
       </icon>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.jboss.tools.quarkus.lsp4e.internal.startup.qute.QuteStartup">
+      </startup>
+   </extension>
+   <extension
+         id="qutenature"
+         name="Qute"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.jboss.tools.quarkus.lsp4e.internal.nature.qute.QuteNature">
+         </run>
+      </runtime>
+      <content-type
+            id="org.jboss.tools.quarkus.lsp4e.qute.html">
+      </content-type>
+      <content-type
+            id="org.jboss.tools.quarkus.lsp4e.qute.yaml">
+      </content-type>
+      <content-type
+            id="org.jboss.tools.quarkus.lsp4e.qute.json">
+      </content-type>
+      <content-type
+            id="org.jboss.tools.quarkus.lsp4e.qute.txt">
+      </content-type>
+      <content-type
+            id="org.jboss.tools.quarkus.lsp4e.qute">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.jboss.tools.quarkus.lsp4e.internal.qute.QutePropertyTester"
+            id="org.jboss.tools.quarkus.lsp4e.qutePropertyTester"
+            namespace="org.jboss.tools.quarkus.lsp4e"
+            properties="isQute"
+            type="org.eclipse.ui.IEditorPart">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <dynamic
+               class="org.jboss.tools.quarkus.lsp4e.internal.menus.qute.QuteValidationContributionItem"
+               id="org.jboss.tools.quarkus.lsp4e.quteValidation">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <adapt
+                        type="org.eclipse.ui.IEditorPart">
+                     <test
+                           property="org.jboss.tools.quarkus.lsp4e.isQute">
+                     </test>
+                  </adapt>
+               </with>
+            </visibleWhen>
+         </dynamic>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.jboss.tools.quarkus.lsp4e.internal.properties.qute.QutePropertyPage"
+            id="org.jboss.tools.quarkus.lsp4e.properties.qute.QutePropertyPage"
+            name="Qute">
+         <enabledWhen>
+            <and>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+               </adapt>
+               <test
+                     property="org.eclipse.core.resources.projectNature"
+                     value="org.jboss.tools.quarkus.lsp4e.qutenature">
+               </test>
+            </and>
+         </enabledWhen>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.jboss.tools.common.model.ui.MainPreferencePage"
+            class="org.jboss.tools.quarkus.lsp4e.internal.properties.qute.QutePropertyPage"
+            id="org.jboss.tools.quarkus.lsp4e.preferences.qute.QutePropertyPage"
+            name="Qute">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.jboss.tools.quarkus.lsp4e.internal.preferences.qute.QutePreferenceInitializer">
+      </initializer>
    </extension>
         
 </plugin>

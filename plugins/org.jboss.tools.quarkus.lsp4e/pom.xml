@@ -24,14 +24,14 @@
     <parent>
         <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>plugins</artifactId>
-        <version>1.5.100-SNAPSHOT</version>
+        <version>1.6.0-SNAPSHOT</version>
     </parent>
     
     <groupId>org.jboss.tools.quarkus.plugins</groupId>
     <artifactId>org.jboss.tools.quarkus.lsp4e</artifactId>
     
     <packaging>eclipse-plugin</packaging>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -58,6 +58,12 @@
                                         <artifactId>com.redhat.quarkus.ls</artifactId>
                                         <version>${quarkus-ls.version}</version>
                                     </artifactItem>
+                                    <artifactItem>
+                                        <groupId>com.redhat.microprofile</groupId>
+                                        <artifactId>com.redhat.qute.ls</artifactId>
+                                        <version>${qute-ls.version}</version>
+                                        <classifier>uber</classifier>
+                                    </artifactItem>
                                 </artifactItems>
                             </configuration>
                         </execution>
@@ -83,6 +89,78 @@
                         <skip>false</skip>
                         <stripVersion>true</stripVersion>
                     </configuration>
+                </plugin>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>maven-download-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>get-qute-language-configuration</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/language-configuration.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-qute-html.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/qute-html.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-qute-json.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/qute-json.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-qute-txt.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/qute-txt.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-qute-yaml.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/qute-yaml.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-qute.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/qute/qute.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <!-- make sure server dir is removed after clean to avoid "dirty" build -->

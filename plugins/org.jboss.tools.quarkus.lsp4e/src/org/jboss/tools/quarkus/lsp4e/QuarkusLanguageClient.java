@@ -50,7 +50,7 @@ import org.eclipse.lsp4mp.jdt.core.PropertiesManager;
 import org.eclipse.lsp4mp.jdt.core.PropertiesManagerForJava;
 import org.eclipse.lsp4mp.ls.api.MicroProfileLanguageClientAPI;
 import org.eclipse.lsp4mp.ls.api.MicroProfileLanguageServerAPI;
-import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
+import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 
 /**
  * LSP4E Quarkus language client.
@@ -109,7 +109,6 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	public CompletableFuture<Location> getPropertyDefinition(MicroProfilePropertyDefinitionParams params) {
 		// TODO : implements the Quarkus definition when LSP4E will support JDT LS
 		// syntax uri -> see // https://bugs.eclipse.org/bugs/show_bug.cgi?id=551625
-		//return CompletableFuture.completedFuture(null);
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {

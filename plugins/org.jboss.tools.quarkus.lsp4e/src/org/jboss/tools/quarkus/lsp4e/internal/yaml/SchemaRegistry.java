@@ -51,7 +51,7 @@ import org.eclipse.lsp4mp.jdt.internal.core.MicroProfilePropertiesListenerManage
 import org.eclipse.lsp4mp.utils.JSONSchemaUtils;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin;
-import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
+import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

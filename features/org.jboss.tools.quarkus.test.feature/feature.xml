@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.quarkus.test.feature"
       label="Quarkus Tools Test"
-      version="1.5.100.qualifier">
+      version="1.6.0.qualifier">
 
    <description>
       The Eclipse plugins in this feature provide tooling for the Quarkus
@@ -256,7 +256,7 @@ APPENDIX: How to apply the Apache License to your work.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-            
+
    <plugin
          id="org.jboss.tools.quarkus.reddeer"
          download-size="0"
@@ -269,6 +269,22 @@ APPENDIX: How to apply the Apache License to your work.
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.quarkus.lsp4e.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.quarkus.lsp4e.qute.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>

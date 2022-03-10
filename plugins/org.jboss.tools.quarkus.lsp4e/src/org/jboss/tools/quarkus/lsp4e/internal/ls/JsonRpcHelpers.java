@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.quarkus.lsp4e.internal;
+package org.jboss.tools.quarkus.lsp4e.internal.ls;
 
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jface.text.BadLocationException;

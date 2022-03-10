@@ -1,4 +1,4 @@
-package org.jboss.tools.quarkus.lsp4e.internal;
+package org.jboss.tools.quarkus.lsp4e.internal.ls;
 /*******************************************************************************
  * Copyright (c) 2016-2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials

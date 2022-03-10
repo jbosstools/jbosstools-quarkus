@@ -4,7 +4,7 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.runtime
-Bundle-Version: 1.5.100.qualifier
+Bundle-Version: 1.6.0.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/maven-model-3.6.0.jar,

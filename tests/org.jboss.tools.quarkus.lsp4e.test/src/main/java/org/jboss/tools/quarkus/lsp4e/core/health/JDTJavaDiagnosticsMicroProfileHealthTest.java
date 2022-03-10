@@ -11,7 +11,7 @@
 package org.jboss.tools.quarkus.lsp4e.core.health;
 
 import org.eclipse.lsp4mp.jdt.core.health.JavaDiagnosticsMicroProfileHealthTest;
-import org.jboss.tools.quarkus.lsp4e.internal.JDTUtilsImpl;
+import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 

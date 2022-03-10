@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.jboss.tools.quarkus.lsp4e.internal;
+package org.jboss.tools.quarkus.lsp4e.internal.ls;
 
 import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Element;

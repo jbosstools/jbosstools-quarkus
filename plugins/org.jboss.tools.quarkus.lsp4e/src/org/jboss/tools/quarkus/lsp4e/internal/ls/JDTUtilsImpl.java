@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.quarkus.lsp4e.internal;
+package org.jboss.tools.quarkus.lsp4e.internal.ls;
 
 import java.io.Reader;
 import java.util.Scanner;
@@ -24,16 +24,18 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4mp.commons.DocumentFormat;
 import org.eclipse.lsp4mp.jdt.core.utils.IJDTUtils;
+import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
-public class JDTUtilsImpl implements IJDTUtils {
+public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUtils {
 	private static final IJDTUtils INSTANCE = new JDTUtilsImpl();
 
-	public static IJDTUtils getInstance() {
-		return INSTANCE;
+	public static <T> T getInstance() {
+		return (T) INSTANCE;
 	}
 
 	private JDTUtilsImpl() {
@@ -91,7 +93,9 @@ public class JDTUtilsImpl implements IJDTUtils {
 
 	@Override
 	public void discoverSource(IClassFile classFile, IProgressMonitor monitor) throws CoreException {
-		// TODO implement discoverSource
+		if (ProjectUtils.isMavenProject(classFile.getJavaProject().getProject())) {
+			JavaLanguageServerPlugin.getDefaultSourceDownloader().discoverSource(classFile, monitor);
+		}
 	}
 
 	@Override

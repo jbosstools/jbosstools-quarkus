@@ -9,7 +9,7 @@
  * Red Hat, Inc. - initial API and implementation
  * IBM Corporation - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.quarkus.lsp4e.internal;
+package org.jboss.tools.quarkus.lsp4e.internal.ls;
 
 import java.io.IOException;
 import java.io.Reader;

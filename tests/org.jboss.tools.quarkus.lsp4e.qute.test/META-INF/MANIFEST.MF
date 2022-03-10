@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-Copyright: Copyright (c) 2022 Red Hat, Inc.
+Bundle-ManifestVersion: 2
+Bundle-Name: Quarkus Eclipse LSP4E Qute Test Fragment
+Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e.qute.test
+Fragment-Host: org.jboss.tools.quarkus.lsp4e
+Bundle-Version: 1.6.0.qualifier
+Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e.qute.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Red Hat
+Require-Bundle: com.redhat.qute.jdt.test,
+ org.junit

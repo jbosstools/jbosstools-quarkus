@@ -95,6 +95,28 @@
                 <artifactId>maven-download-plugin</artifactId>
                     <executions>
                         <execution>
+                            <id>get-properties-language-configuration</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/properties-support/language-configuration.json</url>
+                                <outputDirectory>${basedir}/language-support/properties-support</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>get-properties.tmLanguage</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/properties-support/quarkus-properties.tmLanguage.json</url>
+                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                        <execution>
                             <id>get-qute-language-configuration</id>
                             <goals>
                                 <goal>wget</goal>

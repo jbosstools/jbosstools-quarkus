@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.restclient;
 
-import org.eclipse.lsp4mp.jdt.core.restclient.JavaCodeLensMicroProfileRestClientTest;
+import org.eclipse.lsp4mp.jdt.core.restclient.java.MicroProfileRestClientJavaCodeLensTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 
@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
  * @author Red Hat Developers
  *
  */
-public class JDTJavaCodeLensMicroProfileRestClientTest extends JavaCodeLensMicroProfileRestClientTest {
+public class JDTJavaCodeLensMicroProfileRestClientTest extends MicroProfileRestClientJavaCodeLensTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

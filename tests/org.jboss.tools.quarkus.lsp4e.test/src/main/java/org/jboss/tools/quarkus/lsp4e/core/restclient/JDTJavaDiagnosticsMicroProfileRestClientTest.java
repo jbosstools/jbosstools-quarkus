@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.restclient;
 
-import org.eclipse.lsp4mp.jdt.core.restclient.JavaDiagnosticsMicroProfileRestClientTest;
+import org.eclipse.lsp4mp.jdt.core.restclient.java.MicroProfileRestClientJavaDiagnosticsTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,7 +20,7 @@ import org.junit.Ignore;
  *
  */
 @Ignore(value = "Diff between JDT and JDT-LS")
-public class JDTJavaDiagnosticsMicroProfileRestClientTest extends JavaDiagnosticsMicroProfileRestClientTest {
+public class JDTJavaDiagnosticsMicroProfileRestClientTest extends MicroProfileRestClientJavaDiagnosticsTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

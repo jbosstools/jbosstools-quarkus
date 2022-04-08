@@ -112,7 +112,7 @@
                             </goals>
                             <configuration>
                                 <url>https://raw.githubusercontent.com/redhat-developer/vscode-quarkus/${vscode-quarkus.version}/language-support/properties-support/quarkus-properties.tmLanguage.json</url>
-                                <outputDirectory>${basedir}/language-support/qute</outputDirectory>
+                                <outputDirectory>${basedir}/language-support/properties-support</outputDirectory>
                                 <skip>false</skip>
                             </configuration>
                         </execution>

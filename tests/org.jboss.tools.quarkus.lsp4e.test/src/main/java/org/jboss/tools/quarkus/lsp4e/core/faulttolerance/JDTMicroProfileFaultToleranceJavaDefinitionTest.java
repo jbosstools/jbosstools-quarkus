@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.faulttolerance;
 
-import org.eclipse.lsp4mp.jdt.core.faulttolerance.MicroProfileFaultToleranceJavaDefinitionTest ;
+import org.eclipse.lsp4mp.jdt.core.faulttolerance.java.MicroProfileFaultToleranceJavaDefinitionTest ;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 import org.junit.Ignore;

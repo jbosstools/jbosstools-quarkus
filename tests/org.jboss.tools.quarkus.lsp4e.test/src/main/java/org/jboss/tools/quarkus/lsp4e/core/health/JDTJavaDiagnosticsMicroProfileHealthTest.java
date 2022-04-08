@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.health;
 
-import org.eclipse.lsp4mp.jdt.core.health.JavaDiagnosticsMicroProfileHealthTest;
+import org.eclipse.lsp4mp.jdt.core.health.java.MicroProfileHealthJavaDiagnosticsTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,7 +20,7 @@ import org.junit.Ignore;
  *
  */
 @Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
-public class JDTJavaDiagnosticsMicroProfileHealthTest extends JavaDiagnosticsMicroProfileHealthTest {
+public class JDTJavaDiagnosticsMicroProfileHealthTest extends MicroProfileHealthJavaDiagnosticsTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

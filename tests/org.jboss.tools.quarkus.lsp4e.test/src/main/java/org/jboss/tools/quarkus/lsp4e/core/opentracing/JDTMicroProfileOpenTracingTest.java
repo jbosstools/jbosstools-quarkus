@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.opentracing;
 
-import org.eclipse.lsp4mp.jdt.core.opentracing.MicroProfileOpenTracingTest;
+import org.eclipse.lsp4mp.jdt.core.opentracing.properties.MicroProfileOpenTracingTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
 

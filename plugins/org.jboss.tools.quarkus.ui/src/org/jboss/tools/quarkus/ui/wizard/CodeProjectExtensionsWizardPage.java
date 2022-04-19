@@ -10,31 +10,31 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.ui.wizard;
 
-import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.CATEGORIES_PROPERTY;
-import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.EXTENSIONS_PROPERTY;
-import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.SELECTED_CATEGORY_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.SELECTED_EXTENSIONS_PROPERTY;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
-import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableSetContentProvider;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -43,16 +43,65 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
 import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
 import org.jboss.tools.foundation.ui.util.BrowserUtility;
 import org.jboss.tools.quarkus.core.code.model.QuarkusCategory;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
+import org.jboss.tools.quarkus.core.code.model.QuarkusExtensionsModel;
 import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 
 public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPage {
+
+	private class TreeFilter extends ViewerFilter {
+		
+		private final Text text;
+
+		private TreeFilter(Text text) {
+			this.text = text;
+		}
+
+		@Override
+		public boolean select(Viewer viewer, Object parentElement, Object element) {
+			if (StringUtils.isEmpty(text.getText()) || element instanceof QuarkusCategory) {
+				return true;
+			}
+			return ((QuarkusExtension) element).getName().matches(".*" + text.getText() + ".*");
+		}
+
+	}
+
+	public class ExtensionsModelContentProvider implements ITreeContentProvider {
+
+		@Override
+		public Object[] getElements(Object inputElement) {
+			java.util.List<Object> results = new ArrayList<>();
+			if (inputElement instanceof QuarkusExtensionsModel) {
+				results.addAll(((QuarkusExtensionsModel) inputElement).getCategories());
+			} else if (inputElement instanceof QuarkusCategory) {
+				results.addAll(((QuarkusCategory) inputElement).getExtensions());
+			}
+			return results.toArray(new Object[results.size()]);
+		}
+
+		@Override
+		public Object[] getChildren(Object parentElement) {
+			return getElements(parentElement);
+		}
+
+		@Override
+		public Object getParent(Object element) {
+			return null;
+		}
+
+		@Override
+		public boolean hasChildren(Object element) {
+			return element instanceof QuarkusExtensionsModel || element instanceof QuarkusCategory;
+		}
+	}
 
 	private static final int PREFERRED_WIDTH = 800;
 
@@ -62,10 +111,15 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
 		@Override
 		public void update(ViewerCell cell) {
-			QuarkusExtension extension = (QuarkusExtension) cell.getElement();
-			cell.setText(extension.asLabel());
-			if (extension.isProvidesExampleCode()) {
-				cell.setImage(CodeProjectWizard.CODESTARTS_EXTENSION_ICON.createImage());
+			Object element = cell.getElement();
+			if (element instanceof QuarkusExtension) {
+				QuarkusExtension extension = (QuarkusExtension) element;
+				cell.setText(extension.asLabel());
+				if (extension.isProvidesExampleCode()) {
+					cell.setImage(CodeProjectWizard.CODESTARTS_EXTENSION_ICON);
+				}
+			} else if (element instanceof QuarkusCategory) {
+				cell.setText(((QuarkusCategory) element).getName());
 			}
 			super.update(cell);
 		}
@@ -88,13 +142,29 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
 		// explanation
 		Label explanation = new Label(parent, SWT.WRAP);
-		explanation.setText("Clicking on a category will display the extensions in the middle column."
-				+ " Double clicking on an extension will add/remove the extension from the selected extensions list."
-				+ " The current selected extensions are displayed in the third column.");
+		explanation.setText("Double clicking on an extension will add/remove the extension from the selected extensions list."
+				+ " The current selected extensions are displayed in the second column."
+				+ " Use the filter to narrow the extensions list.");
 		GridDataFactory.fillDefaults()
 			.align(SWT.FILL, SWT.FILL)
 			.grab(true, false)
 			.applyTo(explanation);
+		
+		Composite filterComposite = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(filterComposite);
+		GridDataFactory.fillDefaults()
+		.align(SWT.FILL, SWT.FILL)
+		.grab(true, false)
+		.applyTo(filterComposite);
+		
+		Label filterExplanation = new Label(filterComposite, SWT.NONE);
+		filterExplanation.setText("Filter:");
+		
+		Text filterText = new Text(filterComposite, SWT.WRAP);
+		GridDataFactory.fillDefaults()
+		.align(SWT.FILL, SWT.FILL)
+		.grab(true, false)
+		.applyTo(filterText);
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		GridDataFactory.fillDefaults()
@@ -102,34 +172,29 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.grab(true, true)
 			.applyTo(sashForm);
 
-		// categories
-		List categoriesList = (List) createColumn("Extension Categories:", sashForm, this::createList);
-		ListViewer listCategoriesViewer = new ListViewer(categoriesList);
-		listCategoriesViewer.setContentProvider(new ObservableListContentProvider<QuarkusCategory>());
-		listCategoriesViewer.setInput(BeanProperties.list(CATEGORIES_PROPERTY).observe(model));
-		listCategoriesViewer.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				QuarkusCategory category = (QuarkusCategory) element;
-				return category.getName();
+		// extensions
+		Tree extensionsTree = (Tree) createColumn("Available Extensions:", sashForm, this::createTree);
+		TreeViewer treeExtensionsViewer = new TreeViewer(extensionsTree);
+		GridDataFactory.fillDefaults()
+		.grab(true, true)
+		.align(SWT.FILL, SWT.FILL)
+		.applyTo(extensionsTree);
+
+		treeExtensionsViewer.addDoubleClickListener(e -> {
+			if (e.getSelection() instanceof IStructuredSelection) {
+				Object selected = ((IStructuredSelection) e.getSelection()).getFirstElement();
+				if (selected instanceof QuarkusExtension) {
+					model.toggleSelectedExtension((QuarkusExtension) selected);
+				}
 			}
 		});
-		IObservableValue<QuarkusCategory> selectedCategoryObservable = BeanProperties
-				.value(null, SELECTED_CATEGORY_PROPERTY, QuarkusCategory.class).observe(model);
-		ValueBindingBuilder.bind(ViewerProperties.singleSelection().observe(listCategoriesViewer))
-				.to(selectedCategoryObservable).in(dbc);
-
-		// extensions
-		Table extensionsTable = (Table) createColumn("Available Extensions:", sashForm, this::createTable);
-		TableViewer tableExtensionsViewer = getExtensionViewer(extensionsTable);
-		tableExtensionsViewer.addDoubleClickListener(e -> {
-			QuarkusExtension extension = model.getExtensions()
-					.get(((TableViewer) e.getSource()).getTable().getSelectionIndex());
-			model.toggleSelectedExtension(extension);
-		});
-		tableExtensionsViewer.setContentProvider(new ObservableListContentProvider<QuarkusExtension>());
-		tableExtensionsViewer.setInput(BeanProperties.list(EXTENSIONS_PROPERTY).observe(model));
-		extensionsTable.pack(true);
+		treeExtensionsViewer.setContentProvider(new ExtensionsModelContentProvider());
+		treeExtensionsViewer.setLabelProvider(new ExtensionStyledCellLabelProvider());
+		treeExtensionsViewer.setFilters(new TreeFilter(filterText));
+		treeExtensionsViewer.setInput(model.getExtensionsModel());
+		treeExtensionsViewer.expandAll();
+		
+		filterText.addModifyListener(e -> treeExtensionsViewer.refresh());
 
 		// selected extensions
 		Table selectedExtensionsTable = (Table) createColumn("Selected Extensions:", sashForm, this::createTable);
@@ -141,7 +206,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getTable().getSelectionIndex());
 			model.toggleSelectedExtension(extension);
 		});
-		sashForm.setWeights(20, 40, 40);
+		sashForm.setWeights(50, 50);
 
 		// selected extension detail
 		Label detailsSeparator = new Label(parent, SWT.HORIZONTAL | SWT.SEPARATOR);
@@ -168,11 +233,11 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
 		ISWTObservableValue<String> extensionDetailObservable = WidgetProperties.text().observe(detail);
 		ValueBindingBuilder
-			.bind(ViewerProperties.singleSelection().observe(tableExtensionsViewer))
+			.bind(ViewerProperties.singleSelection().observe(treeExtensionsViewer))
 			.converting(new QuarkusExtension2StringConverter())
 			.to(extensionDetailObservable).in(dbc);
 		ValueBindingBuilder
-			.bind(ViewerProperties.singleSelection().observe(tableExtensionsViewer))
+			.bind(ViewerProperties.singleSelection().observe(treeExtensionsViewer))
 			.to(BeanProperties.value("data").observe(detail))
 			.notUpdatingParticipant().in(dbc);
 		detail.addSelectionListener(
@@ -210,15 +275,6 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		return factory.apply(container);
 	}
 
-	private List createList(Composite parent) {
-		List list = new List(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.READ_ONLY);
-		GridDataFactory.fillDefaults()
-			.align(SWT.FILL, SWT.FILL)
-			.grab(true, true)
-			.applyTo(list);
-		return list;
-	}
-
 	private Table createTable(Composite parent) {
 		Composite tableContainer = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults()
@@ -231,6 +287,13 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		return table;
+	}
+
+	private Tree createTree(Composite parent) {
+		Tree tree = new Tree(parent, SWT.SINGLE | SWT.NONE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
+		tree.setHeaderVisible(false);
+		tree.setLinesVisible(false);
+		return tree;
 	}
 
 	private void openBrowser(QuarkusExtension extension) {

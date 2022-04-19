@@ -15,20 +15,20 @@ import java.util.Objects;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.jboss.tools.common.ui.wizard.AbstractModelWizard;
 import org.jboss.tools.quarkus.core.code.model.Tool;
+import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 
 public class CodeProjectWizard extends AbstractModelWizard<CodeProjectModel> implements INewWizard {
 
 	static final ImageDescriptor QUARKUS_LOGO = 
 			ImageDescriptor.createFromFile(CodeProjectWizard.class, "/icon/quarkus-64.png");
 	
-  static final ImageDescriptor CODESTARTS_EXTENSION_ICON = ImageDescriptor.createFromFile(CodeProjectWizard.class,
-      "/icon/fighter-jet-solid.png");
+  static final Image CODESTARTS_EXTENSION_ICON = QuarkusUIPlugin.getDefault().getImageRegistry().get(QuarkusUIPlugin.CODESTARTS_EXTENSION_ICON_KEY);
 	
     public CodeProjectWizard() {
         super("New Quarkus project", new CodeProjectModel());

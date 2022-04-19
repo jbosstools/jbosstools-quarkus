@@ -12,6 +12,8 @@ package org.jboss.tools.quarkus.ui;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,6 +26,8 @@ public class QuarkusUIPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.boss.tools.quarkus.ui"; //$NON-NLS-1$
 
+	public static final String CODESTARTS_EXTENSION_ICON_KEY = "CODESTARTS_EXTENSION_ICON";
+	
 	// The shared instance
 	private static QuarkusUIPlugin plugin;
 
@@ -65,5 +69,11 @@ public class QuarkusUIPlugin extends AbstractUIPlugin {
 	public static void logException(String errMsg, Throwable ex) {
 		getDefault().getLog().log(new Status(IStatus.ERROR, getPluginId(), errMsg, ex));
 		
+	}
+
+	@Override
+	protected void initializeImageRegistry(ImageRegistry registry) {
+		registry.put(CODESTARTS_EXTENSION_ICON_KEY, ImageDescriptor.createFromFile(QuarkusUIPlugin.class,
+			      "/icon/fighter-jet-solid.png"));
 	}
 }

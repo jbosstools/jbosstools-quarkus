@@ -160,7 +160,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		Label filterExplanation = new Label(filterComposite, SWT.NONE);
 		filterExplanation.setText("Filter:");
 		
-		Text filterText = new Text(filterComposite, SWT.WRAP);
+		Text filterText = new Text(filterComposite, SWT.WRAP | SWT.BORDER);
 		GridDataFactory.fillDefaults()
 		.align(SWT.FILL, SWT.FILL)
 		.grab(true, false)

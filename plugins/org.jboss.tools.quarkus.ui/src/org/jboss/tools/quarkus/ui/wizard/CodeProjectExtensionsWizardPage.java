@@ -14,6 +14,7 @@ import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.SELECTED_EXTENS
 
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -69,7 +70,8 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			if (StringUtils.isEmpty(text.getText()) || element instanceof QuarkusCategory) {
 				return true;
 			}
-			return ((QuarkusExtension) element).getName().matches(".*" + text.getText() + ".*");
+			Pattern pattern = Pattern.compile(".*" + text.getText() + ".*", Pattern.CASE_INSENSITIVE);
+			return pattern.matcher(((QuarkusExtension) element).getName()).matches();
 		}
 
 	}

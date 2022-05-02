@@ -163,7 +163,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		Text filterText = new Text(filterComposite, SWT.WRAP | SWT.BORDER);
 		GridDataFactory.fillDefaults()
 		.align(SWT.FILL, SWT.FILL)
-		.grab(true, false)
+		.grab(true, true)
 		.applyTo(filterText);
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);

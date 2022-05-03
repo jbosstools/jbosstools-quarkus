@@ -103,7 +103,7 @@ public class QuarkusExtensionsTest {
         assertEquals(1, model.getCategories().size());
         assertEquals(1, model.getCategories().get(0).getExtensions().size());
         assertEquals(AMAZON_DYNAMODB_CLIENT_EXTENSION_NAME, model.getCategories().get(0).getExtensions().get(0).getName());
-        assertEquals("Amazon DynamoDB client (Preview,Experimental)", model.getCategories().get(0).getExtensions().get(0).asLabel());
+        assertEquals("Amazon DynamoDB client (preview,experimental)", model.getCategories().get(0).getExtensions().get(0).asLabel());
     }
 
     @Test

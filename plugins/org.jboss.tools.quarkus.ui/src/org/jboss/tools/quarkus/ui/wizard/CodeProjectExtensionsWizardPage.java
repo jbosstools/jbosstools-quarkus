@@ -13,12 +13,15 @@ package org.jboss.tools.quarkus.ui.wizard;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.SELECTED_EXTENSIONS_PROPERTY;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
+import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableSetContentProvider;
@@ -40,6 +43,8 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -106,6 +111,7 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 	}
 
 	private static final int PREFERRED_WIDTH = 800;
+	private static final int PREFFERRED_HEIGHT_EXTENSIONS = 400;
 
 	private final CodeProjectModel model;
 
@@ -153,20 +159,26 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.applyTo(explanation);
 		
 		Composite filterComposite = new Composite(parent, SWT.NONE);
-		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(filterComposite);
+		GridLayoutFactory.fillDefaults()
+			.numColumns(2)
+			.applyTo(filterComposite);
 		GridDataFactory.fillDefaults()
-		.align(SWT.FILL, SWT.FILL)
-		.grab(true, false)
-		.applyTo(filterComposite);
+			.align(SWT.FILL, SWT.FILL)
+			.grab(true, false)
+			.applyTo(filterComposite);
 		
 		Label filterExplanation = new Label(filterComposite, SWT.NONE);
 		filterExplanation.setText("Filter:");
-		
-		Text filterText = new Text(filterComposite, SWT.WRAP | SWT.BORDER);
 		GridDataFactory.fillDefaults()
-		.align(SWT.FILL, SWT.FILL)
-		.grab(true, true)
-		.applyTo(filterText);
+			.align(SWT.LEFT, SWT.FILL)
+			.grab(false, false)
+			.applyTo(filterExplanation);
+		
+		Text filterText = new Text(filterComposite,SWT.BORDER);
+		GridDataFactory.fillDefaults()
+			.align(SWT.FILL, SWT.FILL)
+			.grab(true, false)
+			.applyTo(filterText);
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		GridDataFactory.fillDefaults()
@@ -178,9 +190,10 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		Tree extensionsTree = (Tree) createColumn("Available Extensions:", sashForm, this::createTree);
 		TreeViewer treeExtensionsViewer = new TreeViewer(extensionsTree);
 		GridDataFactory.fillDefaults()
-		.grab(true, true)
-		.align(SWT.FILL, SWT.FILL)
-		.applyTo(extensionsTree);
+			.grab(true, true)
+			.align(SWT.FILL, SWT.FILL)
+			.hint(SWT.DEFAULT, PREFFERRED_HEIGHT_EXTENSIONS)
+			.applyTo(extensionsTree);
 
 		treeExtensionsViewer.addDoubleClickListener(e -> {
 			if (e.getSelection() instanceof IStructuredSelection) {
@@ -200,9 +213,16 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 
 		// selected extensions
 		Table selectedExtensionsTable = (Table) createColumn("Selected Extensions:", sashForm, this::createTable);
-		TableViewer tableSelectedExtensionsViewer = getExtensionViewer(selectedExtensionsTable);
+		GridDataFactory.fillDefaults()
+			.grab(true, true)
+			.align(SWT.FILL, SWT.FILL)
+			.hint(SWT.DEFAULT, PREFFERRED_HEIGHT_EXTENSIONS)
+			.applyTo(selectedExtensionsTable);
+		int width = getColumnWidth(model.getExtensionsModel().getCategories(), selectedExtensionsTable);
+		TableViewer tableSelectedExtensionsViewer = createExtensionViewer(width, selectedExtensionsTable);
 		tableSelectedExtensionsViewer.setContentProvider(new ObservableSetContentProvider<>());
-		tableSelectedExtensionsViewer.setInput(BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model));
+		IObservableSet<Object> selectedExtensionsObservable = BeanProperties.set(SELECTED_EXTENSIONS_PROPERTY).observe(model);
+		tableSelectedExtensionsViewer.setInput(selectedExtensionsObservable);
 		tableSelectedExtensionsViewer.addDoubleClickListener(e -> {
 			TableViewer viewer = (TableViewer) e.getSource();
 			QuarkusExtension extension = (QuarkusExtension) viewer.getElementAt(viewer.getTable().getSelectionIndex());
@@ -244,16 +264,44 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.notUpdatingParticipant().in(dbc);
 		detail.addSelectionListener(
 				SelectionListener.widgetSelectedAdapter(e -> openBrowser((QuarkusExtension) detail.getData())));
+
 	}
 
-	public TableViewer getExtensionViewer(Table table) {
+	private int getColumnWidth(List<QuarkusCategory> categories, Table table) {
+		int width = 0;
+		if (categories == null) {
+			return width;
+		}
+		List<QuarkusExtension> allExtensions = categories.stream()
+				.flatMap((QuarkusCategory category) -> category.getExtensions().stream())
+				.collect(Collectors.toList());
+		String longestLabel = getLongestLabel(allExtensions);
+		if (longestLabel != null) {
+			Point extent = new GC(table).textExtent(longestLabel);
+			if (extent != null) {
+				// text extent + icon
+				width = extent.x + 30;
+			}
+		}
+		return width;
+	}
+
+	private String getLongestLabel(List<QuarkusExtension> extensions) {
+		return extensions.stream()
+				.map(extension -> extension.asLabel())
+				.reduce((label1, label2)
+                        -> label1.length() > label2.length()
+                                      ? label1 : label2)
+				.orElse(null);
+	}
+	
+	public TableViewer createExtensionViewer(int width, Table table) {
 		TableColumnLayout layout = new TableColumnLayout();
 		table.getParent().setLayout(layout);
 		TableViewer viewer = new TableViewer(table);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);		
 		col.setLabelProvider(new ExtensionStyledCellLabelProvider());
-		col.getColumn().setWidth(100);;
-		layout.setColumnData(col.getColumn(), new ColumnWeightData(100));
+		layout.setColumnData(col.getColumn(), new ColumnWeightData(100, width, false));
 		return viewer;
 	}
 
@@ -282,10 +330,10 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		GridDataFactory.fillDefaults()
 			.grab(true, true)
 			.align(SWT.FILL, SWT.FILL)
-			.hint(SWT.DEFAULT, 150)
+			.hint(SWT.DEFAULT, PREFFERRED_HEIGHT_EXTENSIONS)
 			.applyTo(tableContainer);
 		// TableColumnLayout requires a parent composite for the table
-		Table table = new Table(tableContainer, SWT.SINGLE | SWT.NONE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
+		Table table = new Table(tableContainer, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		return table;

@@ -46,12 +46,7 @@ public class CodeProjectModel extends ObservablePojo {
     public static final String TOOL_PROPERTY = "tool";
     public static final String ENDPOINT_PROPERTY = "endpoint";
     public static final String MODEL_PROPERTY = "model";
-    public static final String CATEGORIES_PROPERTY = "categories";
     public static final String EXTENSIONS_MODEL_PROPERTY = "extensionsModel";
-    
-    public static final String SELECTED_CATEGORY_PROPERTY = "selectedCategory";
-    
-    public static final String EXTENSIONS_PROPERTY = "extensions";
     
     public static final String SELECTED_EXTENSIONS_PROPERTY = "selectedExtensions";
     
@@ -261,7 +256,6 @@ public class CodeProjectModel extends ObservablePojo {
     
     public void setExtensionsModel(QuarkusExtensionsModel extensionsModel) {
         firePropertyChange(EXTENSIONS_MODEL_PROPERTY, this.extensionsModel, this.extensionsModel = extensionsModel);
-        setCategories(extensionsModel.getCategories());
         extensionsModel.getCategories().forEach(category -> category.getExtensions().forEach(extension -> {
         	if (extension.isDefaultExtension()) {
         		selectedExtensions.add(extension);
@@ -269,49 +263,6 @@ public class CodeProjectModel extends ObservablePojo {
         }));
     }
     
-    public List<QuarkusCategory> getCategories() {
-        return categories;
-    }
-    
-    /**
-     * @param categories the categories to set
-     */
-    public void setCategories(List<QuarkusCategory> categories) {
-        firePropertyChange(CATEGORIES_PROPERTY, this.categories, this.categories = categories);
-        if (!categories.isEmpty()) {
-            setSelectedCategory(categories.get(0));
-        }
-    }
-
-    /**
-     * @return the selectedCategory
-     */
-    public QuarkusCategory getSelectedCategory() {
-        return selectedCategory;
-    }
-
-    /**
-     * @param selectedCategory the selectedCategory to set
-     */
-    public void setSelectedCategory(QuarkusCategory selectedCategory) {
-        firePropertyChange(SELECTED_CATEGORY_PROPERTY, this.selectedCategory, this.selectedCategory = selectedCategory);
-        setExtensions(selectedCategory.getExtensions());
-    }
-
-    /**
-     * @return the extensions
-     */
-    public List<QuarkusExtension> getExtensions() {
-        return extensions;
-    }
-
-    /**
-     * @param extensions the extensions to set
-     */
-    public void setExtensions(List<QuarkusExtension> extensions) {
-        firePropertyChange(EXTENSIONS_PROPERTY, this.extensions, this.extensions = extensions);
-    }
-
     /**
      * @return the selectedExtensions
      */

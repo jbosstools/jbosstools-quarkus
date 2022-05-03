@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.jboss.tools</groupId>
         <artifactId>quarkus</artifactId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.7.0-SNAPSHOT</version>
     </parent>
     
 	<groupId>org.jboss.tools.quarkus</groupId>

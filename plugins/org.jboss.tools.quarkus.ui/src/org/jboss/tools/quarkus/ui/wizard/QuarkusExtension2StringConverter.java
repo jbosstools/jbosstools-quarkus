@@ -18,24 +18,27 @@ import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
  * @author Red Hat Developers
  *
  */
-public class QuarkusExtension2StringConverter extends Converter<QuarkusExtension, String> {
+public class QuarkusExtension2StringConverter extends Converter<Object, String> {
 
 	public QuarkusExtension2StringConverter() {
 		super(QuarkusExtension.class, String.class);
 	}
 
 	@Override
-	public String convert(QuarkusExtension fromObject) {
+	public String convert(Object fromObject) {
 		return fromObject!=null?toString(fromObject):"";
 	}
 
-	private String toString(QuarkusExtension fromObject) {
-		StringBuilder builder = new StringBuilder(fromObject.getDescription());
-		String guide = fromObject.getGuide();
-		if (StringUtils.isNotBlank(guide)) {
-			builder.append(". <a>Click to open guide</a>");
+	private String toString(Object fromObject) {
+		if (fromObject instanceof QuarkusExtension) {
+			StringBuilder builder = new StringBuilder(((QuarkusExtension) fromObject).getDescription());
+			String guide = ((QuarkusExtension) fromObject).getGuide();
+			if (StringUtils.isNotBlank(guide)) {
+				builder.append(". <a>Click to open guide</a>");
+			}
+			return builder.toString();
 		}
-		return builder.toString();
+		return "";
 	}
 
 }

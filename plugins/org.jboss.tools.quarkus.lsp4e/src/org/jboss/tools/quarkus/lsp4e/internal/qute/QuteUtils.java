@@ -115,7 +115,7 @@ public class QuteUtils {
 				validation.put("enabled", isQuteValidationEnabled(project));
 				String[] excludes = getQuteExcludes(project);
 				if (excludes.length > 0) {
-					validation.put("excludes", excludes);
+					validation.put("excluded", excludes);
 				}
 				projectInfo.put("validation", validation);
 				workspaceFolders.put(LSPEclipseUtils.toUri(project).toString(), projectInfo);

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.core.code.model;
 
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,5 +41,8 @@ public class QuarkusModel {
     		extensionsModelMap.put(key, extensionsModel);
     	}
     	return extensionsModel;
+    }
+    
+    public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
     }
 }

@@ -277,7 +277,9 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 				.collect(Collectors.toList());
 		String longestLabel = getLongestLabel(allExtensions);
 		if (longestLabel != null) {
-			Point extent = new GC(table).textExtent(longestLabel);
+			GC gc = new GC(table);
+			Point extent = gc.textExtent(longestLabel);
+			gc.dispose();
 			if (extent != null) {
 				// text extent + icon
 				width = extent.x + 30;

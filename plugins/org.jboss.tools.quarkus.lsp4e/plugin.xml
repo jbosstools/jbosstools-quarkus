@@ -134,7 +134,7 @@
    <extension
          point="org.eclipse.tm4e.registry.grammars">
       <grammar
-            path="./language-support/properties-support/quarkus-properties.tmLanguage.json"
+            path="language-support/properties-support/quarkus-properties.tmLanguage.json"
             scopeName="properties">
       </grammar>
       <scopeNameContentTypeBinding
@@ -142,7 +142,7 @@
             scopeName="properties">
       </scopeNameContentTypeBinding>
       <grammar
-            path="./language-support/qute/qute-html.tmLanguage.json"
+            path="language-support/qute/qute-html.tmLanguage.json"
             scopeName="text.html.qute">
       </grammar>
       <scopeNameContentTypeBinding
@@ -150,7 +150,7 @@
             scopeName="text.html.qute">
       </scopeNameContentTypeBinding>
       <grammar
-            path="./language-support/qute/qute-yaml.tmLanguage.json"
+            path="language-support/qute/qute-yaml.tmLanguage.json"
             scopeName="source.yaml.qute">
       </grammar>
       <scopeNameContentTypeBinding
@@ -158,7 +158,7 @@
             scopeName="source.yaml.qute">
       </scopeNameContentTypeBinding>
       <grammar
-            path="./language-support/qute/qute-json.tmLanguage.json"
+            path="language-support/qute/qute-json.tmLanguage.json"
             scopeName="source.json.qute">
       </grammar>
       <scopeNameContentTypeBinding
@@ -166,7 +166,7 @@
             scopeName="source.json.qute">
       </scopeNameContentTypeBinding>
       <grammar
-            path="./language-support/qute/qute-txt.tmLanguage.json"
+            path="language-support/qute/qute-txt.tmLanguage.json"
             scopeName="text.qute">
       </grammar>
       <scopeNameContentTypeBinding
@@ -174,7 +174,7 @@
             scopeName="text.qute">
       </scopeNameContentTypeBinding>
       <grammar
-            path="./language-support/qute/qute.tmLanguage.json"
+            path="language-support/qute/qute.tmLanguage.json"
             scopeName="grammar.qute">
       </grammar>
       <scopeNameContentTypeBinding

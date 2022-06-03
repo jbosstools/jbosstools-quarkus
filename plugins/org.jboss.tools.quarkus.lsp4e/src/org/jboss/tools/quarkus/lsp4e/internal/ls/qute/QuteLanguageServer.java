@@ -78,7 +78,7 @@ public class QuteLanguageServer extends ProcessStreamConnectionProvider {
 	@Override
 	public void start() throws IOException {
 		super.start();
-		QuarkusCoreUsageStats.getInstance().startLS();
+		QuarkusCoreUsageStats.getInstance().startQuteLS();
 	}
 
 	@Override

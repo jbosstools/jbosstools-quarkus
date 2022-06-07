@@ -149,6 +149,7 @@ public class QuteConfigurationBlock extends OptionsConfigurationBlock {
 		excludeList = new ListDialogField<>(adapter, buttons, new LabelProvider());
 		excludeList.setDialogFieldListener(adapter);
 		excludeList.setRemoveButtonIndex(2);
+		excludeList.setLabelText("Exclude from validation:");
 		createExcludeContent(mainComp);
 		String excludes = getStoredValue(QuarkusLSPPlugin.EXCLUDE_KEY);
 		if (excludes != null && excludes.length() > 0) {
@@ -172,7 +173,12 @@ public class QuteConfigurationBlock extends OptionsConfigurationBlock {
 		excludeComposite.setLayoutData(gd);
 		excludeComposite.setFont(folder.getFont());
 
-		GridData data= new GridData(GridData.FILL_BOTH);
+		GridData data= new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		Control labelControl = excludeList.getLabelControl(excludeComposite);
+		labelControl.setLayoutData(data);
+		
+		data= new GridData(GridData.FILL_BOTH);
 		data.widthHint= conv.convertWidthInCharsToPixels(50);
 		Control listControl= excludeList.getListControl(excludeComposite);
 		listControl.setLayoutData(data);

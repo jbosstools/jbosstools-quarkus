@@ -28,6 +28,8 @@ public class QuarkusCoreUsageStats {
 	
 	private UsageEventType startLS;
 
+	private UsageEventType startQuteLS;
+
 	public static QuarkusCoreUsageStats getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new QuarkusCoreUsageStats();
@@ -41,6 +43,9 @@ public class QuarkusCoreUsageStats {
 				"type: 0=maven/1=gradle");
 		this.startLS = createEventType("startLS", // actionName
 				"Number of microprofile-ls start", // labelDescription
+				UsageEventType.HOW_MANY_TIMES_VALUE_DESCRIPTION);
+		this.startQuteLS = createEventType("startQuteLS", // actionName
+				"Number of qute-ls start", // labelDescription
 				UsageEventType.HOW_MANY_TIMES_VALUE_DESCRIPTION);
 	}
 
@@ -60,6 +65,10 @@ public class QuarkusCoreUsageStats {
 		UsageReporter.getInstance().countEvent(startLS.event());
 	}
 	
+	public void startQuteLS() {
+		UsageReporter.getInstance().countEvent(startQuteLS.event());
+	}
+
 	private static int getTool(ToolSupport tool) {
 		return tool instanceof MavenToolSupport?0:1;
 	}

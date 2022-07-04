@@ -36,6 +36,7 @@ Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,
  org.jboss.tools.quarkus.core.launch,
  org.jboss.tools.quarkus.core.project,
+ org.jboss.tools.quarkus.core.utils,
  org.jboss.tools.quarkus.tool
 Bundle-Activator: org.jboss.tools.quarkus.core.QuarkusCorePlugin
 Bundle-ActivationPolicy: lazy

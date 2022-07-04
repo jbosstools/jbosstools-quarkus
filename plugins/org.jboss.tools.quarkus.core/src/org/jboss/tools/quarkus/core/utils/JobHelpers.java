@@ -8,7 +8,7 @@
  * Contributors:
  *      Sonatype, Inc. - initial API and implementation
  *******************************************************************************/
-package org.jboss.tools.quarkus.core.code.utils;
+package org.jboss.tools.quarkus.core.utils;
 
 import java.util.ArrayList;
 import java.util.Deque;

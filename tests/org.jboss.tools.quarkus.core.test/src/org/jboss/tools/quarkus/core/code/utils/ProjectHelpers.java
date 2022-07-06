@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.JavaCore;
+import org.jboss.tools.quarkus.core.utils.JobHelpers;
 
 public class ProjectHelpers {
 	public static IProject loadProject(File projectDir) throws CoreException, Exception {

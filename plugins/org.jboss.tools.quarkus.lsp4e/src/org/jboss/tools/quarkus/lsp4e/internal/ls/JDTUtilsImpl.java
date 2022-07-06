@@ -24,12 +24,10 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4mp.commons.DocumentFormat;
 import org.eclipse.lsp4mp.jdt.core.utils.IJDTUtils;
-import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUtils {
 	private static final IJDTUtils INSTANCE = new JDTUtilsImpl();
@@ -93,9 +91,7 @@ public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUt
 
 	@Override
 	public void discoverSource(IClassFile classFile, IProgressMonitor monitor) throws CoreException {
-		if (ProjectUtils.isMavenProject(classFile.getJavaProject().getProject())) {
-			JavaLanguageServerPlugin.getDefaultSourceDownloader().discoverSource(classFile, monitor);
-		}
+		DownloadHelper.INSTANCE.discoverSource(classFile, monitor);
 	}
 
 	@Override

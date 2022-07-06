@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e;singleton:=true
-Bundle-Version: 1.7.0.qualifier
+Bundle-Version: 1.8.0.qualifier
 Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench,
@@ -31,8 +31,9 @@ Require-Bundle: org.eclipse.lsp4e,
  org.apache.commons.io,
  org.eclipse.wildwebdeveloper,
  com.redhat.qute.jdt,
- org.eclipse.jdt.ls.core,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.eclipse.m2e.core,
+ org.jboss.tools.maven.core
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy

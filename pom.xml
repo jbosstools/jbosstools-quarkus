@@ -28,7 +28,7 @@
 	</parent>
 
     <artifactId>quarkus</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.8.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -73,6 +73,11 @@
 			<id>jbosstools-base</id>
 			<layout>p2</layout>
 			<url>${jbosstools-base-site}</url>
+		</repository>
+		<repository>
+			<id>jbosstools-central</id>
+			<layout>p2</layout>
+			<url>${jbosstools-central-site}</url>
 		</repository>
 		<repository>
 		  <id>lsp4mp-snapshots</id>

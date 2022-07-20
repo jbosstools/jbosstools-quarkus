@@ -63,7 +63,9 @@ public class QuarkusCoreConstants {
     
     public static final String CLIENT_ID_PARAMETERS = CODE_CLIENT_NAME_PARAMETER_NAME + "="
             + CODE_CLIENT_NAME_PARAMETER_VALUE + "&" + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_NAME + "="
-            + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE; 
+            + CODE_CLIENT_CONTACT_EMAIL_PARAMETER_VALUE;
+    
+    public static final String PLATFORM_ONLY_PARAMETER = "platformOnly";
 
     public static final String EXTENSIONS_SUFFIX = "/api/extensions/stream/";
 

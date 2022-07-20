@@ -26,6 +26,7 @@ import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.DOWNLOAD_SUFFIX;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.EXTENSIONS_SUFFIX;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.STREAMS_SUFFIX;
 import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.CLIENT_ID_PARAMETERS;
+import static org.jboss.tools.quarkus.core.QuarkusCoreConstants.PLATFORM_ONLY_PARAMETER;
 import static org.jboss.tools.quarkus.core.QuarkusCorePlugin.PLUGIN_ID;
 
 import java.io.ByteArrayInputStream;
@@ -246,7 +247,7 @@ public class QuarkusModelRegistry {
   
   public static QuarkusExtensionsModel loadExtensionsModel(String endpointURL, String key, IProgressMonitor monitor) throws CoreException {
       try {
-		String streamsURL = endpointURL + EXTENSIONS_SUFFIX + key + "?" + CLIENT_ID_PARAMETERS;
+		String streamsURL = endpointURL + EXTENSIONS_SUFFIX + key + "?" + CLIENT_ID_PARAMETERS + "&" + PLATFORM_ONLY_PARAMETER + "=false";
 		  File file = TRANSPORT_UTILITY.getCachedFileForURL(streamsURL, streamsURL, CACHE_FOREVER, monitor);
 		  if (file == null) {
 		    throw new CoreException(new Status(ERROR, PLUGIN_ID, "Invalid URL"));

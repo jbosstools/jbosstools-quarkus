@@ -28,7 +28,7 @@ public class CodeProjectWizard extends AbstractModelWizard<CodeProjectModel> imp
 	static final ImageDescriptor QUARKUS_LOGO = 
 			ImageDescriptor.createFromFile(CodeProjectWizard.class, "/icon/quarkus-64.png");
 	
-  static final Image CODESTARTS_EXTENSION_ICON = QuarkusUIPlugin.getDefault().getImageRegistry().get(QuarkusUIPlugin.CODESTARTS_EXTENSION_ICON_KEY);
+  static final Image PLATFORM_EXTENSION_ICON = QuarkusUIPlugin.getDefault().getImageRegistry().get(QuarkusUIPlugin.PLATFORM_EXTENSION_ICON_KEY);
 	
     public CodeProjectWizard() {
         super("New Quarkus project", new CodeProjectModel());

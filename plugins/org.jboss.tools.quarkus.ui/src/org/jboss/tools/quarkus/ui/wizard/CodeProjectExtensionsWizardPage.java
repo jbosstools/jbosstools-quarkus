@@ -45,6 +45,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -65,14 +66,22 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 	private class TreeFilter extends ViewerFilter {
 		
 		private final Text text;
+		private final Button button;
 
-		private TreeFilter(Text text) {
+		private TreeFilter(Text text, Button button) {
 			this.text = text;
+			this.button = button;
 		}
 
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
-			if (StringUtils.isEmpty(text.getText()) || element instanceof QuarkusCategory) {
+			if (element instanceof QuarkusCategory) {
+				return true;
+			}
+			if (button.getSelection() && !((QuarkusExtension) element).isPlatform()) {
+				return false;
+			}
+			if (StringUtils.isEmpty(text.getText())) {
 				return true;
 			}
 			Pattern pattern = Pattern.compile(".*" + text.getText() + ".*", Pattern.CASE_INSENSITIVE);
@@ -123,8 +132,8 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			if (element instanceof QuarkusExtension) {
 				QuarkusExtension extension = (QuarkusExtension) element;
 				cell.setText(extension.asLabel());
-				if (extension.isProvidesExampleCode()) {
-					cell.setImage(CodeProjectWizard.CODESTARTS_EXTENSION_ICON);
+				if (extension.isPlatform()) {
+					cell.setImage(CodeProjectWizard.PLATFORM_EXTENSION_ICON);
 				}
 			} else if (element instanceof QuarkusCategory) {
 				cell.setText(((QuarkusCategory) element).getName());
@@ -179,6 +188,14 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 			.align(SWT.FILL, SWT.FILL)
 			.grab(true, false)
 			.applyTo(filterText);
+		
+		Button platformButton = new Button(parent, SWT.CHECK);
+		platformButton.setSelection(true);
+		platformButton.setText("Platform only extensions");
+		GridDataFactory.fillDefaults()
+		.align(SWT.FILL, SWT.FILL)
+		.grab(true, false)
+		.applyTo(platformButton);
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		GridDataFactory.fillDefaults()
@@ -205,11 +222,12 @@ public class CodeProjectExtensionsWizardPage extends AbstractDataBindingWizardPa
 		});
 		treeExtensionsViewer.setContentProvider(new ExtensionsModelContentProvider());
 		treeExtensionsViewer.setLabelProvider(new ExtensionStyledCellLabelProvider());
-		treeExtensionsViewer.setFilters(new TreeFilter(filterText));
+		treeExtensionsViewer.setFilters(new TreeFilter(filterText, platformButton));
 		treeExtensionsViewer.setInput(model.getExtensionsModel());
 		treeExtensionsViewer.expandAll();
 		
 		filterText.addModifyListener(e -> treeExtensionsViewer.refresh());
+		platformButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> treeExtensionsViewer.refresh()));
 
 		// selected extensions
 		Table selectedExtensionsTable = (Table) createColumn("Selected Extensions:", sashForm, this::createTable);

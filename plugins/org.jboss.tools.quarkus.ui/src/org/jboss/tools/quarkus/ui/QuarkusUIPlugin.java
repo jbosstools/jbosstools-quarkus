@@ -26,7 +26,7 @@ public class QuarkusUIPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.boss.tools.quarkus.ui"; //$NON-NLS-1$
 
-	public static final String CODESTARTS_EXTENSION_ICON_KEY = "CODESTARTS_EXTENSION_ICON";
+	public static final String PLATFORM_EXTENSION_ICON_KEY = "PLATFORM_EXTENSION_ICON";
 	
 	// The shared instance
 	private static QuarkusUIPlugin plugin;
@@ -73,7 +73,7 @@ public class QuarkusUIPlugin extends AbstractUIPlugin {
 
 	@Override
 	protected void initializeImageRegistry(ImageRegistry registry) {
-		registry.put(CODESTARTS_EXTENSION_ICON_KEY, ImageDescriptor.createFromFile(QuarkusUIPlugin.class,
-			      "/icon/fighter-jet-solid.png"));
+		registry.put(PLATFORM_EXTENSION_ICON_KEY, ImageDescriptor.createFromFile(QuarkusUIPlugin.class,
+			      "/icon/platform-icon.png"));
 	}
 }

@@ -94,7 +94,6 @@ public class ProjectUtils {
 			if (context == null) {
 				context = new HashMap<String, Object>();
 			}
-			File workspaceFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 			File projectFolder = new File(location);
 			ProjectWriter projectWriter = new FileProjectWriter(projectFolder);
 			new CreateProject(projectWriter)
@@ -107,8 +106,7 @@ public class ProjectUtils {
 			IProjectConfigurationManager projectConfigurationManager = MavenPlugin.getProjectConfigurationManager();
 			MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
 			LocalProjectScanner scanner = new LocalProjectScanner(
-					workspaceFolder, //
-					projectFolder.getCanonicalPath(), 
+					Collections.singletonList(projectFolder.getCanonicalPath()), 
 					false, 
 					mavenModelManager);
 			scanner.run(new NullProgressMonitor());

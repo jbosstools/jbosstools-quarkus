@@ -71,7 +71,7 @@
                                 <goal>wget</goal>
                             </goals>
                             <configuration>
-                                <url>${qute-jdt-site}/com.redhat.qute.jdt.test-${qute-ls.version}-SNAPSHOT-projects.zip</url>
+                                <url>${qute-jdt-site}/com.redhat.qute.jdt.test-${qute-ls.version}-projects.zip</url>
                                 <outputDirectory>${basedir}</outputDirectory>
                                 <unpack>true</unpack>
                                 <skip>false</skip>

@@ -39,6 +39,7 @@
         <module>org.jboss.tools.quarkus.runtime.test</module>
         <module>org.jboss.tools.quarkus.ui.test</module>
         <module>org.jboss.tools.quarkus.lsp4e.test</module>
+        <module>org.jboss.tools.quarkus.lsp4e.quarkus.test</module>
         <module>org.jboss.tools.quarkus.lsp4e.qute.test</module>
     </modules>
     

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Red Hat, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.jboss.tools.quarkus</groupId>
+        <artifactId>tests</artifactId>
+        <version>1.8.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.jboss.tools.quarkus.tests</groupId>
+    <artifactId>org.jboss.tools.quarkus.lsp4e.quarkus.test</artifactId>
+
+    <packaging>eclipse-test-plugin</packaging>
+    
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.class</include>
+					</includes>
+					<skip>${skipTests}</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tychoVersion}</version>
+                <configuration>
+                    <dependency-resolution>
+                        <extraRequirements>
+                            <requirement>
+                                <id>com.redhat.microprofile.jdt.quarkus</id>
+                                <versionRange>0.0.0</versionRange>
+                                <type>eclipse-plugin</type>
+                            </requirement>
+                        </extraRequirements>
+                    </dependency-resolution>
+                </configuration>
+			</plugin>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>maven-download-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>get-projects</id>
+                            <goals>
+                                <goal>wget</goal>
+                            </goals>
+                            <configuration>
+                                <url>${quarkus-jdt-site}/com.redhat.microprofile.jdt.quarkus.test-${quarkus-ls.version}-projects.zip</url>
+                                <outputDirectory>${basedir}</outputDirectory>
+                                <unpack>true</unpack>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+		</plugins>
+	</build>
+
+</project>

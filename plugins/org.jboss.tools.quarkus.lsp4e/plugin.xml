@@ -135,11 +135,11 @@
          point="org.eclipse.tm4e.registry.grammars">
       <grammar
             path="language-support/properties-support/quarkus-properties.tmLanguage.json"
-            scopeName="properties">
+            scopeName="source.quarkus-properties">
       </grammar>
       <scopeNameContentTypeBinding
             contentTypeId="org.jboss.tools.quarkus.lsp4e.properties"
-            scopeName="properties">
+            scopeName="source.quarkus-properties">
       </scopeNameContentTypeBinding>
       <grammar
             path="language-support/qute/qute-html.tmLanguage.json"

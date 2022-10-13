@@ -83,7 +83,8 @@ public class QuarkusLaunchConfigurationDelegate extends LaunchConfigurationDeleg
 				debugPort);
 		ToolSupport toolSupport = ProjectUtils.getToolSupport(project);
 		copy(toolSupport.run(context, monitor), launch);
-		if ("debug".equals(mode)) {
+		/* M2E automatically launches a remote debugger */
+		if ("debug".equals(mode) && !ProjectUtils.isMavenProject(project)) {
 			createRemoteJavaDebugConfiguration(configuration, debugPort, monitor);
 		}
 		QuarkusCoreUsageStats.getInstance().startApplication(mode, toolSupport);

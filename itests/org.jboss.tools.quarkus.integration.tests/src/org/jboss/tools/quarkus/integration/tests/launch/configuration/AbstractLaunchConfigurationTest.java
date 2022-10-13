@@ -26,6 +26,8 @@ import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.DebugConfigurationsDialog;
+import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.RunConfigurationsDialog;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -69,41 +71,41 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	    } catch (AssertionError e) {}
 	}
 
-	public void testNewQuarkusConfiguration(String projectName, String projectType) {
-		RunConfigurationsDialog runDialog = new RunConfigurationsDialog();
-		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, runDialog);
-		checkNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
-		runNewQuarkusConfiguration(projectName, runDialog, launchConfiguration, "8080", projectType);
+	public void testNewQuarkusConfiguration(String projectName, String projectType, boolean debug) {
+		LaunchConfigurationsDialog launchDialog = debug?new DebugConfigurationsDialog(): new RunConfigurationsDialog();
+		QuarkusLaunchConfigurationTabGroup launchConfiguration = createNewQuarkusConfiguration(projectName, launchDialog);
+		checkNewQuarkusConfiguration(projectName, launchDialog, launchConfiguration);
+		runNewQuarkusConfiguration(projectName, launchDialog, launchConfiguration, "8080", projectType);
 		new ConsoleView().terminateConsole();
-		deleteNewQuarkusConfiguration(projectName, runDialog, launchConfiguration);
+		deleteNewQuarkusConfiguration(projectName, launchDialog, launchConfiguration);
 	}
 
 	public QuarkusLaunchConfigurationTabGroup createNewQuarkusConfiguration(String projectName,
-			RunConfigurationsDialog runDialog) {
-		runDialog.open();
+			LaunchConfigurationsDialog launchDialog) {
+		launchDialog.open();
 		QuarkusLaunchConfigurationTabGroup launchConfiguration = new QuarkusLaunchConfigurationTabGroup();
-		runDialog.create(launchConfiguration, projectName);
-		launchConfiguration.selectProject(new DefaultShell(Shell.RUN_CONFIGURATION), projectName);
-		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		runDialog.close(true);
+		launchDialog.create(launchConfiguration, projectName);
+		launchConfiguration.selectProject(new DefaultShell(launchDialog.getTitle()), projectName);
+		new DefaultShell(launchDialog.getTitle()).setFocus();
+		launchDialog.close(true);
 
 		return launchConfiguration;
 	}
 
-	public void checkNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+	public void checkNewQuarkusConfiguration(String projectName, LaunchConfigurationsDialog launchDialog,
 			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
-		runDialog.open();
-		runDialog.select(launchConfiguration, projectName);
-		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		runDialog.close();
+		launchDialog.open();
+		launchDialog.select(launchConfiguration, projectName);
+		new DefaultShell(launchDialog.getTitle()).setFocus();
+		launchDialog.close();
 	}
 
-	public void runNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+	public void runNewQuarkusConfiguration(String projectName, LaunchConfigurationsDialog launchDialog,
 			QuarkusLaunchConfigurationTabGroup launchConfiguration, String localhostPort, String projectType) {
-		runDialog.open();
-		runDialog.select(launchConfiguration, projectName);
-		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		runDialog.run();
+		launchDialog.open();
+		launchDialog.select(launchConfiguration, projectName);
+		new DefaultShell(launchDialog.getTitle()).setFocus();
+		launchDialog.run();
 
 		ConsoleView consoleView = new ConsoleView();
 		if (TextLabels.GRADLE_TYPE == projectType) {
@@ -119,12 +121,12 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 		checkUrlContent("Hello RESTEasy", localhostPort);
 	}
 
-	public void deleteNewQuarkusConfiguration(String projectName, RunConfigurationsDialog runDialog,
+	public void deleteNewQuarkusConfiguration(String projectName, LaunchConfigurationsDialog launchDialog,
 			QuarkusLaunchConfigurationTabGroup launchConfiguration) {
-		runDialog.open();
-		runDialog.select(launchConfiguration, projectName);
-		runDialog.delete(launchConfiguration, projectName);
-		new DefaultShell(Shell.RUN_CONFIGURATION).setFocus();
-		runDialog.close();
+		launchDialog.open();
+		launchDialog.select(launchConfiguration, projectName);
+		launchDialog.delete(launchConfiguration, projectName);
+		new DefaultShell(launchDialog.getTitle()).setFocus();
+		launchDialog.close();
 	}
 }

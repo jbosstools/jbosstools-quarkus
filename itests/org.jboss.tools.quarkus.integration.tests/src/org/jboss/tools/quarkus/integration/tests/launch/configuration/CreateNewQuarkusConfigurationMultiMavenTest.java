@@ -42,6 +42,11 @@ public class CreateNewQuarkusConfigurationMultiMavenTest extends AbstractLaunchC
 
 	@Test
 	public void testNewQuarkusMavenConfiguration() {
-		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE);
+		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE, false);
+	}
+	
+	@Test
+	public void testDebugNewQuarkusMavenConfiguration() {
+		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE, true);
 	}
 }

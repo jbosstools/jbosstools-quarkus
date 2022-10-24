@@ -37,6 +37,11 @@ public class CreateNewQuarkusConfigurationGradleTest extends AbstractLaunchConfi
 
 	@Test
 	public void testNewQuarkusGradleConfiguration() {
-		testNewQuarkusConfiguration(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
+		testNewQuarkusConfiguration(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE, false);
+	}
+	
+	@Test
+	public void testDebugNewQuarkusGradleConfiguration() {
+		testNewQuarkusConfiguration(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE, true);
 	}
 }

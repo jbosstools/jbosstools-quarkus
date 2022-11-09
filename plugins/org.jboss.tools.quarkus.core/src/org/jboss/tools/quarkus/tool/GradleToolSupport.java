@@ -103,7 +103,7 @@ public class GradleToolSupport extends AbstractToolSupport {
 		Job job = Job.create("Starting " + context.getName(), monitor2 -> {
 			ILaunchConfigurationWorkingCopy launchConfiguration = getConfiguration(context);
 			launchConfiguration.setAttribute("tasks", Collections.singletonList("quarkusDev"));
-			List<String> arguments = add(launchConfiguration.getAttribute("arguments", Collections.emptyList()), "-Ddebug=" + context.getDebugPort());
+			List<String> arguments = add(launchConfiguration.getAttribute("arguments", Collections.emptyList()), "-Ddebug=" + getDebugArgument(context));
 			if (StringUtils.isNotBlank(context.getProfile())) {
 				arguments = add(arguments, "-Dquarkus.profile=" + context.getProfile());
 			}
@@ -123,5 +123,9 @@ public class GradleToolSupport extends AbstractToolSupport {
 		});
 		job.schedule();
 		return launch;
+	}
+
+	protected String getDebugArgument(ToolExecutionContext context) {
+		return context.isDebug()?Integer.toString(context.getDebugPort()):"false";
 	}
 }

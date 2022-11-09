@@ -70,10 +70,14 @@ public class MavenToolSupport extends AbstractToolSupport {
 		ILaunchConfigurationWorkingCopy launchConfiguration = getConfiguration(context);
 		launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_GOALS, "compile quarkus:dev");
 		if (StringUtils.isBlank(context.getProfile())) {
-			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Collections.singletonList("debug=" + context.getDebugPort()));
+			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Collections.singletonList("debug=" + getDebugArgument(context)));
 		} else {
-			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Arrays.asList("debug=" + context.getDebugPort(), "quarkus.profile=" + context.getProfile()));
+			launchConfiguration.setAttribute(MavenLaunchConstants.ATTR_PROPERTIES, Arrays.asList("debug=" + getDebugArgument(context), "quarkus.profile=" + context.getProfile()));
 		}
 		return launchConfiguration.launch(ILaunchManager.RUN_MODE, monitor);
+	}
+
+	protected String getDebugArgument(ToolExecutionContext context) {
+		return context.isDebug()?Integer.toString(context.getDebugPort()):"false";
 	}
 }

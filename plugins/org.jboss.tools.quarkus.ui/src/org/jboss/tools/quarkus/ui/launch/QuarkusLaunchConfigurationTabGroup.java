@@ -20,11 +20,12 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
+import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 
 public class QuarkusLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		setTabs(new QuarkusProjectTab(), new EnvironmentTab(), new CommonTab());
+		setTabs(new QuarkusProjectTab(), new SourceLookupTab(), new EnvironmentTab(), new CommonTab());
 	}
 }

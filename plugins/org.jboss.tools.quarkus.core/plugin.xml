@@ -23,7 +23,8 @@
             delegate="org.jboss.tools.quarkus.core.launch.QuarkusLaunchConfigurationDelegate"
             id="org.jboss.tools.quarkus.core.launchConfigurationType"
             modes="run, debug"
-            name="Quarkus Application">
+            name="Quarkus Application"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
       </launchConfigurationType>
    </extension>>
 </plugin>

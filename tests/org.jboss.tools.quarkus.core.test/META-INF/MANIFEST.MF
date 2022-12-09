@@ -12,4 +12,4 @@ Import-Package: org.junit,
  org.junit.jupiter.api,
  org.junit.rules
 Require-Bundle: org.apache.commons.io,
- org.mockito
+ org.mockito.mockito-core;bundle-version="4.8.0"

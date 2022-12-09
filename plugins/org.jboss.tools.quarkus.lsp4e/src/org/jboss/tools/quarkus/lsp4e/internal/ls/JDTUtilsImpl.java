@@ -113,4 +113,13 @@ public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUt
 			return s.hasNext() ? s.next() : "";
 		}
 	}
+
+	@Override
+	public String getJavadoc(IMember member, com.redhat.qute.commons.DocumentFormat documentFormat)
+			throws JavaModelException {
+		boolean markdown = DocumentFormat.Markdown.equals(documentFormat);
+		Reader reader = markdown ? JDTJavadocContentAccess.getMarkdownContentReader(member)
+				: JDTJavadocContentAccess.getPlainTextContentReader(member);
+		return reader != null ? toString(reader) : null;
+	}
 }

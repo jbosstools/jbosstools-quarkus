@@ -40,10 +40,10 @@
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
         <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
         <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/latest/all/repo/</qute-jdt-site>
-        <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.5.0/repository/</lsp4mp-jdt-site>
-        <quarkus-ls.version>0.12.1</quarkus-ls.version>
-        <lsp4mp-ls.version>0.5.0</lsp4mp-ls.version>
-        <qute-ls.version>0.12.1</qute-ls.version>
+        <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.6.0/repository/</lsp4mp-jdt-site>
+        <quarkus-ls.version>0.13.0</quarkus-ls.version>
+        <lsp4mp-ls.version>0.6.0</lsp4mp-ls.version>
+        <qute-ls.version>0.13.0</qute-ls.version>
         <!--
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA
           in case of desynchronization between the projects

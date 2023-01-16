@@ -35,7 +35,7 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-//import org.eclipse.m2e.tests.common.JobHelpers;
+import org.eclipse.m2e.tests.common.JobHelpers;
 import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.ui.launch.QuarkusLaunchConfigurationTabGroup;
@@ -55,8 +55,6 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	public static void importProject(String projectName, String location) throws IOException, CoreException, InterruptedException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		File dir = new File(workspace.getRoot().getLocation().toFile(), projectName);
-		System.out.println(workspace.getRoot().getLocation().toFile());
-		AbstractWait.sleep(TimePeriod.DEFAULT);
 	    if(dir.isFile()) {
 	      dir = dir.getParentFile();
 	    }
@@ -64,8 +62,6 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 
 	    final IProject project = workspace.getRoot().getProject(projectName);
 	      if(!project.exists()) {
-	    	System.out.println(workspace.getRoot().getLocation().append(projectName));
-	    	AbstractWait.sleep(TimePeriod.VERY_LONG);
 	        IProjectDescription projectDescription = workspace.loadProjectDescription(workspace.getRoot().getLocation().append(projectName).append(".project"));
 	        project.create(projectDescription, null);
 	        project.open(IResource.NONE, null);
@@ -74,8 +70,8 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	        project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	      }
 	    try {
-	    	new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-//	    	JobHelpers.waitForJobsToComplete();
+//	    	new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	    	JobHelpers.waitForJobsToComplete();
 	    } catch (AssertionError e) {}
 	}
 	

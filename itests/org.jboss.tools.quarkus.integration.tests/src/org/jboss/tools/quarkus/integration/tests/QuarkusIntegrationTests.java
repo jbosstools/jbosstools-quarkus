@@ -43,7 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //	CreateNewProjectTest.class,
 //	CreateNewQuarkusConfigurationMavenTest.class,
 //	CreateNewQuarkusConfigurationGradleTest.class,
-	CreateNewQuarkusConfigurationMultiMavenTest.class,
+//	CreateNewQuarkusConfigurationMultiMavenTest.class,
 //	EnvironmentVariablesTest.class,
 //	ApplicationPropertiesContentAssistTest.class,
 //	InstallQuarkusExtensionTest.class,
@@ -52,7 +52,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //	CodestartTest.class,
 //	RunProjectsOnOtherPorts.class,
 //	RunProjectWithProfileTest.class,
-//	RunProjectWithDebugTest.class // https://issues.redhat.com/browse/JBIDE-28840
+	RunProjectWithDebugTest.class // https://issues.redhat.com/browse/JBIDE-28840
 	
 })
 

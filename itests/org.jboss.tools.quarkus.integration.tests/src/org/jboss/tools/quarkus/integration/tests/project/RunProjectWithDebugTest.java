@@ -97,7 +97,7 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 
 		WebBrowserView webBrowserView = new WebBrowserView();
 		webBrowserView.open();
-		webBrowserView.openPageURL("localhost:8080/hello");
+		webBrowserView.openPageURL("http://localhost:8080/hello");
 		checkWebBrowserText(webBrowserView, ""); // check if webBrowser is empty
 
 		checkReturn("with changes");
@@ -114,6 +114,13 @@ public class RunProjectWithDebugTest extends AbstractQuarkusTest {
 	private void checkWebBrowserText(WebBrowserView webBrowser, String expectedText) {
 		webBrowser.activate();
 		String quarkusProjectHelloReturn = webBrowser.getText();
+
+		if ((quarkusProjectHelloReturn != null) && (quarkusProjectHelloReturn.contains("<html>"))) { // win11 returns tags with text, need to remove
+			quarkusProjectHelloReturn = quarkusProjectHelloReturn.replace("<html><head></head><body>", "").replace("</body></html>", "");
+			if (quarkusProjectHelloReturn.contains("<pre>")) {
+				quarkusProjectHelloReturn = quarkusProjectHelloReturn.replace("<pre>", "").replace("</pre>", "");
+			}
+		}
 
 		assertEquals("Should be <" + expectedText + "> , but is <" + quarkusProjectHelloReturn + ">", expectedText, quarkusProjectHelloReturn);
 

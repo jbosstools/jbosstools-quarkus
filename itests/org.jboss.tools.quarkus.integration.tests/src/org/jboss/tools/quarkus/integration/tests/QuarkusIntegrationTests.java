@@ -39,19 +39,19 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-//	PerspectiveTest.class,
-//	CreateNewProjectTest.class,
-//	CreateNewQuarkusConfigurationMavenTest.class,
-//	CreateNewQuarkusConfigurationGradleTest.class,
-//	CreateNewQuarkusConfigurationMultiMavenTest.class,
-//	EnvironmentVariablesTest.class,
+	PerspectiveTest.class,
+	CreateNewProjectTest.class,
+	CreateNewQuarkusConfigurationMavenTest.class,
+	CreateNewQuarkusConfigurationGradleTest.class,
+//	CreateNewQuarkusConfigurationMultiMavenTest.class, // https://issues.redhat.com/browse/JBIDE-28841
+	EnvironmentVariablesTest.class,
 //	ApplicationPropertiesContentAssistTest.class,
-//	InstallQuarkusExtensionTest.class,
+	InstallQuarkusExtensionTest.class,
 //	ApplicationPropertiesNewExtensionContentAssistTest.class,
-//	ApplicationYaml.class,
-//	CodestartTest.class,
-//	RunProjectsOnOtherPorts.class,
-//	RunProjectWithProfileTest.class,
+	ApplicationYaml.class,
+	CodestartTest.class,
+	RunProjectsOnOtherPorts.class,
+	RunProjectWithProfileTest.class,
 	RunProjectWithDebugTest.class // https://issues.redhat.com/browse/JBIDE-28840
 	
 })

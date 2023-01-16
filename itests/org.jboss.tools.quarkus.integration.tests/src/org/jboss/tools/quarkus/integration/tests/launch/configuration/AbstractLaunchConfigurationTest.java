@@ -70,7 +70,6 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 	        project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	      }
 	    try {
-//	    	new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	    	JobHelpers.waitForJobsToComplete();
 	    } catch (AssertionError e) {}
 	}
@@ -118,23 +117,14 @@ public abstract class AbstractLaunchConfigurationTest extends AbstractQuarkusTes
 			new PushButton("Debug").click();;
 		} else {
 			if (TextLabels.GRADLE_TYPE == projectType) { 
-				new PushButton("Run").click(); // Gradle project has an infinite process, "launchDialog.run()" 
-											   // fails because of timeout in "JobIsRunning".
+				new PushButton("Run").click(); // Gradle project has an infinite process, 
+											   // "launchDialog.run()" fails because of timeout in "JobIsRunning".
 			} else {
 				launchDialog.run();
 			}
 		}
-
 		ConsoleView consoleView = new ConsoleView();
-		if (TextLabels.GRADLE_TYPE == projectType) {
-			new WaitUntil(new ConsoleHasText(consoleView,
-					"[[39m[38;2;68;136;255mio.quarkus[39m[38;2;208;208;208m] ([39m[38;2;68;170;68mQuarkus Main Thread[39m[38;2;208;208;208m) [39m[38;2;176;208;176m[39m[38;2;221;221;221m"
-							+ projectName),
-					TimePeriod.getCustom(600));
-		} else {
-			new WaitUntil(new ConsoleHasText(consoleView, "[io.quarkus] (Quarkus Main Thread) " + projectName),
-					TimePeriod.getCustom(600));
-		}
+		new WaitUntil(new ConsoleHasText(consoleView, "started in"), TimePeriod.getCustom(600));
 	}
 
 	public void deleteNewQuarkusConfiguration(String projectName, LaunchConfigurationsDialog launchDialog,

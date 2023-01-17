@@ -20,6 +20,9 @@ import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.lookup.ShellLookup;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.workbench.condition.ContentAssistantShellIsOpened;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
@@ -53,6 +56,11 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 		insertAndSave(editor, textForContentAssist);
+//		System.out.println("Try to open content assist");
+//		AbstractWait.sleep(TimePeriod.VERY_LONG);
+//		String os_name = System.getProperty("os.name");
+//		System.out.println(System.getProperty("os.name"));
+//		AbstractWait.sleep(TimePeriod.DEFAULT);
 		return openContentAssist(editor);
 	}
 
@@ -79,18 +87,27 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 		ContentAssistant contentAssist = null;
 		Shell[] shells = ShellLookup.getInstance().getShells();
 		ContentAssistantShellIsOpened caw = new ContentAssistantShellIsOpened(shells);
-		try {
-			contentAssist = editor.openContentAssistant();
-		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
-																						// download microprofile...
-																						// when
-																						// content assistent
-																						// opens, sometimes it need
-																						// more then default 10
-																						// seconds
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			new ShellMenuItem("Window", "Navigation", "Find Actions").select();
+			new DefaultText().setText("Content Assist - Content Assist (Space)");
+			new DefaultTable().getItem(0).click();
+
 			new WaitUntil(caw, TimePeriod.LONG);
 			contentAssist = new ContentAssistant(caw.getContentAssistTable());
+		} else {
+			try {
+				contentAssist = editor.openContentAssistant();
+			} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // CRS need some time for
+																							// download microprofile...
+																							// when
+																							// content assistent
+																							// opens, sometimes it need
+																							// more then default 10
+																							// seconds
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				new WaitUntil(caw, TimePeriod.LONG);
+				contentAssist = new ContentAssistant(caw.getContentAssistTable());
+			}
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 

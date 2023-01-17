@@ -45,9 +45,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateNewQuarkusConfigurationGradleTest.class,
 //	CreateNewQuarkusConfigurationMultiMavenTest.class, // https://issues.redhat.com/browse/JBIDE-28841
 	EnvironmentVariablesTest.class,
-//	ApplicationPropertiesContentAssistTest.class,
+	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
-//	ApplicationPropertiesNewExtensionContentAssistTest.class,
+	ApplicationPropertiesNewExtensionContentAssistTest.class,
 	ApplicationYaml.class,
 	CodestartTest.class,
 	RunProjectsOnOtherPorts.class,

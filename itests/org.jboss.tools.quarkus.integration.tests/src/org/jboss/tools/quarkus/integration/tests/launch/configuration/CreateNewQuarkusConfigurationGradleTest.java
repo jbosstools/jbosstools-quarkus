@@ -32,12 +32,6 @@ public class CreateNewQuarkusConfigurationGradleTest extends AbstractLaunchConfi
 
 	@BeforeClass
 	public static void testNewNewQuarkusGradleProject() {
-//		String os_name = System.getProperty("os.name");
-//		System.out.println(os_name);
-//		System.out.println(OS.LINUX);
-//		System.out.println(OS.MACOSX);
-//		System.out.println(OS.WINDOWS);
-//		AbstractWait.sleep(TimePeriod.LONG);
 		createNewQuarkusProject(GRADLE_PROJECT_NAME, TextLabels.GRADLE_TYPE);
 	}
 

@@ -56,11 +56,6 @@ public abstract class AbstractContentAssistantTest extends AbstractQuarkusTest {
 
 		TextEditor editor = openFileWithTextEditor(projectName, TextLabels.GENERIC_TEXT_EDITOR);
 		insertAndSave(editor, textForContentAssist);
-//		System.out.println("Try to open content assist");
-//		AbstractWait.sleep(TimePeriod.VERY_LONG);
-//		String os_name = System.getProperty("os.name");
-//		System.out.println(System.getProperty("os.name"));
-//		AbstractWait.sleep(TimePeriod.DEFAULT);
 		return openContentAssist(editor);
 	}
 

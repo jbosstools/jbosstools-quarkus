@@ -27,6 +27,7 @@ import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtension
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithDebugTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithProfileTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectsOnOtherPorts;
+import org.jboss.tools.quarkus.integration.tests.project.ApplicationPropertiesGotoSourceTest;
 import org.jboss.tools.quarkus.integration.tests.project.CodestartTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -49,6 +50,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,
 	ApplicationYaml.class,
+	ApplicationPropertiesGotoSourceTest.class,
 	CodestartTest.class,
 	RunProjectsOnOtherPorts.class,
 	RunProjectWithProfileTest.class,

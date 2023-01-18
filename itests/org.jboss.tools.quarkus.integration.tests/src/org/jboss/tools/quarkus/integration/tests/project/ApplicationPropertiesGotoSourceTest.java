@@ -8,16 +8,24 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.quarkus.integration.tests.content.assistant;
+package org.jboss.tools.quarkus.integration.tests.project;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.keyboard.Keyboard;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.swt.SWT;
+import org.jboss.tools.quarkus.integration.tests.project.universal.methods.AbstractQuarkusTest;
 import org.jboss.tools.quarkus.reddeer.common.QuarkusLabels.TextLabels;
 import org.jboss.tools.quarkus.reddeer.perspective.QuarkusPerspective;
 import org.junit.BeforeClass;
@@ -26,11 +34,12 @@ import org.junit.runner.RunWith;
 
 /**
  * 
- * @author olkornii@redhat.com
+ * https://issues.redhat.com/browse/JBIDE-28195
+ * @author jmaury@redhat.com
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class ApplicationPropertiesGotoSourceTest extends AbstractContentAssistantTest {
+public class ApplicationPropertiesGotoSourceTest extends AbstractQuarkusTest {
 
 	private static String PROJECT_NAME = "testgotosourceproject";
 
@@ -41,7 +50,8 @@ public class ApplicationPropertiesGotoSourceTest extends AbstractContentAssistan
 
 	@BeforeClass
 	public static void createNewQuarkusProject() {
-		createProjectAndCheckJDK(PROJECT_NAME);
+		testCreateNewProject(PROJECT_NAME, TextLabels.MAVEN_TYPE);
+		checkProblemsView();
 	}
 
 	@Test
@@ -59,14 +69,18 @@ public class ApplicationPropertiesGotoSourceTest extends AbstractContentAssistan
 		/*
 		 * let the LSP process the file changes and compute information
 		 */
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
+		new WaitWhile(new JobIsRunning());
+		AbstractWait.sleep(TimePeriod.DEFAULT);
+
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			new ShellMenuItem("Window", "Navigation", "Find Actions").select();
+			new DefaultText().setText("Open Hyperlink (F3)");
+			new DefaultTable().getItem(0).click();
+		} else {
+			Keyboard keyboard = KeyboardFactory.getKeyboard();
+			keyboard.invokeKeyCombination(SWT.F3);
+			javaEditor = new TextEditor();
 		}
-		Keyboard keyboard = KeyboardFactory.getKeyboard();
-		keyboard.invokeKeyCombination(SWT.F3);
-		javaEditor = new TextEditor();
 		assertEquals("/" + PROJECT_NAME + "/src/main/java/org/acme/ExampleResource.java", javaEditor.getAssociatedFile().getRelativePath());
 	}
 }

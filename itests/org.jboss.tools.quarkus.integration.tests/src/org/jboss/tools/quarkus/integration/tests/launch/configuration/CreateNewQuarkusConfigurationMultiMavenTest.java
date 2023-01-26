@@ -22,10 +22,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * https://issues.redhat.com/browse/JBIDE-27065 New quarkus launch configuration
+ * https://issues.redhat.com/browse/JBIDE-28153
  * integration test for Maven
  * 
- * @author olkornii@redhat.com
+ * @author jmaury@redhat.com
  */
 @OpenPerspective(QuarkusPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -41,12 +41,11 @@ public class CreateNewQuarkusConfigurationMultiMavenTest extends AbstractLaunchC
 	}
 
 	@Test
-	public void testNewQuarkusMavenConfiguration() {
-		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE, false);
+	public void testNewQuarkusMultiMavenConfiguration() {
+		testRunConfiguration();
 	}
 	
-	@Test
-	public void testDebugNewQuarkusMavenConfiguration() {
-		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE, true);
+	private void testRunConfiguration() {
+		testNewQuarkusConfiguration(REST_PROJECT_NAME, TextLabels.MAVEN_TYPE, false, "Hello RESTEasy");
 	}
 }

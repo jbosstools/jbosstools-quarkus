@@ -157,9 +157,9 @@ public abstract class AbstractQuarkusTest {
 			new ContextMenuItem(TextLabels.GRADLE_CONTEXT_MENU_ITEM, TextLabels.REFRESH_GRADLE_PROJECT).select();
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
-			refreshProjectWorkaround(projectName);
-		}
+//		if (projectType.equals(TextLabels.MAVEN_TYPE)) {
+//			refreshProjectWorkaround(projectName);
+//		}
 	}
 
 	private static void refreshProjectWorkaround(String projectName) {

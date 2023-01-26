@@ -62,8 +62,8 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 		QuarkusLaunchConfigurationTabGroup firstLaunchConfiguration = createNewQuarkusConfiguration(PROJECT_NAME_1,
 				firstRunDialog);
 		ConsoleView consoleView = new ConsoleView();
-		runNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration, "8080", TextLabels.MAVEN_TYPE);
-		if (!consoleView.getConsoleText().contains("Listening for transport dt_socket at address:")) {
+		runNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration, "8080", TextLabels.MAVEN_TYPE, false);
+		if (!consoleView.getConsoleText().contains("Listening on: http://localhost:8080")) {
 			consoleView.terminateConsole();
 			deleteNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration);
 			fail("First application: debug was not started!");
@@ -72,7 +72,10 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 		RunConfigurationsDialog secondRunDialog = new RunConfigurationsDialog();
 		QuarkusLaunchConfigurationTabGroup secondLaunchConfiguration = createNewQuarkusConfiguration(PROJECT_NAME_2,
 				secondRunDialog);
-		runNewQuarkusConfiguration(PROJECT_NAME_2, secondRunDialog, secondLaunchConfiguration, "8085", TextLabels.MAVEN_TYPE);
+		runNewQuarkusConfiguration(PROJECT_NAME_2, secondRunDialog, secondLaunchConfiguration, "8085", TextLabels.MAVEN_TYPE, false);
+
+		checkUrlContent("Hello from RESTEasy Reactive", "8080");
+		checkUrlContent("Hello from RESTEasy Reactive", "8085");
 
 		terminateBothApplications(consoleView);
 		deleteNewQuarkusConfiguration(PROJECT_NAME_1, firstRunDialog, firstLaunchConfiguration);
@@ -80,7 +83,7 @@ public class RunProjectsOnOtherPorts extends AbstractLaunchConfigurationTest {
 
 		WithTextMatcher applicationMatcher = new WithTextMatcher(new RegexMatcher(".*" + PROJECT_NAME_2 + ".*"));
 		consoleView.switchConsole(applicationMatcher);
-		if (!consoleView.getConsoleText().contains("Listening for transport dt_socket at address:")) {
+		if (!consoleView.getConsoleText().contains("Listening on: http://localhost:8085")) {
 			fail("Second application: debug was not started!");
 		}
 	}

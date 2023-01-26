@@ -79,7 +79,7 @@ public class ApplicationYaml extends AbstractQuarkusTest {
 
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "new_test_quarkus_project_name"), TimePeriod.getCustom(600));
-		checkUrlContent("Hello RESTEasy", "8080");
+		checkUrlContent("Hello from RESTEasy Reactive", "8080");
 
 		consoleView.terminateConsole();
 	}

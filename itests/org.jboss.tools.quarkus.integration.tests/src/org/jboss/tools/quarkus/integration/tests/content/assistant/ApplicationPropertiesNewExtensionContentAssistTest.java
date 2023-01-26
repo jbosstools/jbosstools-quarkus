@@ -16,7 +16,10 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -67,13 +70,18 @@ public class ApplicationPropertiesNewExtensionContentAssistTest extends Abstract
 		ev.open();
 		ev.getExtension("SmallRye OpenAPI").select();
 		new ContextMenuItem("Install extension").select();
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		ConsoleView consoleView = new ConsoleView();
+		new WaitUntil(new ConsoleHasText(consoleView, "Finished at:"), TimePeriod.LONG);
 
 		checkExtensionInPom(new File(WORKSPACE + POM_FILE_PATH),
 				"quarkus-smallrye-openapi");
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-
+		refreshProject(NEW_EXTENSION_PROJECT_NAME, TextLabels.MAVEN_TYPE);
+		
 		ContentAssistant contentAssistNew = testContentAssistant(NEW_EXTENSION_PROJECT_NAME,
 				TEXT_FOR_TEST_CONTENT_ASSIST);
 		assertTrue(checkProposal(contentAssistNew, PORPOSAL_FOR_SELECT));

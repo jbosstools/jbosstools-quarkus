@@ -49,6 +49,9 @@
 					<useUIThread>false</useUIThread>
 					<testClass>${test.class}</testClass>
 					<skip>${skipITests}</skip>
+					<environmentVariables>
+					    <MAVEN_CMD_LINE_ARGS/>
+					</environmentVariables>
 				</configuration>
 			</plugin>
 		</plugins>

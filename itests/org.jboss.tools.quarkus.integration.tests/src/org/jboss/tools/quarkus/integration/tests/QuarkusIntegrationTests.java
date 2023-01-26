@@ -21,11 +21,13 @@ import org.jboss.tools.quarkus.integration.tests.content.assistant.ApplicationPr
 import org.jboss.tools.quarkus.integration.tests.environment.EnvironmentVariablesTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationGradleTest;
 import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMavenTest;
+import org.jboss.tools.quarkus.integration.tests.launch.configuration.CreateNewQuarkusConfigurationMultiMavenTest;
 import org.jboss.tools.quarkus.integration.tests.project.CreateNewProjectTest;
 import org.jboss.tools.quarkus.integration.tests.project.InstallQuarkusExtensionTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithDebugTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectWithProfileTest;
 import org.jboss.tools.quarkus.integration.tests.project.RunProjectsOnOtherPorts;
+import org.jboss.tools.quarkus.integration.tests.project.ApplicationPropertiesGotoSourceTest;
 import org.jboss.tools.quarkus.integration.tests.project.CodestartTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -42,15 +44,17 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateNewProjectTest.class,
 	CreateNewQuarkusConfigurationMavenTest.class,
 	CreateNewQuarkusConfigurationGradleTest.class,
+//	CreateNewQuarkusConfigurationMultiMavenTest.class, // https://issues.redhat.com/browse/JBIDE-28841
 	EnvironmentVariablesTest.class,
 	ApplicationPropertiesContentAssistTest.class,
 	InstallQuarkusExtensionTest.class,
 	ApplicationPropertiesNewExtensionContentAssistTest.class,
 	ApplicationYaml.class,
+	ApplicationPropertiesGotoSourceTest.class,
 	CodestartTest.class,
 	RunProjectsOnOtherPorts.class,
 	RunProjectWithProfileTest.class,
-	RunProjectWithDebugTest.class
+	RunProjectWithDebugTest.class // https://issues.redhat.com/browse/JBIDE-28840
 	
 })
 

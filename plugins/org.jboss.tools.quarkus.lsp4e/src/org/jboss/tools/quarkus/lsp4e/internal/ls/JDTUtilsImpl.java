@@ -38,11 +38,13 @@ public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUt
 
 	private JDTUtilsImpl() {
 	}
-	
+
 	@Override
 	public ICompilationUnit resolveCompilationUnit(String uriString) {
 		return JDTUtils.resolveCompilationUnit(uriString);
 	}
+
+	@Override
 	public IClassFile resolveClassFile(String uriString) {
 		return JDTUtils.resolveClassFile(uriString);
 	}
@@ -78,7 +80,7 @@ public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUt
 		}*/
 		//TODO: verify we need to synchronise on jobs
 	}
-	
+
 	@Override
 	public int toOffset(IBuffer buffer, int line, int column) {
 		return JsonRpcHelpers.toOffset(buffer, line, column);
@@ -114,6 +116,9 @@ public class JDTUtilsImpl implements IJDTUtils, com.redhat.qute.jdt.utils.IJDTUt
 		}
 	}
 
+	/** 
+	 * Qute Javadoc differs from Microprofile 
+	 */
 	@Override
 	public String getJavadoc(IMember member, com.redhat.qute.commons.DocumentFormat documentFormat)
 			throws JavaModelException {

@@ -10,17 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.quarkus.lsp4e.core.faulttolerance;
 
-import org.eclipse.lsp4mp.jdt.core.faulttolerance.java.MicroProfileFaultToleranceJavaDefinitionTest ;
+import org.eclipse.lsp4mp.jdt.core.faulttolerance.java.MicroProfileFaultToleranceJavaDefinitionTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 /**
  * @author Red Hat Developers
  *
  */
-@Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
-public class JDTMicroProfileFaultToleranceJavaDefinitionTest extends MicroProfileFaultToleranceJavaDefinitionTest  {
+public class JDTMicroProfileFaultToleranceJavaDefinitionTest extends MicroProfileFaultToleranceJavaDefinitionTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

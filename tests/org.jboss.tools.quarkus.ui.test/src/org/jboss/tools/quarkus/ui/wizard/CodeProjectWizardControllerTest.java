@@ -44,7 +44,7 @@ public class CodeProjectWizardControllerTest {
 		model.setModel(catalog);
 		model.setExtensionsModel(extensionsModel);
 		IStatus status = new CodeProjectWizardController(model).run(new NullProgressMonitor());
-		assertTrue(status.isOK());
+		assertTrue(status.isOK(), status::getMessage);
 	}
 	
 	@Test

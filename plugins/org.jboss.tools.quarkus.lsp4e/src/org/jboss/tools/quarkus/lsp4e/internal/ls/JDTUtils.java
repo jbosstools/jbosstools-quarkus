@@ -40,14 +40,17 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.ISourceReference;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -56,7 +59,9 @@ import org.eclipse.jdt.core.SourceRange;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.internal.corext.codemanipulation.GetterSetterUtil;
 import org.eclipse.jdt.internal.corext.dom.IASTSharedValues;
+import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -70,20 +75,21 @@ import com.google.common.base.Charsets;
  * with only required method for Quarkus LSP4E.
  *
  */
-public class JDTUtils  {
-	
+public final class JDTUtils {
+
 	public static final String PATH_SEPARATOR = "/";
 	public static final String PERIOD = ".";
 	public static final String SRC = "src";
-
-	public static final String FILE_UNC_PREFIX = "file:////";
 	private static final String JDT_SCHEME = "jdt";
 	//Code generators known to cause problems
 	private static Set<String> SILENCED_CODEGENS = Collections.singleton("lombok");
 	
 	public static final String DEFAULT_PROJECT_NAME = "jdt.java-project";
 
-	
+	private JDTUtils() {
+		//No public instantiation
+	}
+
 	/**
 	 * Given the uri returns a {@link ICompilationUnit}.
 	 * May return null if it can not associate the uri with a Java
@@ -110,6 +116,14 @@ public class JDTUtils  {
 		}
 
 		IFile resource = (IFile) findResource(uri, ResourcesPlugin.getWorkspace().getRoot()::findFilesForLocationURI);
+		if(resource != null) {
+			return resolveCompilationUnit(resource);
+		} else {
+			return getFakeCompilationUnit(uri, new NullProgressMonitor());
+		}
+	}
+	
+	public static ICompilationUnit resolveCompilationUnit(IFile resource) {
 		if(resource != null){
 			if(!ProjectUtils.isJavaProject(resource.getProject())){
 				return null;
@@ -120,10 +134,9 @@ public class JDTUtils  {
 					return JavaCore.createCompilationUnitFrom(resource);
 				}
 			}
-			return null;
-		} else {
-			return getFakeCompilationUnit(uri, new NullProgressMonitor());
 		}
+
+		return null;
 	}
 	
 	static ICompilationUnit getFakeCompilationUnit(URI uri, IProgressMonitor monitor) {
@@ -280,12 +293,11 @@ public class JDTUtils  {
 				resources = resourceFinder.apply(uri);
 			}
 		}
-		if (resources.length == 0 && Platform.OS_WIN32.equals(Platform.getOS())
-				&& uri.toString().startsWith(FILE_UNC_PREFIX)) {
+		if (resources.length == 0 && Platform.OS_WIN32.equals(Platform.getOS()) && uri.toString().startsWith(ResourceUtils.FILE_UNC_PREFIX)) {
 			String uriString = uri.toString();
-			int index = uriString.indexOf(PATH_SEPARATOR, FILE_UNC_PREFIX.length());
+			int index = uriString.indexOf(PATH_SEPARATOR, ResourceUtils.FILE_UNC_PREFIX.length());
 			if (index > 0) {
-				String server = uriString.substring(FILE_UNC_PREFIX.length(), index);
+				String server = uriString.substring(ResourceUtils.FILE_UNC_PREFIX.length(), index);
 				uriString = uriString.replace(server, server.toUpperCase());
 				try {
 					uri = new URI(uriString);
@@ -426,7 +438,8 @@ public class JDTUtils  {
 	 * @return
 	 */
 	public static String getFileURI(IResource resource) {
-		return ResourceUtils.fixURI(resource.getRawLocationURI() == null ? resource.getLocationURI() : resource.getRawLocationURI());
+		URI uri = resource.getRawLocationURI();
+		return ResourceUtils.fixURI(uri == null ? resource.getLocationURI() : uri);
 	}
 
 
@@ -475,7 +488,7 @@ public class JDTUtils  {
 	 * with the name range only, or the extended source range around the name of the
 	 * element.
 	 */
-	public enum LocationType {
+	public static enum LocationType {
 		/**
 		 * This is range encapsulating only the name of the Java element.
 		 */
@@ -502,6 +515,13 @@ public class JDTUtils  {
 		};
 
 		/* default */ abstract ISourceRange getRange(IJavaElement element) throws JavaModelException;
+
+		/**
+		 * Sugar for {@link JDTUtils#toLocation(IJavaElement, LocationType)}.
+		 */
+		public Location toLocation(IJavaElement element) throws JavaModelException {
+			return JDTUtils.toLocation(element, this);
+		}
 	}
 
 	public static Location toLocation(IJavaElement element) throws JavaModelException {
@@ -529,10 +549,34 @@ public class JDTUtils  {
 			ISourceRange nameRange = type.getRange(element);
 			if (SourceRange.isAvailable(nameRange)) {
 				if (cf == null) {
+					// https://github.com/redhat-developer/vscode-java/issues/2805
+					// 1. Jump to the field of the lombok-annotated class corresponding to the getter and setter method
+					if (element instanceof IMethod) {
+						IMethod method = (IMethod) element;
+						if (isGenerated(method)) {
+							IType iType = method.getDeclaringType();
+							if (iType != null) {
+								for (IField field : iType.getFields()) {
+									IMethod getter = GetterSetterUtil.getGetter(field);
+									if (getter != null && JavaModelUtil.isSameMethodSignature(getter.getElementName(), getter.getParameterTypes(), false, method)) {
+										nameRange = field.getNameRange();
+										break;
+									}
+									IMethod setter = GetterSetterUtil.getSetter(field);
+									if (setter != null && JavaModelUtil.isSameMethodSignature(setter.getElementName(), setter.getParameterTypes(), false, method)) {
+										nameRange = field.getNameRange();
+										break;
+									}
+								}
+							}
+						}
+					}
 					return toLocation(unit, nameRange.getOffset(), nameRange.getLength());
 				} else {
 					return toLocation(cf, nameRange.getOffset(), nameRange.getLength());
 				}
+			} else if (cf != null) {
+				return toLocation(cf);
 			}
 		}
 		return null;
@@ -614,4 +658,20 @@ public class JDTUtils  {
 		}
 		return null;
 	}
+
+	/**
+	 *
+	 * copied from
+	 * https://github.com/projectlombok/lombok/blob/731bb185077918af8bc1e6a9e6bb538b2d3fbbd8/src/eclipseAgent/lombok/launch/PatchFixesHider.java#L418-L426
+	 */
+	public static boolean isGenerated(IMember member) {
+		boolean result = false;
+		try {
+			result = member.getNameRange().getLength() <= 0 || member.getNameRange().equals(member.getSourceRange());
+		} catch (JavaModelException e) {
+			// better to assume it isn't generated
+		}
+		return result;
+	}
+
 }

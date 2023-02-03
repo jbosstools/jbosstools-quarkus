@@ -13,11 +13,13 @@ package org.jboss.tools.quarkus.lsp4e.core;
 import org.eclipse.lsp4mp.jdt.core.PropertiesManagerClassPathKindTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 /**
  * @author Red Hat Developers
  *
  */
+@Ignore(value = "Diff between JDT and JDT-LS")
 public class JDTPropertiesManagerClassPathKindTest extends PropertiesManagerClassPathKindTest {
 	@BeforeClass
 	public static void init() {

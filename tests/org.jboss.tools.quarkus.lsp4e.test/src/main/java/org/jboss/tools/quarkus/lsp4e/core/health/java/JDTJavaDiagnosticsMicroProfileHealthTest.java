@@ -19,7 +19,7 @@ import org.junit.Ignore;
  * @author Red Hat Developers
  *
  */
-//@Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
+@Ignore("JDT and JDT-LS JavaDoc2HTML generators differs")
 public class JDTJavaDiagnosticsMicroProfileHealthTest extends MicroProfileHealthJavaDiagnosticsTest {
 	@BeforeClass
 	public static void init() {

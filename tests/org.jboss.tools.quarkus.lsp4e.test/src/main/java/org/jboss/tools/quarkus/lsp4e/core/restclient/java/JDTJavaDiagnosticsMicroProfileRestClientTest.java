@@ -19,7 +19,7 @@ import org.junit.Ignore;
  * @author Red Hat Developers
  *
  */
-//@Ignore(value = "Diff between JDT and JDT-LS")
+@Ignore(value = "Diff between JDT and JDT-LS")
 public class JDTJavaDiagnosticsMicroProfileRestClientTest extends MicroProfileRestClientJavaDiagnosticsTest {
 	@BeforeClass
 	public static void init() {

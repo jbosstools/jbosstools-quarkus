@@ -42,7 +42,7 @@ jobs:
         run: |
           find . -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;
       - name: Publish aggregated tests reports
-        uses: scacap/action-surefire-report@v1
+        uses: scacap/action-surefire-report@4cbb611f23a9b5a030c73c2b32190a80983956ed #v1
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           report_paths: '${{github.workspace}}/*test-reports/**/TEST-*.xml'

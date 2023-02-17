@@ -47,7 +47,7 @@ jobs:
 
     # Build and compile using Maven
     - name: Build/Compile and run unit tests
-      uses: GabrielBB/xvfb-action@v1
+      uses: GabrielBB/xvfb-action@86d97bde4a65fe9b290c0b3fb92c2c4ed0e5302d #v1
       with:
         run: >
           mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true

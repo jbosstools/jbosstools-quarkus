@@ -2,7 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for quarkus UI Tests
 Bundle-SymbolicName: org.jboss.tools.quarkus.reddeer
+<<<<<<< Upstream, based on origin/main
 Bundle-Version: 1.9.100.qualifier
+=======
+Bundle-Version: 1.10.0.qualifier
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 Require-Bundle: 
  org.jboss.tools.quarkus.ui,
  org.eclipse.reddeer.go

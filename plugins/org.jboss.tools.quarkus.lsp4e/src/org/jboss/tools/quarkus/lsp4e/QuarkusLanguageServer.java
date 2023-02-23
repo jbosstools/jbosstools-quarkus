@@ -42,6 +42,10 @@ public class QuarkusLanguageServer extends ProcessStreamConnectionProvider {
 	public QuarkusLanguageServer() {
 		List<String> commands = new ArrayList<>();
 		commands.add(computeJavaPath());
+		String debugPortString = System.getProperty(getClass().getName() + ".debugPort");
+		if (debugPortString != null) {
+			commands.add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=" + debugPortString);
+		}
 		commands.add("-classpath");
 		try {
 			commands.add(computeClasspath());

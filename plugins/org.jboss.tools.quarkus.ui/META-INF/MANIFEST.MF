@@ -4,7 +4,11 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse UI Plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.ui;singleton:=true
+<<<<<<< Upstream, based on origin/main
 Bundle-Version: 1.9.100.qualifier
+=======
+Bundle-Version: 1.10.0.qualifier
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 Automatic-Module-Name: org.jboss.tools.quarkus.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.jboss.tools.quarkus.core,

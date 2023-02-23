@@ -2,7 +2,11 @@
 <feature
       id="org.jboss.tools.quarkus.test.feature"
       label="Quarkus Tools Test"
+<<<<<<< Upstream, based on origin/main
       version="1.9.100.qualifier">
+=======
+      version="1.10.0.qualifier">
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 
    <description>
       The Eclipse plugins in this feature provide tooling for the Quarkus

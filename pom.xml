@@ -28,7 +28,11 @@
 	</parent>
 
     <artifactId>quarkus</artifactId>
+<<<<<<< Upstream, based on origin/main
     <version>1.9.100-SNAPSHOT</version>
+=======
+    <version>1.10.0-SNAPSHOT</version>
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 
     <packaging>pom</packaging>
 
@@ -36,7 +40,7 @@
         <maven.version>3.6.0</maven.version>
         <plexus.version>3.1.1</plexus.version>
         <quarkus.version>0.25.0</quarkus.version>
-        <vscode-quarkus.version>v1.9.0</vscode-quarkus.version>
+        <vscode-quarkus.version>v1.10.0</vscode-quarkus.version>
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
         <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
         <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/latest/all/repo/</qute-jdt-site>

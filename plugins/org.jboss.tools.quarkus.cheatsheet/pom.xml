@@ -24,7 +24,11 @@
     <parent>
         <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>plugins</artifactId>
+<<<<<<< Upstream, based on origin/main
         <version>1.9.100-SNAPSHOT</version>
+=======
+        <version>1.10.0-SNAPSHOT</version>
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
     </parent>
     
     <groupId>org.jboss.tools.quarkus.plugins</groupId>

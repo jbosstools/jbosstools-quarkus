@@ -5,7 +5,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse LSP4E Qute Test Fragment
 Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e.qute.test
 Fragment-Host: org.jboss.tools.quarkus.lsp4e
+<<<<<<< Upstream, based on origin/main
 Bundle-Version: 1.9.100.qualifier
+=======
+Bundle-Version: 1.10.0.qualifier
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e.qute.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Red Hat

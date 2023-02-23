@@ -4,7 +4,11 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.lsp4e;singleton:=true
+<<<<<<< Upstream, based on origin/main
 Bundle-Version: 1.9.100.qualifier
+=======
+Bundle-Version: 1.10.0.qualifier
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench,

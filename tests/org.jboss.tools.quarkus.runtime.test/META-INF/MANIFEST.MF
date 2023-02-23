@@ -4,7 +4,11 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Test Fragment
 Bundle-SymbolicName: org.jboss.tools.quarkus.runtime.test
+<<<<<<< Upstream, based on origin/main
 Bundle-Version: 1.9.100.qualifier
+=======
+Bundle-Version: 1.10.0.qualifier
+>>>>>>> 4ba2651 Provide the capability to debug MicroProfile LS
 Fragment-Host: org.jboss.tools.quarkus.runtime
 Automatic-Module-Name: org.jboss.tools.quarkus.runtime.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -16,7 +16,11 @@
 
 # Building Quarkus Eclipse
 
-You will need to have Maven installed. You can build the project by issuing `mvn clean verify`. 
+You will need to have Maven installed. 
+
+See the [jbosstools-devdoc](https://github.com/jbosstools/jbosstools-devdoc/blob/main/building/setup_development_environment.adoc#maven-settings) documentation to update your **settings.xml** to point to required artifacts stored in the JBoss Maven repositories.
+
+Once this is setup, you can build the project by issuing `mvn clean verify`. 
 
 <img src="images/build.png" width="400"/>
 

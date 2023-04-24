@@ -38,8 +38,8 @@
         <quarkus.version>0.25.0</quarkus.version>
         <vscode-quarkus.version>v1.9.0</vscode-quarkus.version>
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/latest/all/repo/</quarkus-jdt-site>
-        <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/latest/all/repo/</qute-jdt-site>
+        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/2022-12-01_16-22-31-B180/all/repo/</quarkus-jdt-site>
+        <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/2022-12-01_16-22-31-B180/all/repo/</qute-jdt-site>
         <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.6.0/repository/</lsp4mp-jdt-site>
         <quarkus-ls.version>0.13.0</quarkus-ls.version>
         <lsp4mp-ls.version>0.6.0</lsp4mp-ls.version>

@@ -29,12 +29,13 @@ import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
-import org.eclipse.lsp4mp.commons.CodeActionResolveData;
+import org.eclipse.lsp4mp.commons.JavaCursorContextResult;
 import org.eclipse.lsp4mp.commons.JavaFileInfo;
 import org.eclipse.lsp4mp.commons.MicroProfileDefinition;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeActionParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaCodeLensParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaCompletionParams;
+import org.eclipse.lsp4mp.commons.MicroProfileJavaCompletionResult;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaDefinitionParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaDiagnosticsParams;
 import org.eclipse.lsp4mp.commons.MicroProfileJavaFileInfoParams;
@@ -44,6 +45,7 @@ import org.eclipse.lsp4mp.commons.MicroProfileProjectInfo;
 import org.eclipse.lsp4mp.commons.MicroProfileProjectInfoParams;
 import org.eclipse.lsp4mp.commons.MicroProfilePropertyDefinitionParams;
 import org.eclipse.lsp4mp.commons.ProjectLabelInfoEntry;
+import org.eclipse.lsp4mp.commons.codeaction.CodeActionResolveData;
 import org.eclipse.lsp4mp.commons.utils.JSONUtility;
 import org.eclipse.lsp4mp.jdt.core.IMicroProfilePropertiesChangedListener;
 import org.eclipse.lsp4mp.jdt.core.MicroProfileCorePlugin;
@@ -85,7 +87,7 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			final MicroProfileProjectInfo[] projectInfo = new MicroProfileProjectInfo[1];
 			Job job = Job.create("MicroProfile properties collector", (ICoreRunnable) monitor -> {
 				projectInfo[0] = PropertiesManager.getInstance().getMicroProfileProjectInfo(params,
-				        JDTUtilsImpl.getInstance(), monitor);
+						JDTUtilsImpl.getInstance(), monitor);
 			});
 			job.schedule();
 			try {
@@ -114,12 +116,13 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				return PropertiesManager.getInstance().findPropertyLocation(params, JDTUtilsImpl.getInstance(), monitor);
+				return PropertiesManager.getInstance().findPropertyLocation(params, JDTUtilsImpl.getInstance(),
+						monitor);
 			} catch (CoreException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
-			}	
-			
+			}
+
 		});
 	}
 
@@ -132,7 +135,7 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return Collections.emptyList();
-			}	
+			}
 		});
 	}
 
@@ -145,21 +148,22 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
-			}	
+			}
 		});
 	}
 
 	@Override
 	public CompletableFuture<List<PublishDiagnosticsParams>> getJavaDiagnostics(
-	        MicroProfileJavaDiagnosticsParams javaParams) {
+			MicroProfileJavaDiagnosticsParams javaParams) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				return PropertiesManagerForJava.getInstance().diagnostics(javaParams, JDTUtilsImpl.getInstance(), monitor);
+				return PropertiesManagerForJava.getInstance().diagnostics(javaParams, JDTUtilsImpl.getInstance(),
+						monitor);
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
-			}	
+			}
 		});
 	}
 
@@ -178,12 +182,12 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	}
 
 	@Override
-	public CompletableFuture<ProjectLabelInfoEntry> getJavaProjectlabels(
-	        MicroProfileJavaProjectLabelsParams javaParams) {
+	public CompletableFuture<ProjectLabelInfoEntry> getJavaProjectLabels(
+			MicroProfileJavaProjectLabelsParams javaParams) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			return ProjectLabelManager.getInstance().getProjectLabelInfo(javaParams, JDTUtilsImpl.getInstance(),
-			        monitor);
+					monitor);
 		});
 	}
 
@@ -201,7 +205,8 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 		return CompletableFutures.computeAsync(cancelChecker -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				return PropertiesManagerForJava.getInstance().definition(javaParams, JDTUtilsImpl.getInstance(), monitor);
+				return PropertiesManagerForJava.getInstance().definition(javaParams, JDTUtilsImpl.getInstance(),
+						monitor);
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
@@ -210,25 +215,31 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 	}
 
 	@Override
-	public CompletableFuture<CompletionList> getJavaCompletion(MicroProfileJavaCompletionParams javaParams) {
+	public CompletableFuture<MicroProfileJavaCompletionResult> getJavaCompletion(
+			MicroProfileJavaCompletionParams javaParams) {
 		return CompletableFutures.computeAsync(cancelChecker -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				return PropertiesManagerForJava.getInstance().completion(javaParams, JDTUtilsImpl.getInstance(), monitor);
+				PropertiesManagerForJava.getInstance();
+				JavaCursorContextResult cursorContextResult = PropertiesManagerForJava.javaCursorContext(javaParams,
+						JDTUtilsImpl.getInstance(), monitor);
+				return new MicroProfileJavaCompletionResult(PropertiesManagerForJava.getInstance()
+						.completion(javaParams, JDTUtilsImpl.getInstance(), monitor), cursorContextResult);
 			} catch (JavaModelException e) {
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
 			}
 		});
 	}
-	
+
 	@Override
 	public CompletableFuture<CodeAction> resolveCodeAction(CodeAction unresolved) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			try {
 				IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 				// Deserialize CodeAction#data which is a JSonObject to CodeActionResolveData
-				CodeActionResolveData resolveData = JSONUtility.toModel(unresolved.getData(), CodeActionResolveData.class);
+				CodeActionResolveData resolveData = JSONUtility.toModel(unresolved.getData(),
+						CodeActionResolveData.class);
 				unresolved.setData(resolveData);
 				return PropertiesManagerForJava.getInstance().resolveCodeAction(unresolved, JDTUtilsImpl.getInstance(),
 						monitor);
@@ -237,5 +248,5 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 				return null;
 			}
 		});
-	}	
+	}
 }

@@ -28,7 +28,7 @@
 	</parent>
 
     <artifactId>quarkus</artifactId>
-    <version>1.9.100-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -42,7 +42,7 @@
         <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/2022-12-01_16-22-31-B180/all/repo/</qute-jdt-site>
         <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.6.0/repository/</lsp4mp-jdt-site>
         <quarkus-ls.version>0.13.0</quarkus-ls.version>
-        <lsp4mp-ls.version>0.6.0</lsp4mp-ls.version>
+        <lsp4mp-ls.version>0.7.1</lsp4mp-ls.version>
         <qute-ls.version>0.13.0</qute-ls.version>
         <!--
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA

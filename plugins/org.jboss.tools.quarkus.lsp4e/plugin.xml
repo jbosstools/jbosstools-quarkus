@@ -225,6 +225,10 @@
             commandId="qute.command.open.uri">
       </handler>
       <handler
+            class="org.jboss.tools.quarkus.lsp4e.internal.handlers.qute.GenerateTemplateFileHandler"
+            commandId="qute.command.generate.template.file">
+      </handler>
+      <handler
             class="org.jboss.tools.quarkus.lsp4e.internal.handlers.qute.UpdateConfigurationHandler"
             commandId="qute.command.configuration.update">
       </handler>

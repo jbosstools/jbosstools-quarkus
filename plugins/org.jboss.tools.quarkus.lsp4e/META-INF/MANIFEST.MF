@@ -24,8 +24,10 @@ Require-Bundle: org.eclipse.lsp4e,
  org.apache.commons.io,
  com.redhat.qute.jdt,
  org.eclipse.core.expressions,
+ com.google.guava,
+ org.eclipse.m2e.core,
  org.jboss.tools.maven.core,
- com.google.guava
+ org.eclipse.jdt.annotation;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e
 Bundle-ActivationPolicy: lazy

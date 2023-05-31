@@ -38,12 +38,12 @@
         <quarkus.version>0.25.0</quarkus.version>
         <vscode-quarkus.version>v1.9.0</vscode-quarkus.version>
         <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-quarkus.git</tycho.scmUrl>
-        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/2022-12-01_16-22-31-B180/all/repo/</quarkus-jdt-site>
-        <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/2022-12-01_16-22-31-B180/all/repo/</qute-jdt-site>
-        <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.6.0/repository/</lsp4mp-jdt-site>
-        <quarkus-ls.version>0.13.0</quarkus-ls.version>
+        <quarkus-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/quarkus-jdt/2023-04-04_17-59-41-B206/all/repo/</quarkus-jdt-site>
+        <qute-jdt-site>https://download.jboss.org/jbosstools/vscode/stable/builds/qute-jdt/2023-04-04_17-59-41-B206/all/repo/</qute-jdt-site>
+        <lsp4mp-jdt-site>http://download.eclipse.org/lsp4mp/releases/0.7.1/repository/</lsp4mp-jdt-site>
+        <quarkus-ls.version>0.14.1</quarkus-ls.version>
         <lsp4mp-ls.version>0.7.1</lsp4mp-ls.version>
-        <qute-ls.version>0.13.0</qute-ls.version>
+        <qute-ls.version>0.14.1</qute-ls.version>
         <!--
           Uncomment only if you need to use non released bits from LSP4MP or Quarkus LS in GA
           in case of desynchronization between the projects
@@ -88,7 +88,7 @@
 		  <snapshots>
 		    <enabled>true</enabled>
 		  </snapshots>
-		</repository>		
+		</repository>
 		<repository>
 		  <id>lsp4mp-releases</id>
 		  <url>https://repo.eclipse.org/content/repositories/lsp4mp-releases</url>
@@ -98,7 +98,7 @@
 		  <snapshots>
 		    <enabled>false</enabled>
 		  </snapshots>
-		</repository>		
+		</repository>
 	</repositories>
 
     <modules>

@@ -80,8 +80,8 @@
                                         <groupId>com.kotcrab.remark</groupId>
                                         <artifactId>remark</artifactId>
                                         <version>1.2.0</version>
-                            </artifactItem>
-                        </artifactItems>
+                                    </artifactItem>
+                                </artifactItems>
                             </configuration>
                         </execution>
                     </executions>

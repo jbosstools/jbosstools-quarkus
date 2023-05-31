@@ -220,8 +220,7 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 		return CompletableFutures.computeAsync(cancelChecker -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				PropertiesManagerForJava.getInstance();
-				JavaCursorContextResult cursorContextResult = PropertiesManagerForJava.javaCursorContext(javaParams,
+				JavaCursorContextResult cursorContextResult = PropertiesManagerForJava.getInstance().javaCursorContext(javaParams,
 						JDTUtilsImpl.getInstance(), monitor);
 				return new MicroProfileJavaCompletionResult(PropertiesManagerForJava.getInstance()
 						.completion(javaParams, JDTUtilsImpl.getInstance(), monitor), cursorContextResult);

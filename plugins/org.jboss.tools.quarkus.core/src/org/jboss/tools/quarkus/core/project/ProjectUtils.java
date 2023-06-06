@@ -44,7 +44,7 @@ import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.core.project.LocalProjectScanner;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
-import org.jboss.tools.common.jdt.core.buildpath.ClasspathContainersHelper;
+import org.jboss.tools.quarkus.core.project.ClasspathContainersHelper;
 import org.jboss.tools.quarkus.core.QuarkusCoreConstants;
 import org.jboss.tools.quarkus.tool.DefaultToolContext;
 import org.jboss.tools.quarkus.tool.GradleToolSupport;

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
-import org.jboss.tools.common.ui.notification.LabelNotification;
+import org.jboss.tools.foundation.ui.notification.LabelNotification;
 import org.jboss.tools.quarkus.core.project.ProjectUtils;
 
 import io.quarkus.dependencies.Extension;

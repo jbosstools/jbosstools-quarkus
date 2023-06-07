@@ -27,6 +27,7 @@ Require-Bundle: org.jboss.tools.quarkus.runtime,
  org.apache.httpcomponents.httpcore,
  org.eclipse.core.net,
  org.eclipse.m2e.launching;bundle-version="2.0.0",
+ org.jboss.tools.common.jdt;bundle-version="3.17.100",
  org.eclipse.buildship.core;bundle-version="3.1.5"
 Export-Package: org.jboss.tools.quarkus.core,
  org.jboss.tools.quarkus.core.code.model,

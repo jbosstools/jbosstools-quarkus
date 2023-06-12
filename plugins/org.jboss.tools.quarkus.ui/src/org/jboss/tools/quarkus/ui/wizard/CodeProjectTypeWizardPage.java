@@ -18,6 +18,7 @@ import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.USE_DEFAULT_LOC
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
@@ -52,13 +53,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.jboss.tools.common.ui.WizardUtils;
-import org.jboss.tools.common.ui.databinding.EclipseProjectValidator;
-import org.jboss.tools.common.ui.databinding.InvertingBooleanConverter;
-import org.jboss.tools.common.ui.databinding.MandatoryStringValidator;
-import org.jboss.tools.common.ui.databinding.RequiredControlDecorationUpdater;
-import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
-import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
+import org.jboss.tools.foundation.ui.databinding.EclipseProjectValidator;
+import org.jboss.tools.foundation.ui.databinding.InvertingBooleanConverter;
+import org.jboss.tools.foundation.ui.databinding.MandatoryStringValidator;
+import org.jboss.tools.foundation.ui.databinding.RequiredControlDecorationUpdater;
+import org.jboss.tools.foundation.ui.databinding.ValueBindingBuilder;
+import org.jboss.tools.foundation.ui.databinding.wizard.AbstractDataBindingWizardPage;
+import org.jboss.tools.foundation.ui.databinding.wizard.WizardUtils;
 import org.jboss.tools.quarkus.core.code.model.QuarkusModelRegistry;
 import org.jboss.tools.quarkus.core.code.model.QuarkusStream;
 import org.jboss.tools.quarkus.core.code.model.Tool;

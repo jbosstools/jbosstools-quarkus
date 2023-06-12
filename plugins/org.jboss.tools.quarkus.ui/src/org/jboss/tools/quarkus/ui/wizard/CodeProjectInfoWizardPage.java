@@ -14,8 +14,8 @@ import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.ARTIFACTID_PROP
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.CLASSNAME_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.GROUPID_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.PATH_PROPERTY;
-import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.VERSION_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.USE_CODE_STARTERS_PROPERTY;
+import static org.jboss.tools.quarkus.ui.wizard.CodeProjectModel.VERSION_PROPERTY;
 import static org.jboss.tools.quarkus.ui.wizard.CodeProjectTypeWizardPage.createTextWidget;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -28,9 +28,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.jboss.tools.common.ui.databinding.MandatoryStringValidator;
-import org.jboss.tools.common.ui.databinding.ValueBindingBuilder;
-import org.jboss.tools.common.ui.wizard.AbstractDataBindingWizardPage;
+import org.jboss.tools.foundation.ui.databinding.MandatoryStringValidator;
+import org.jboss.tools.foundation.ui.databinding.ValueBindingBuilder;
+import org.jboss.tools.foundation.ui.databinding.wizard.AbstractDataBindingWizardPage;
 
 public class CodeProjectInfoWizardPage extends AbstractDataBindingWizardPage {
 

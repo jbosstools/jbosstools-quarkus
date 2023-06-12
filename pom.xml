@@ -28,7 +28,7 @@
 	</parent>
 
     <artifactId>quarkus</artifactId>
-    <version>1.9.100-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 

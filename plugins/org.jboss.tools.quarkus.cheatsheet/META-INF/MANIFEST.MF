@@ -4,15 +4,14 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Cheatsheet Plugin
 Bundle-SymbolicName: org.jboss.tools.quarkus.cheatsheet;singleton:=true
-Bundle-Version: 1.9.100.qualifier
+Bundle-Version: 1.10.0.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.cheatsheet
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.jboss.tools.quarkus.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.ui,
- org.eclipse.ui.cheatsheets,
- org.jboss.tools.common.ui
+ org.eclipse.ui.cheatsheets
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.quarkus.cheatsheet.Activator
 Bundle-Vendor: Red Hat

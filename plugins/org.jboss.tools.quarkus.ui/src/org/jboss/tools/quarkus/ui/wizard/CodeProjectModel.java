@@ -19,7 +19,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.jboss.tools.common.databinding.ObservablePojo;
+import org.jboss.tools.foundation.core.databinding.ObservablePojo;
 import org.jboss.tools.quarkus.core.code.model.QuarkusCategory;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtension;
 import org.jboss.tools.quarkus.core.code.model.QuarkusExtensionsModel;

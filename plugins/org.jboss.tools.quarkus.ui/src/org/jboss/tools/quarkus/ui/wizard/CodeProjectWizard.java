@@ -19,7 +19,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.jboss.tools.common.ui.wizard.AbstractModelWizard;
+import org.jboss.tools.foundation.ui.databinding.wizard.AbstractModelWizard;
 import org.jboss.tools.quarkus.core.code.model.Tool;
 import org.jboss.tools.quarkus.ui.QuarkusUIPlugin;
 

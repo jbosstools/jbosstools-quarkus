@@ -8,7 +8,6 @@ Fragment-Host: org.jboss.tools.quarkus.lsp4e
 Bundle-Version: 1.10.0.qualifier
 Automatic-Module-Name: org.jboss.tools.quarkus.lsp4e.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.lsp4mp.jdt.core,
- org.junit,
+Require-Bundle: org.junit,
  org.eclipse.lsp4mp.jdt.test
 Bundle-Vendor: Red Hat

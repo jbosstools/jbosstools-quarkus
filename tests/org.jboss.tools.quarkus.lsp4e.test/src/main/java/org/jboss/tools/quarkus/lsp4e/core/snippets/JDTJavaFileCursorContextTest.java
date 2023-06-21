@@ -11,18 +11,14 @@
 * Contributors:
 *     Red Hat Inc. - initial API and implementation
 *******************************************************************************/
-package org.jboss.tools.quarkus.lsp4e.core.config.java;
+package org.jboss.tools.quarkus.lsp4e.core.snippets;
 
-import org.eclipse.lsp4mp.jdt.core.config.java.MicroProfileConfigJavaDiagnosticsTest;
+import org.eclipse.lsp4mp.jdt.core.snippets.JavaFileCursorContextTest;
+//import org.jboss.tools.quarkus.lsp4e.core.core.snippets.JavaFileCursorContextTest;
 import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
-/**
- * @author Red Hat Developers
- *
- */
-public class JDTConfigJavaDiagnosticsTest extends MicroProfileConfigJavaDiagnosticsTest {
+public class JDTJavaFileCursorContextTest extends JavaFileCursorContextTest {
 	@BeforeClass
 	public static void init() {
 		setJDTUtils(JDTUtilsImpl.getInstance());

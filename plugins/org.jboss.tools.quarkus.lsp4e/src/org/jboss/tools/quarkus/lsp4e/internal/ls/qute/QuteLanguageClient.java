@@ -32,6 +32,7 @@ import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.CancelChecker;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin;
@@ -40,6 +41,7 @@ import org.jboss.tools.quarkus.lsp4e.internal.qute.QuteUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+import com.redhat.qute.commons.GenerateMissingJavaMemberParams;
 import com.redhat.qute.commons.JavaTypeInfo;
 import com.redhat.qute.commons.ProjectInfo;
 import com.redhat.qute.commons.QuteJavaCodeLensParams;
@@ -47,6 +49,7 @@ import com.redhat.qute.commons.QuteJavaDefinitionParams;
 import com.redhat.qute.commons.QuteJavaDiagnosticsParams;
 import com.redhat.qute.commons.QuteJavaDocumentLinkParams;
 import com.redhat.qute.commons.QuteJavaTypesParams;
+import com.redhat.qute.commons.QuteJavadocParams;
 import com.redhat.qute.commons.QuteProjectParams;
 import com.redhat.qute.commons.QuteResolvedJavaTypeParams;
 import com.redhat.qute.commons.ResolvedJavaTypeInfo;
@@ -232,6 +235,22 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return Collections.emptyList();
 			}
+		});
+	}
+	
+	@Override
+	public CompletableFuture<String> getJavadoc(QuteJavadocParams params) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().getJavadoc(params, JDTUtilsImpl.getInstance(), monitor);
+		});
+	}
+	
+	@Override
+	public CompletableFuture<WorkspaceEdit> generateMissingJavaMember(GenerateMissingJavaMemberParams params) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().generateMissingJavaMember(params, JDTUtilsImpl.getInstance(), monitor);
 		});
 	}
 

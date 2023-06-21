@@ -102,10 +102,11 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 
 	private IProgressMonitor getProgressMonitor(CancelChecker cancelChecker) {
 		IProgressMonitor monitor = new NullProgressMonitor() {
+			@Override
 			public boolean isCanceled() {
 				cancelChecker.checkCanceled();
 				return false;
-			};
+			}
 		};
 		return monitor;
 	}
@@ -221,8 +222,8 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 		return CompletableFutures.computeAsync(cancelChecker -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			try {
-				JavaCursorContextResult cursorContextResult = PropertiesManagerForJava.getInstance().javaCursorContext(javaParams,
-						JDTUtilsImpl.getInstance(), monitor);
+				JavaCursorContextResult cursorContextResult = PropertiesManagerForJava.getInstance()
+						.javaCursorContext(javaParams, JDTUtilsImpl.getInstance(), monitor);
 				return new MicroProfileJavaCompletionResult(PropertiesManagerForJava.getInstance()
 						.completion(javaParams, JDTUtilsImpl.getInstance(), monitor), cursorContextResult);
 			} catch (JavaModelException e) {
@@ -249,24 +250,52 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			}
 		});
 	}
-	
+
 	@Override
 	public CompletableFuture<List<ProjectLabelInfoEntry>> getAllJavaProjectLabels() {
-		return CompletableFuture.completedFuture(null);
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			// no progress cancellation support for this call ?
+			return ProjectLabelManager.getInstance().getProjectLabelInfo();
+		});
 	}
-	
+
 	@Override
-	public CompletableFuture<JavaCursorContextResult> getJavaCursorContext(MicroProfileJavaCompletionParams context) {
-		return CompletableFuture.completedFuture(null);
+	public CompletableFuture<JavaCursorContextResult> getJavaCursorContext(
+			MicroProfileJavaCompletionParams javaParams) {
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManagerForJava.getInstance().javaCursorContext(javaParams, JDTUtilsImpl.getInstance(),
+						monitor);
+			} catch (JavaModelException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}
+		});
 	}
-	
+
 	@Override
 	public CompletableFuture<List<SymbolInformation>> getJavaWorkspaceSymbols(String projectUri) {
-		return CompletableFuture.completedFuture(null);
+		return CompletableFutures.computeAsync(cancelChecker -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return PropertiesManagerForJava.getInstance().workspaceSymbols(projectUri, JDTUtilsImpl.getInstance(),
+					monitor);
+		});
 	}
-	
+
 	@Override
 	public CompletableFuture<String> getPropertyDocumentation(MicroProfilePropertyDocumentationParams params) {
-		return CompletableFuture.completedFuture(null);
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			try {
+				return PropertiesManager.getInstance().collectPropertyDocumentation(params, JDTUtilsImpl.getInstance(),
+						monitor);
+			} catch (CoreException e) {
+				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				return null;
+			}
+
+		});
 	}
 }

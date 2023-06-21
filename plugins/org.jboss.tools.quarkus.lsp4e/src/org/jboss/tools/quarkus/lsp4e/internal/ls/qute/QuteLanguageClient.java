@@ -239,13 +239,19 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 	}
 	
 	@Override
-	public CompletableFuture<String> getJavadoc(QuteJavadocParams arg0) {
-		return CompletableFuture.completedFuture(null);
+	public CompletableFuture<String> getJavadoc(QuteJavadocParams params) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().getJavadoc(params, JDTUtilsImpl.getInstance(), monitor);
+		});
 	}
 	
 	@Override
-	public CompletableFuture<WorkspaceEdit> generateMissingJavaMember(GenerateMissingJavaMemberParams arg0) {
-		return CompletableFuture.completedFuture(null);
+	public CompletableFuture<WorkspaceEdit> generateMissingJavaMember(GenerateMissingJavaMemberParams params) {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().generateMissingJavaMember(params, JDTUtilsImpl.getInstance(), monitor);
+		});
 	}
 
 	private static IProgressMonitor getProgressMonitor(CancelChecker cancelChecker) {

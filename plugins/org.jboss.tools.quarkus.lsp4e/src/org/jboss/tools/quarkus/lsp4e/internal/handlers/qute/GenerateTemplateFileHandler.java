@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -35,11 +34,7 @@ import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.services.LanguageServer;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin;
-
-import com.redhat.qute.services.commands.QuteGenerateTemplateContentCommandHandler;
 
 /**
  * @author Red Hat Developers
@@ -48,6 +43,9 @@ import com.redhat.qute.services.commands.QuteGenerateTemplateContentCommandHandl
 public class GenerateTemplateFileHandler extends LSPCommandHandler {
 
 	private static final String TEMPLATE_FILE_URI = "templateFileUri"; //$NON-NLS-1$
+	
+	//TODO refactor to use QuteServerCommandConstants class in future versions
+	private static final String QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT = "qute.command.generate.template.content"; //$NON-NLS-1$
 
 	@Override
 	public Object execute(ExecutionEvent event, @NonNull Command command, IPath sourcePath) {
@@ -55,11 +53,11 @@ public class GenerateTemplateFileHandler extends LSPCommandHandler {
 		try {
 			uri = getURI(command.getArguments());
 			ExecuteCommandParams params = new ExecuteCommandParams();
-			params.setCommand(QuteGenerateTemplateContentCommandHandler.COMMAND_ID);
+			params.setCommand(QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT);
 			params.setArguments(command.getArguments());
 			LanguageServer server = getServer();
 			if (server != null) {
-				// use LangageServer to generate file content for qute template, with given commend arguments
+				// use LangageServer to generate file content for qute template, with given command arguments
 				server.getWorkspaceService().executeCommand(params).thenApply(content -> {
 					try {
 						Path path = Path.of(uri);
@@ -98,7 +96,7 @@ public class GenerateTemplateFileHandler extends LSPCommandHandler {
 	private LanguageServer getServer() {
 		List<LanguageServer> servers = LanguageServiceAccessor.getActiveLanguageServers(cap -> {
 			ExecuteCommandOptions provider = cap.getExecuteCommandProvider();
-			return provider != null && provider.getCommands().contains(QuteGenerateTemplateContentCommandHandler.COMMAND_ID);
+			return provider != null && provider.getCommands().contains(QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT);
 		});
 		return servers.isEmpty() ? null : servers.get(0);
 	}

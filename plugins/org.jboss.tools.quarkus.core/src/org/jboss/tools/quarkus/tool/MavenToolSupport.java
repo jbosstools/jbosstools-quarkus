@@ -42,9 +42,8 @@ public class MavenToolSupport extends AbstractToolSupport {
 	public String getScript() {
 		if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
 			return "mvnw.cmd";
-		} else {
-			return "mvnw";
 		}
+		return "mvnw";
 	}
 	
 	private ILaunchConfigurationWorkingCopy getConfiguration(ToolContext context) throws CoreException {

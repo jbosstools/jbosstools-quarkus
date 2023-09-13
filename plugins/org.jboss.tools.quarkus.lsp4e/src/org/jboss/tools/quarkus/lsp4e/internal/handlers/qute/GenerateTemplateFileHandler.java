@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.lsp4e.LanguageServerWrapper;
+import org.eclipse.lsp4e.LanguageServers;
 import org.eclipse.lsp4e.LanguageServiceAccessor;
 import org.eclipse.lsp4e.command.LSPCommandHandler;
 import org.eclipse.lsp4j.Command;
@@ -46,7 +48,7 @@ public class GenerateTemplateFileHandler extends LSPCommandHandler {
 	
 	//TODO refactor to use QuteServerCommandConstants class in future versions
 	private static final String QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT = "qute.command.generate.template.content"; //$NON-NLS-1$
-
+	
 	@Override
 	public Object execute(ExecutionEvent event, @NonNull Command command, IPath sourcePath) {
 		URI uri;
@@ -55,10 +57,10 @@ public class GenerateTemplateFileHandler extends LSPCommandHandler {
 			ExecuteCommandParams params = new ExecuteCommandParams();
 			params.setCommand(QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT);
 			params.setArguments(command.getArguments());
-			LanguageServer server = getServer();
+			LanguageServerWrapper server = getServer();
 			if (server != null) {
 				// use LangageServer to generate file content for qute template, with given command arguments
-				server.getWorkspaceService().executeCommand(params).thenApply(content -> {
+				server.execute(ls -> ls.getWorkspaceService().executeCommand(params)).thenApply(content -> {
 					try {
 						Path path = Path.of(uri);
 						if (!Files.exists(path)) {
@@ -93,11 +95,11 @@ public class GenerateTemplateFileHandler extends LSPCommandHandler {
 		return null;
 	}
 
-	private LanguageServer getServer() {
-		List<LanguageServer> servers = LanguageServiceAccessor.getActiveLanguageServers(cap -> {
+	private LanguageServerWrapper getServer() {
+		List<LanguageServerWrapper> servers = LanguageServiceAccessor.getStartedWrappers( ResourcesPlugin.getWorkspace().getRoot().getProject(), cap -> {
 			ExecuteCommandOptions provider = cap.getExecuteCommandProvider();
 			return provider != null && provider.getCommands().contains(QUTE_COMMAND_GENERATE_TEMPLATE_CONTENT);
-		});
+		}, true);
 		return servers.isEmpty() ? null : servers.get(0);
 	}
 

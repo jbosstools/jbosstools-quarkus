@@ -20,7 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -33,9 +35,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.lsp4e.LSPEclipseUtils;
+import org.eclipse.lsp4e.LanguageServerWrapper;
 import org.eclipse.lsp4e.LanguageServiceAccessor;
 import org.eclipse.lsp4e.LanguageServersRegistry.LanguageServerDefinition;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
@@ -103,12 +107,11 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
   }
 
   
-  private void sendInitialize() {
-    List<LanguageServer> servers = LanguageServiceAccessor.getLanguageServers(null, null, true);
-    for (LanguageServer server : servers) {
-      Optional<LanguageServerDefinition> definition = LanguageServiceAccessor.resolveServerDefinition(server);
-      if (definition.isPresent()) {
-        if ("org.eclipse.wildwebdeveloper.yaml".equals(definition.get().id)) {
+  private void sendInitialize() throws IOException {
+    List<LanguageServerWrapper> servers = LanguageServiceAccessor.getLSWrappers(null, null);
+    for (LanguageServerWrapper server : servers) {
+      if (server.serverDefinition != null) {
+        if ("org.eclipse.wildwebdeveloper.yaml".equals(server.serverDefinition.id)) {
               Map<String, Object> prefs = new HashMap<>();
               prefs.put("schemas", schemas2YAMLLSMap());
               prefs.put("completion", true);
@@ -116,7 +119,15 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
               prefs.put("validate", true);
               DidChangeConfigurationParams params = new DidChangeConfigurationParams(
                   Collections.singletonMap("yaml", prefs));
-              server.getWorkspaceService().didChangeConfiguration(params);
+              Function<LanguageServer, CompletableFuture<Void>> fn = new Function<>() {
+				
+				@Override
+				public CompletableFuture<Void> apply(LanguageServer ls) {
+					ls.getWorkspaceService().didChangeConfiguration(params);
+					return CompletableFuture.completedFuture(null);
+				}
+			};
+              server.execute(fn);
             }
           } 
         }
@@ -151,9 +162,8 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
     	Map<String, Object> result = new Gson().fromJson(schemaStr, new TypeToken<HashMap<String, Object>>() {
       }.getType());
     	return result == null ? Collections.emptyMap():result;
-    } else {
-      return Collections.emptyMap();
     }
+	return Collections.emptyMap();
   }
 
   /**
@@ -195,7 +205,12 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
       updateYAMLLanguageServerConfigIfRequired(project, false);
     }
     if (!projects.isEmpty()) {
-      sendInitialize();
+      try {
+		sendInitialize();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     }
   }
 

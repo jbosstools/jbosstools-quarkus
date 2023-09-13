@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jboss.tools.quarkus</groupId>
         <artifactId>plugins</artifactId>
-        <version>1.10.0-SNAPSHOT</version>
+        <version>1.10.100-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jboss.tools.quarkus.plugins</groupId>

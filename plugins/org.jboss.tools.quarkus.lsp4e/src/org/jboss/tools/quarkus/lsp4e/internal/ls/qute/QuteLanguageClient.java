@@ -72,7 +72,6 @@ import com.redhat.qute.ls.api.QuteLanguageServerAPI;
  */
 public class QuteLanguageClient extends LanguageClientImpl implements QuteLanguageClientAPI, IPreferenceChangeListener, INodeChangeListener {
 
-	private static IJavaDataModelChangedListener SINGLETON_LISTENER;
 	
 	private static QuteLanguageClient SINGLETON_CLIENT;
 	
@@ -86,16 +85,9 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 	 * 
 	 */
 	public QuteLanguageClient() {
-		// FIXME : how to remove the listener????
-		// The listener should be removed when language server is shutdown, how to
-		// manage that????
-		if (SINGLETON_LISTENER != null) {
-			QutePlugin.getDefault().removeJavaDataModelChangedListener(SINGLETON_LISTENER);
-		}
 		if (SINGLETON_CLIENT != null) {
 			SINGLETON_CLIENT.dispose();
 		}
-		SINGLETON_LISTENER = listener;
 		SINGLETON_CLIENT = this;
 		QutePlugin.getDefault().addJavaDataModelChangedListener(listener);
 		listenForPreferences();
@@ -104,10 +96,12 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 	/**
 	 * 
 	 */
-	private void dispose() {
+	@Override
+	public void dispose() {
 		InstanceScope.INSTANCE.getNode(QuarkusLSPPlugin.PREFERENCES_QUALIFIER).removePreferenceChangeListener(this);
 		((IEclipsePreferences) Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE)).removeNodeChangeListener(this);
 		preferencesNodes.forEach(node -> node.removePreferenceChangeListener(this));
+		super.dispose();
 	}
 
 	/**
@@ -256,10 +250,11 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 
 	private static IProgressMonitor getProgressMonitor(CancelChecker cancelChecker) {
 		IProgressMonitor monitor = new NullProgressMonitor() {
+			@Override
 			public boolean isCanceled() {
 				cancelChecker.checkCanceled();
 				return false;
-			};
+			}
 		};
 		return monitor;
 	}
@@ -275,7 +270,7 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 	public void removed(NodeChangeEvent event) {
 		Preferences child = event.getChild().node(QuarkusLSPPlugin.PREFERENCES_QUALIFIER);
 		((IEclipsePreferences) child).removePreferenceChangeListener(this);
-		preferencesNodes.remove((IEclipsePreferences) child);
+		preferencesNodes.remove(child);
 	}
 
 	@Override

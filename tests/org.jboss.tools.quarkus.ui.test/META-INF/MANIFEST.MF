@@ -4,9 +4,9 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.jboss.tools.quarkus.ui.test
-Bundle-Version: 1.10.0.qualifier
+Bundle-Version: 1.10.100.qualifier
 Fragment-Host: org.jboss.tools.quarkus.ui
 Automatic-Module-Name: org.jboss.tools.quarkus.ui.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.junit.jupiter.api,
- org.eclipse.core.resources
+Require-Bundle: org.eclipse.core.resources,
+ junit-jupiter-api;bundle-version="5.10.0"

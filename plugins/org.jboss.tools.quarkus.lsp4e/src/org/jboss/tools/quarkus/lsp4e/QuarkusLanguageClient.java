@@ -289,4 +289,10 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 
 		});
 	}
+
+	@Override
+	public void dispose() {
+		MicroProfileCorePlugin.getDefault().removeMicroProfilePropertiesChangedListener(listener);
+		super.dispose();
+	}
 }

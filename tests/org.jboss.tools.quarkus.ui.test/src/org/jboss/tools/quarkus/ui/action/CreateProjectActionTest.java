@@ -24,7 +24,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.jboss.tools.quarkus.ui.action.CreateProjectAction;
 import org.junit.jupiter.api.Test;
 
 public class CreateProjectActionTest {

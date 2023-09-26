@@ -73,8 +73,6 @@ import com.redhat.qute.ls.api.QuteLanguageServerAPI;
 public class QuteLanguageClient extends LanguageClientImpl
 		implements QuteLanguageClientAPI, IPreferenceChangeListener, INodeChangeListener {
 
-	private static QuteLanguageClient SINGLETON_CLIENT;
-
 	private IJavaDataModelChangedListener listener = event -> {
 		((QuteLanguageServerAPI) getLanguageServer()).dataModelChanged(event);
 	};
@@ -82,10 +80,6 @@ public class QuteLanguageClient extends LanguageClientImpl
 	private List<IEclipsePreferences> preferencesNodes = new ArrayList<>();
 
 	public QuteLanguageClient() {
-		if (SINGLETON_CLIENT != null) {
-			SINGLETON_CLIENT.dispose();
-		}
-		SINGLETON_CLIENT = this;
 		QutePlugin.getDefault().addJavaDataModelChangedListener(listener);
 		listenForPreferences();
 	}

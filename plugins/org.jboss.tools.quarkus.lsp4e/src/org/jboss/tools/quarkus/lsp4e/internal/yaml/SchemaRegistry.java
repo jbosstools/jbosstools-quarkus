@@ -38,6 +38,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.lsp4e.LanguageServerWrapper;
+import org.eclipse.lsp4e.LanguageServersRegistry;
+import org.eclipse.lsp4e.LanguageServersRegistry.LanguageServerDefinition;
 import org.eclipse.lsp4e.LanguageServiceAccessor;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.services.LanguageServer;
@@ -92,7 +94,7 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
 				}
 			}
 			if (sendToServer) {
-				sendInitialize();
+				sendInitialize(project);
 			}
 		} catch (CoreException | IOException e) {
 			QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
@@ -103,30 +105,26 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
 		updateYAMLLanguageServerConfigIfRequired(project, true);
 	}
 
-	private void sendInitialize() throws IOException {
-		List<LanguageServerWrapper> servers = LanguageServiceAccessor.getLSWrappers(null, null);
-		for (LanguageServerWrapper server : servers) {
-			if (server.serverDefinition != null) {
-				if ("org.eclipse.wildwebdeveloper.yaml".equals(server.serverDefinition.id)) {
-					Map<String, Object> prefs = new HashMap<>();
-					prefs.put("schemas", schemas2YAMLLSMap());
-					prefs.put("completion", true);
-					prefs.put("hover", true);
-					prefs.put("validate", true);
-					DidChangeConfigurationParams params = new DidChangeConfigurationParams(
-							Collections.singletonMap("yaml", prefs));
-					Function<LanguageServer, CompletableFuture<Void>> fn = new Function<>() {
+	private void sendInitialize(IProject project) throws IOException {
+		LanguageServerDefinition def = LanguageServersRegistry.getInstance()
+				.getDefinition("org.eclipse.wildwebdeveloper.yaml");
+		LanguageServerWrapper server = LanguageServiceAccessor.getLSWrapper(project, def);
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("schemas", schemas2YAMLLSMap());
+		prefs.put("completion", true);
+		prefs.put("hover", true);
+		prefs.put("validate", true);
+		DidChangeConfigurationParams params = new DidChangeConfigurationParams(Collections.singletonMap("yaml", prefs));
+		Function<LanguageServer, CompletableFuture<Void>> fn = new Function<>() {
 
-						@Override
-						public CompletableFuture<Void> apply(LanguageServer ls) {
-							ls.getWorkspaceService().didChangeConfiguration(params);
-							return CompletableFuture.completedFuture(null);
-						}
-					};
-					server.execute(fn);
-				}
+			@Override
+			public CompletableFuture<Void> apply(LanguageServer ls) {
+				ls.getWorkspaceService().didChangeConfiguration(params);
+				return CompletableFuture.completedFuture(null);
 			}
-		}
+		};
+		server.execute(fn);
+
 	}
 
 	private Map<String, Object> schemas2YAMLLSMap() {
@@ -199,14 +197,14 @@ public class SchemaRegistry implements IMicroProfilePropertiesChangedListener, I
 				}
 			}
 		}
-		for (IProject project : projects) {
-			updateYAMLLanguageServerConfigIfRequired(project, false);
-		}
 		if (!projects.isEmpty()) {
-			try {
-				sendInitialize();
-			} catch (IOException e) {
-				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+			for (IProject project : projects) {
+				updateYAMLLanguageServerConfigIfRequired(project, false);
+				try {
+					sendInitialize(project);
+				} catch (IOException e) {
+					QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
+				}
 			}
 		}
 	}

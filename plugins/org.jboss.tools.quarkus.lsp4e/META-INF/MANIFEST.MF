@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.jdt.core.manipulation,
  org.eclipse.jdt.ui,
  org.eclipse.lsp4mp.jdt.core,
- org.jsoup;bundle-version="1.8.3";visibility:=reexport,
  org.eclipse.ui,
  org.jboss.tools.foundation.ui,
  org.apache.commons.lang3,
@@ -35,6 +34,7 @@ Bundle-ClassPath: .,
  server/org.eclipse.lsp4mp.ls-uber.jar,
  server/com.redhat.quarkus.ls.jar,
  lib/remark.jar,
+ lib/jsoup.jar,
  server/com.redhat.qute.ls-uber.jar
 Bundle-Activator: org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin
 Export-Package: org.jboss.tools.quarkus.lsp4e

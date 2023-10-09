@@ -11,6 +11,7 @@
 package org.jboss.tools.quarkus.lsp4e.internal.ls.qute;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -268,5 +269,13 @@ public class QuteLanguageClient extends LanguageClientImpl
 	public void preferenceChange(PreferenceChangeEvent event) {
 		getLanguageServer().getWorkspaceService()
 				.didChangeConfiguration(new DidChangeConfigurationParams(QuteUtils.getQuteSettings()));
+	}
+	
+	@Override
+	public CompletableFuture<Collection<ProjectInfo>> getProjects() {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().getProjects(JDTUtilsImpl.getInstance(), monitor);
+		});
 	}
 }

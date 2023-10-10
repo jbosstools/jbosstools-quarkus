@@ -65,20 +65,11 @@ import org.jboss.tools.quarkus.lsp4e.internal.ls.JDTUtilsImpl;
  */
 public class QuarkusLanguageClient extends LanguageClientImpl implements MicroProfileLanguageClientAPI {
 
-	private static IMicroProfilePropertiesChangedListener SINGLETON_LISTENER;
-
 	private IMicroProfilePropertiesChangedListener listener = event -> {
 		((MicroProfileLanguageServerAPI) getLanguageServer()).propertiesChanged(event);
 	};
 
 	public QuarkusLanguageClient() {
-		// FIXME : how to remove the listener????
-		// The listener should be removed when language server is shutdown, how to
-		// manage that????
-		if (SINGLETON_LISTENER != null) {
-			MicroProfileCorePlugin.getDefault().removeMicroProfilePropertiesChangedListener(SINGLETON_LISTENER);
-		}
-		SINGLETON_LISTENER = listener;
 		MicroProfileCorePlugin.getDefault().addMicroProfilePropertiesChangedListener(listener);
 	}
 
@@ -297,5 +288,11 @@ public class QuarkusLanguageClient extends LanguageClientImpl implements MicroPr
 			}
 
 		});
+	}
+
+	@Override
+	public void dispose() {
+		MicroProfileCorePlugin.getDefault().removeMicroProfilePropertiesChangedListener(listener);
+		super.dispose();
 	}
 }

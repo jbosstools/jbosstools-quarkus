@@ -11,6 +11,7 @@
 package org.jboss.tools.quarkus.lsp4e.internal.ls.qute;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -70,61 +71,45 @@ import com.redhat.qute.ls.api.QuteLanguageServerAPI;
  * @author Red Hat Developers
  *
  */
-public class QuteLanguageClient extends LanguageClientImpl implements QuteLanguageClientAPI, IPreferenceChangeListener, INodeChangeListener {
+public class QuteLanguageClient extends LanguageClientImpl
+		implements QuteLanguageClientAPI, IPreferenceChangeListener, INodeChangeListener {
 
-	private static IJavaDataModelChangedListener SINGLETON_LISTENER;
-	
-	private static QuteLanguageClient SINGLETON_CLIENT;
-	
 	private IJavaDataModelChangedListener listener = event -> {
 		((QuteLanguageServerAPI) getLanguageServer()).dataModelChanged(event);
 	};
 
 	private List<IEclipsePreferences> preferencesNodes = new ArrayList<>();
-	
-	/**
-	 * 
-	 */
+
 	public QuteLanguageClient() {
-		// FIXME : how to remove the listener????
-		// The listener should be removed when language server is shutdown, how to
-		// manage that????
-		if (SINGLETON_LISTENER != null) {
-			QutePlugin.getDefault().removeJavaDataModelChangedListener(SINGLETON_LISTENER);
-		}
-		if (SINGLETON_CLIENT != null) {
-			SINGLETON_CLIENT.dispose();
-		}
-		SINGLETON_LISTENER = listener;
-		SINGLETON_CLIENT = this;
 		QutePlugin.getDefault().addJavaDataModelChangedListener(listener);
 		listenForPreferences();
 	}
 
-	/**
-	 * 
-	 */
-	private void dispose() {
+	@Override
+	public void dispose() {
 		InstanceScope.INSTANCE.getNode(QuarkusLSPPlugin.PREFERENCES_QUALIFIER).removePreferenceChangeListener(this);
-		((IEclipsePreferences) Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE)).removeNodeChangeListener(this);
+		((IEclipsePreferences) Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE))
+				.removeNodeChangeListener(this);
 		preferencesNodes.forEach(node -> node.removePreferenceChangeListener(this));
+		QutePlugin.getDefault().removeJavaDataModelChangedListener(listener);
+		super.dispose();
 	}
 
 	/**
-	 * In order to send configuration change notification, we should detect changes on Qute configuration. To do so,
-	 * we listen on:
-	 * - general Qute configuration
-	 * - new nodes on project node (new projects being added)
-	 * - for each project listen on the Qute prefences
+	 * In order to send configuration change notification, we should detect changes
+	 * on Qute configuration. To do so, we listen on: - general Qute configuration -
+	 * new nodes on project node (new projects being added) - for each project
+	 * listen on the Qute prefences
 	 * 
-	 *  #see {@link #dispose()}
+	 * #see {@link #dispose()}
 	 */
 	private void listenForPreferences() {
 		InstanceScope.INSTANCE.getNode(QuarkusLSPPlugin.PREFERENCES_QUALIFIER).addPreferenceChangeListener(this);
-		((IEclipsePreferences) Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE)).addNodeChangeListener(this);
+		((IEclipsePreferences) Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE))
+				.addNodeChangeListener(this);
 		try {
 			Platform.getPreferencesService().getRootNode().accept(node -> {
-				if (node.parent() != null && node.parent().absolutePath().equals("/"+ ProjectScope.SCOPE)) {
+				if (node.parent() != null && node.parent().absolutePath().equals("/" + ProjectScope.SCOPE)) {
 					Preferences child = node.node(QuarkusLSPPlugin.PREFERENCES_QUALIFIER);
 					((IEclipsePreferences) child).addPreferenceChangeListener(this);
 					preferencesNodes.add((IEclipsePreferences) child);
@@ -142,9 +127,9 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
 			return QuteSupportForTemplate.getInstance().getProjectInfo(params, JDTUtilsImpl.getInstance(), monitor);
-		});		
+		});
 	}
-	
+
 	@Override
 	public CompletableFuture<DataModelProject<DataModelTemplate<DataModelParameter>>> getDataModelProject(
 			QuteDataModelProjectParams params) {
@@ -184,7 +169,7 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 				QuarkusLSPPlugin.logException(e.getLocalizedMessage(), e);
 				return null;
 			}
-		});		
+		});
 	}
 
 	@Override
@@ -200,7 +185,7 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 			}
 		});
 	}
-	
+
 	@Override
 	public CompletableFuture<List<? extends CodeLens>> getJavaCodelens(QuteJavaCodeLensParams javaParams) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
@@ -237,7 +222,7 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 			}
 		});
 	}
-	
+
 	@Override
 	public CompletableFuture<String> getJavadoc(QuteJavadocParams params) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
@@ -245,21 +230,23 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 			return QuteSupportForTemplate.getInstance().getJavadoc(params, JDTUtilsImpl.getInstance(), monitor);
 		});
 	}
-	
+
 	@Override
 	public CompletableFuture<WorkspaceEdit> generateMissingJavaMember(GenerateMissingJavaMemberParams params) {
 		return CompletableFutures.computeAsync((cancelChecker) -> {
 			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
-			return QuteSupportForTemplate.getInstance().generateMissingJavaMember(params, JDTUtilsImpl.getInstance(), monitor);
+			return QuteSupportForTemplate.getInstance().generateMissingJavaMember(params, JDTUtilsImpl.getInstance(),
+					monitor);
 		});
 	}
 
 	private static IProgressMonitor getProgressMonitor(CancelChecker cancelChecker) {
 		IProgressMonitor monitor = new NullProgressMonitor() {
+			@Override
 			public boolean isCanceled() {
 				cancelChecker.checkCanceled();
 				return false;
-			};
+			}
 		};
 		return monitor;
 	}
@@ -275,11 +262,20 @@ public class QuteLanguageClient extends LanguageClientImpl implements QuteLangua
 	public void removed(NodeChangeEvent event) {
 		Preferences child = event.getChild().node(QuarkusLSPPlugin.PREFERENCES_QUALIFIER);
 		((IEclipsePreferences) child).removePreferenceChangeListener(this);
-		preferencesNodes.remove((IEclipsePreferences) child);
+		preferencesNodes.remove(child);
 	}
 
 	@Override
 	public void preferenceChange(PreferenceChangeEvent event) {
-		getLanguageServer().getWorkspaceService().didChangeConfiguration(new DidChangeConfigurationParams(QuteUtils.getQuteSettings()));
+		getLanguageServer().getWorkspaceService()
+				.didChangeConfiguration(new DidChangeConfigurationParams(QuteUtils.getQuteSettings()));
+	}
+	
+	@Override
+	public CompletableFuture<Collection<ProjectInfo>> getProjects() {
+		return CompletableFutures.computeAsync((cancelChecker) -> {
+			IProgressMonitor monitor = getProgressMonitor(cancelChecker);
+			return QuteSupportForTemplate.getInstance().getProjects(JDTUtilsImpl.getInstance(), monitor);
+		});
 	}
 }

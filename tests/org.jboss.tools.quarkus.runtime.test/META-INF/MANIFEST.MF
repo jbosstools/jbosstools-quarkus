@@ -4,9 +4,10 @@ Bundle-Copyright: Copyright (c) 2019 Red Hat, Inc.
 Bundle-ManifestVersion: 2
 Bundle-Name: Quarkus Eclipse Runtime Test Fragment
 Bundle-SymbolicName: org.jboss.tools.quarkus.runtime.test
-Bundle-Version: 1.10.0.qualifier
+Bundle-Version: 1.10.100.qualifier
 Fragment-Host: org.jboss.tools.quarkus.runtime
+Import-Package: org.junit;version="4.13.2",
+ org.junit.jupiter.api;version="5.10.0"
 Automatic-Module-Name: org.jboss.tools.quarkus.runtime.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.jdt.junit5.runtime,
- org.junit.jupiter.api
+Require-Bundle: org.eclipse.jdt.junit5.runtime

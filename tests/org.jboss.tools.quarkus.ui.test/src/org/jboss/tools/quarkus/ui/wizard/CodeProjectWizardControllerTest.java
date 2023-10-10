@@ -12,6 +12,8 @@ package org.jboss.tools.quarkus.ui.wizard;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Random;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -24,7 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class CodeProjectWizardControllerTest {
-	private int counter = 0;
+	private int counter = new Random().nextInt();
 	
 	private static QuarkusModel catalog;
 

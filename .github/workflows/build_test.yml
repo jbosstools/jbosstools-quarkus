@@ -37,6 +37,7 @@ jobs:
         architecture: x64
         distribution: 'temurin'
         cache: maven
+
     # Install Maven 3.9
     - name: Set up Maven
       uses: stCarolas/setup-maven@07fbbe97d97ef44336b7382563d66743297e442f #v4.5
@@ -57,6 +58,7 @@ jobs:
       uses: GabrielBB/xvfb-action@86d97bde4a65fe9b290c0b3fb92c2c4ed0e5302d #v1
       with:
         run: >
+          export MAVEN_OPTS="-Xms1G -Xmx2G"
           mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true
           -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
 

@@ -55,12 +55,7 @@ jobs:
 
     # Build and compile using Maven
     - name: Build/Compile and run unit tests
-      uses: GabrielBB/xvfb-action@86d97bde4a65fe9b290c0b3fb92c2c4ed0e5302d #v1
-      with:
-        run: >
-          export MAVEN_OPTS="-Xms1G -Xmx2G"
-          mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true
-          -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
+      run: xvfb-run -a export MAVEN_OPTS="-Xms1G -Xmx2G"; mvn clean verify -U -fae -B --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
 
     # Archive artifacts to be applied in Publish Reports workflow
     - name: Archiving test artifacts

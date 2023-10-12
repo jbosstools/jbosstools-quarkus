@@ -23,7 +23,7 @@
  */
 package org.jboss.tools.quarkus.lsp4e.internal.ls;
 
-import org.jsoup.internal.StringUtil;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -46,7 +46,9 @@ public class HtmlToPlainText {
 	 */
 	public String getPlainText(Element element) {
 		FormattingVisitor formatter = new FormattingVisitor();
-		NodeTraversor.traverse(formatter, element); // walk the DOM, and call .head() and .tail() for each node
+		NodeTraversor traversor = new NodeTraversor(formatter);
+		traversor.traverse(element); // walk the DOM, and call .head() and .tail() for each node
+
 		return formatter.toString();
 	}
 

@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 
 import org.jboss.tools.quarkus.lsp4e.QuarkusLSPPlugin;
 import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Safelist;
+import org.jsoup.safety.Whitelist;
 
 import com.overzealous.remark.Options;
 import com.overzealous.remark.Options.Tables;
@@ -50,7 +50,7 @@ public class JavaDoc2MarkdownConverter extends AbstractJavaDocConverter {
 			Field safelistField = Cleaner.class.getDeclaredField("safelist");
 			safelistField.setAccessible(true);
 
-			Safelist s = (Safelist) safelistField.get(c);
+			Whitelist s = (Whitelist) safelistField.get(c);
 
 			s.addProtocols("a", "href", "file", "jdt");
 			s.addProtocols("img", "src", "file");

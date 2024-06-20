@@ -6,12 +6,12 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }} # compiles and test on Ubuntu
+    runs-on: ${{ matrix.os }} # compiles and test on various OS
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        java: ["17"]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        java: [ 17, 18, 19, 20 ] #21 not released yet on temurin
       fail-fast: false
 
     steps:
@@ -28,15 +28,13 @@ jobs:
         repository: jbosstools/jbosstools-build-ci
         path: build-ci
 
-    # Java JDK 11 used for maven build
+    # Java JDK used for maven build
     - name: Setup Java ${{ matrix.java }}
       uses: actions/setup-java@v3
       with:
         java-version: ${{ matrix.java }}
-        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
-        architecture: x64
         distribution: 'temurin'
-        cache: maven
+        cache: 'maven'
 
     # Install Maven 3.9
     - name: Set up Maven
@@ -54,12 +52,21 @@ jobs:
           jbosstools-${{ runner.os }}-maven-
 
     # Build and compile using Maven
-    - name: Build/Compile and run unit tests
+    - name: Build/Compile and run unit tests (Linux)
       run: xvfb-run -a mvn clean verify -U -fae -B --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+    - name: Build/Compile and run unit tests (Mac)
+      run: mvn clean verify -U -fae -B --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -ntp
+      if: ${{ matrix.os == 'macos-latest' }}
+      # as below, do fail builds on errors 
+    - name: Build/Compile and run unit tests (Windows)
+      run: mvn clean verify --% -U -fae -B --settings build-ci/maven-settings.xml -fae -DskipITests=true -ntp
+      if: ${{ matrix.os == 'windows-latest' }}
 
     # Archive artifacts to be applied in Publish Reports workflow
     - name: Archiving test artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
+      if: ${{ matrix.os != 'windows-latest'}} # currently disabled because of https://github.com/actions/upload-artifact/issues/240, failing above if tests errors
       with: 
         name: ${{ matrix.os }}-${{ matrix.java }}-test-reports
         path: |
